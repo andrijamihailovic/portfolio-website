@@ -332,7 +332,7 @@ nav ul li a:hover::after{
 
 /*----------------css for small screens-------------*/
 
-@media only screen and (max-with: 600px){
+@media only screen and (max-width: 600px){
     #header{
         background-image: url(images/ozadje_telefon.png);
     }
