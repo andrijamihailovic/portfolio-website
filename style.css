@@ -334,7 +334,8 @@ nav ul li a:hover::after{
 
 @media only screen and (max-with: 600px){
     #heder{
-        background-image: url(images/fon\ background.pdf) ;
+        background-image: url(images/ozadje6.pdf);
+        background-size:600px;
     }
     .header-text{
         font-size: 16px;
