@@ -199,19 +199,19 @@ nav ul li a:hover::after{
 }
 
 .produkt1_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
 
 .produkt2_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
 
 .produkt3_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
@@ -260,19 +260,19 @@ nav ul li a:hover::after{
     margin-top: 50px;
 }
 .graphic1_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
 
 .graphic2_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
 
 .graphic3_foto img{
-    width: 420px;
+    width: 100%;
     border-radius: 15px;
     margin-bottom: 20px;
 }
