@@ -341,7 +341,8 @@ nav .smallmenu{
      }
 
     #header{
-        background-image: none;
+        background-image: url(images/fon\ background.pdf);
+        background-size: auto;
     }
     .header-text{
         font-size: 16px;
