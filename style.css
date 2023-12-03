@@ -401,7 +401,7 @@ nav ul .smallmenu{
 }
 
 .container .industrial-list{
-    width: 80%;
+    flex-basis: 100%;
 }
 
     
