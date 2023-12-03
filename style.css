@@ -352,8 +352,15 @@ nav .smallmenu{
         font-size: 30px;
     }
     nav .smallmenu{
-        width: 50%;
+        width: 16px;
         display: block;
          }
+         nav ul{
+        background: #0011ff;
+        position: fixed; top: 0;
+        right: 0;
+        width: 200px;
+        height: 100vh;
+        padding-top: 50px;
     
 }
