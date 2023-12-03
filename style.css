@@ -441,5 +441,39 @@ nav ul .smallmenu{
     margin-bottom: 20px;
     margin-left: 30px;
 }
+
+.industrial-list div i{
+    width: 339px;
+    font-size: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.industrial-list div h2{
+    width: 339px;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.graphic-list div i{
+    width: 339px;
+    font-size: 50px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.graphic-list div h2{
+    width: 339px;
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
     
 }
