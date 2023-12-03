@@ -358,7 +358,7 @@ nav .smallmenu{
          nav ul{
         background: #6a6ea6;
         position: fixed; top: 0;
-        right: 0;
+        right: -200px;
         width: 200px;
         height: 100vh;
         padding-top: 50px;
