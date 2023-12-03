@@ -388,12 +388,10 @@ nav ul .smallmenu{
 }
 
 .about-col-1{
-    width: 300%;
     margin-bottom: 30px;
 }
 
 .about-col-2{
-    width: 300%;
     font-size: 14px;
 }
 
@@ -403,34 +401,39 @@ nav ul .smallmenu{
 }
 
 .produkt1_foto img{
-    width: 80%;
+    width: 70%;
     border-radius: 15px;
     margin-bottom: 20px;
+    margin-left: 30px;
 }
 
 .produkt2_foto img{
-    width: 80%;
+    width: 70%;
     border-radius: 15px;
     margin-bottom: 20px;
+    margin-left: 30px;
 }
 
 .produkt3_foto img{
-    width: 80%;
+    width: 70%;
     border-radius: 15px;
     margin-bottom: 20px;
+    margin-left: 30px;
 }
 
 .graphic-list div i{
-    width: 336px;
+    width: 300px;
     font-size: 50px;
     margin-bottom: 30px;
+    margin-left: 30px;
 }
 
 .graphic-list div h2{
-    width: 336px;
+    width: 300px;
     font-size: 30px;
     font-weight: 500;
     margin-bottom: 15px;
+    margin-left: 30px;
 }
     
 }
