@@ -408,31 +408,37 @@ nav ul .smallmenu{
 }
 
 .produkt2_foto img{
-    width: 70%;
+    width: 80%;
     border-radius: 15px;
     margin-bottom: 20px;
     margin-left: 30px;
 }
 
 .produkt3_foto img{
-    width: 70%;
+    width: 80%;
     border-radius: 15px;
     margin-bottom: 20px;
     margin-left: 30px;
 }
 
-.graphic-list div i{
-    width: 300px;
-    font-size: 40px;
-    margin-bottom: 30px;
+.graphic1_foto img{
+    width: 80%;
+    border-radius: 15px;
+    margin-bottom: 20px;
     margin-left: 30px;
 }
 
-.graphic-list div h2{
-    width: 300px;
-    font-size: 24px;
-    font-weight: 500;
-    margin-bottom: 15px;
+.graphic2_foto img{
+    width: 80%;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+.graphic3_foto img{
+    width: 80%;
+    border-radius: 15px;
+    margin-bottom: 20px;
     margin-left: 30px;
 }
     
