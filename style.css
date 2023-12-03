@@ -354,6 +354,7 @@ nav .smallmenu{
     nav .smallmenu{
         width: 24px;
         display: block;
+        cursor: pointer;
          }
          nav ul{
         background: #6a6ea6;
@@ -363,6 +364,7 @@ nav .smallmenu{
         height: 100vh;
         padding-top: 50px;
         z-index: 2;
+        transition: right 0.5s;
         }
 
         nav ul li{
