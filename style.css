@@ -363,5 +363,19 @@ nav .smallmenu{
         height: 100vh;
         padding-top: 50px;
         }
+
+        nav ul li{
+           display:block;
+           margin: 25px;
+            }
+
+nav ul .smallmenu{
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    cursor: pointer;
+
+        
+
     
 }
