@@ -357,7 +357,7 @@ nav .smallmenu{
         cursor: pointer;
          }
          nav ul{
-        background: #6a6ea6;
+        background: #000ed0;
         position: fixed; top: 0;
         right: -200px;
         width: 200px;
@@ -377,6 +377,14 @@ nav ul .smallmenu{
     top: 25px;
     left: 25px;
     cursor: pointer;
+}
+
+    .sub-title{
+    font-size: 40px;
+    }
+
+    .about-col-1, .about-col-2{
+    flex-basis: 100%;
 }
 
         
