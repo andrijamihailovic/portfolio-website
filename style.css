@@ -383,12 +383,17 @@ nav ul .smallmenu{
     font-size: 40px;
     }
 
+    .about-col-1, .about-col-2{
+    flex-basis: 100%;
+}
 
 .about-col-1{
+    width: 336px;
     margin-bottom: 30px;
 }
 
 .about-col-2{
+    width: 336px;
     font-size: 14px;
 }
 
