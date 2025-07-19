@@ -100,8 +100,6 @@ class Object3D {
     });
     ctx.strokeStyle = hovered ? "white" : "#ddd";
     ctx.lineWidth = hovered ? 2.5 : 1.2;
-    ctx.shadowColor = hovered ? "white" : "transparent";
-    ctx.shadowBlur = hovered ? 10 : 0;
     for (let edge of this.edges) {
       let [a, b] = edge;
       ctx.beginPath();
@@ -109,7 +107,6 @@ class Object3D {
       ctx.lineTo(projected[b].x, projected[b].y);
       ctx.stroke();
     }
-    ctx.shadowBlur = 0;
     ctx.fillStyle = "white";
     ctx.font = "16px sans-serif";
     ctx.textAlign = "center";
@@ -264,6 +261,7 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+
 
 
     
