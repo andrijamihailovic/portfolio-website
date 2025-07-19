@@ -73,47 +73,49 @@
     </p>
   </div>
 
-  <script>
-    const floatText = document.querySelector('.float-text');
-    const backArrow = document.getElementById('back-arrow');
+<script>
+  const floatText = document.querySelector('.float-text');
+  const backArrow = document.getElementById('back-arrow');
 
-    backArrow.addEventListener('click', () => {
-      history.back();
-    });
+  backArrow.addEventListener('click', () => {
+    history.back();
+  });
 
-    const sentence = `Andrija Mihailović (born 2000) graduated in 2022 in Industrial Design from the Academy of Fine Arts and Design (ALUO) in Ljubljana. He continued his studies at the master’s level and completed the program with honors, Cum Laude, in 2024.
+  const sentence = `Andrija Mihailović (born 2000) graduated in 2022 in Industrial Design from the Academy of Fine Arts and Design (ALUO) in Ljubljana. He continued his studies at the master’s level and completed the program with honors, Cum Laude, in 2024.
 During his studies and various projects, he explored different design fields while consistently maintaining and incorporating key elements of social and sustainable impact. Over time, he noticed that conventional approaches limited him and did not satisfy his curiosity, so he began to include thinking beyond established design frameworks in his work.
 He is especially interested in the intersection between design and other fields, adding content and broader context to projects.
 He collaborated on research projects with ALUO, local brands, and creative collectives. In 2024, as part of a team, he designed a pavilion representing the design department at Milan Design Week, for which the team received recognition from the University of Ljubljana.
 In 2023, he worked at the Berlin research institute Matters of Activity, focusing on research design. This experience deepened his understanding and enthusiasm for multidisciplinary work. In 2025, he also participated in the research project Recare about shoes under LUCA School of Arts in Ghent, successfully transferring research approaches into practice in collaboration with local companies.
 During his time abroad, he organized and participated in numerous international workshops and lectures, including at Humboldt University in Berlin, the Department of Applied and Molecular Microbiology at TU Berlin, and LUCA School of Arts in Ghent.`;
 
-    // Clear container
-    floatText.innerHTML = '';
+  floatText.innerHTML = '';
 
-    // Break the sentence into spans
-    sentence.split('').forEach(char => {
+  sentence.split('').forEach(char => {
+    if (char === ' ') {
+      floatText.appendChild(document.createTextNode(' '));
+    } else {
       const span = document.createElement('span');
       span.textContent = char;
       floatText.appendChild(span);
-    });
+    }
+  });
 
-    // Scatter on hover
-    floatText.addEventListener('mouseover', (e) => {
-      if (e.target.tagName === 'SPAN') {
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 50 + 20;
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
-        e.target.style.opacity = 0;
-        setTimeout(() => {
-          e.target.style.transform = 'translate(0, 0)';
-          e.target.style.opacity = 1;
-        }, 1000);
-      }
-    });
-  </script>
+  floatText.addEventListener('mouseover', (e) => {
+    if (e.target.tagName === 'SPAN') {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * 50 + 20;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
+      e.target.style.opacity = 0;
+      setTimeout(() => {
+        e.target.style.transform = 'translate(0, 0)';
+        e.target.style.opacity = 1;
+      }, 1000);
+    }
+  });
+</script>
+
 </body>
 </html>
 
