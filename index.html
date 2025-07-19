@@ -14,12 +14,14 @@
   <canvas id="sceneCanvas"></canvas>
   <script src="script.js"></script>
 </body>
+    <body onload="document.body.classList.add('fade-in')">
 </html>
 
 </script>
 
 <script>
 
+// === Canvas Setup ===
 const sceneCanvas = document.getElementById("sceneCanvas");
 const trailCanvas = document.getElementById("trailCanvas");
 const sceneCtx = sceneCanvas.getContext("2d");
@@ -38,11 +40,11 @@ window.addEventListener("resize", () => {
   positionObjects();
 });
 
-// === Cursor/Touch Trail ===
+// === Cursor Trail ===
 let trail = [];
 function addToTrail(x, y) {
   trail.push({ x, y, alpha: 1.0 });
-  if (trail.length > 100) trail.shift(); // keep it smooth
+  if (trail.length > 100) trail.shift();
 }
 window.addEventListener("mousemove", e => addToTrail(e.clientX, e.clientY));
 window.addEventListener("touchmove", e => {
@@ -68,7 +70,7 @@ function drawTrail() {
 }
 drawTrail();
 
-// === Object3D class ===
+// === Object3D ===
 class Object3D {
   constructor(points, edges, label, centerX, centerY) {
     this.points = points;
@@ -79,7 +81,6 @@ class Object3D {
     this.rotation = { x: 0, y: 0 };
     this.autoRotate = true;
   }
-
   rotatePoint(p, ax, ay) {
     let { x, y, z } = p;
     let y1 = y * Math.cos(ax) - z * Math.sin(ax);
@@ -88,18 +89,19 @@ class Object3D {
     let z2 = -x * Math.sin(ay) + z1 * Math.cos(ay);
     return { x: x1, y: y1, z: z2 };
   }
-
-  draw(ctx) {
+  draw(ctx, hovered = false) {
     let projected = this.points.map(p => {
       let rotated = this.rotatePoint(p, this.rotation.x, this.rotation.y);
       let scale = 500 / (500 + rotated.z);
       return {
-        x: this.centerX + rotated.x * scale,
-        y: this.centerY + rotated.y * scale
+        x: this.centerX + rotated.x * scale * (hovered ? 1.1 : 1),
+        y: this.centerY + rotated.y * scale * (hovered ? 1.1 : 1)
       };
     });
-
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = hovered ? "white" : "#ddd";
+    ctx.lineWidth = hovered ? 2.5 : 1.2;
+    ctx.shadowColor = hovered ? "white" : "transparent";
+    ctx.shadowBlur = hovered ? 10 : 0;
     for (let edge of this.edges) {
       let [a, b] = edge;
       ctx.beginPath();
@@ -107,36 +109,33 @@ class Object3D {
       ctx.lineTo(projected[b].x, projected[b].y);
       ctx.stroke();
     }
-
+    ctx.shadowBlur = 0;
     ctx.fillStyle = "white";
     ctx.font = "16px sans-serif";
     ctx.textAlign = "center";
     ctx.fillText(this.label, this.centerX, this.centerY + 70);
   }
-
   update() {
     if (this.autoRotate) {
       this.rotation.x += 0.005;
       this.rotation.y += 0.01;
     }
   }
-
   isClicked(x, y) {
     return x > this.centerX - 60 && x < this.centerX + 60 &&
            y > this.centerY - 60 && y < this.centerY + 60;
   }
 }
 
-// === Shapes ===
+// === 3D Objects ===
 const cube = new Object3D(
   [
-    {x:-30,y:-30,z:-30}, {x:30,y:-30,z:-30}, {x:30,y:30,z:-30}, {x:-30,y:30,z:-30},
-    {x:-30,y:-30,z:30},  {x:30,y:-30,z:30},  {x:30,y:30,z:30},  {x:-30,y:30,z:30}
+    {x:-30,y:-30,z:-30},{x:30,y:-30,z:-30},{x:30,y:30,z:-30},{x:-30,y:30,z:-30},
+    {x:-30,y:-30,z:30},{x:30,y:-30,z:30},{x:30,y:30,z:30},{x:-30,y:30,z:30}
   ],
   [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]],
   "Product Design", 0, 0
 );
-
 const pyramid = new Object3D(
   [
     {x:-30,y:30,z:-30},{x:30,y:30,z:-30},{x:30,y:30,z:30},{x:-30,y:30,z:30},{x:0,y:-40,z:0}
@@ -144,7 +143,6 @@ const pyramid = new Object3D(
   [[0,1],[1,2],[2,3],[3,0],[0,4],[1,4],[2,4],[3,4]],
   "Graphic Design", 0, 0
 );
-
 const polygon = new Object3D(
   [
     {x:0,y:-40,z:0},{x:40,y:0,z:0},{x:20,y:40,z:30},
@@ -153,7 +151,6 @@ const polygon = new Object3D(
   [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[2,5],[0,2]],
   "Motion Design", 0, 0
 );
-
 const objects = [cube, pyramid, polygon];
 
 function positionObjects() {
@@ -175,14 +172,12 @@ function positionObjects() {
 }
 positionObjects();
 
-// === Dragging support ===
+// === Dragging ===
 let draggingObject = null;
 let lastX, lastY;
-
 function getXY(e) {
   return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY };
 }
-
 function startDrag(e) {
   const { x, y } = getXY(e);
   for (let obj of objects) {
@@ -196,7 +191,6 @@ function startDrag(e) {
     }
   }
 }
-
 function onDrag(e) {
   if (draggingObject) {
     const { x, y } = getXY(e);
@@ -207,14 +201,12 @@ function onDrag(e) {
     e.preventDefault();
   }
 }
-
 function endDrag() {
   if (draggingObject) {
     setTimeout(() => draggingObject.autoRotate = true, 2000);
     draggingObject = null;
   }
 }
-
 sceneCanvas.addEventListener("mousedown", startDrag);
 sceneCanvas.addEventListener("touchstart", startDrag, { passive: false });
 sceneCanvas.addEventListener("mousemove", onDrag);
@@ -222,40 +214,57 @@ sceneCanvas.addEventListener("touchmove", onDrag, { passive: false });
 sceneCanvas.addEventListener("mouseup", endDrag);
 sceneCanvas.addEventListener("touchend", endDrag);
 
-// === Handle clicks (tap or mouse click) ===
+// === Hover + Click ===
+let mouse = { x: null, y: null };
+sceneCanvas.addEventListener("mousemove", e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+sceneCanvas.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  mouse.x = t.clientX;
+  mouse.y = t.clientY;
+});
+sceneCanvas.addEventListener("mouseleave", () => { mouse.x = null; mouse.y = null; });
+
+function transitionToPage(url) {
+  document.body.classList.remove("fade-in");
+  document.body.classList.add("fade-out");
+  setTimeout(() => window.location.href = url, 500);
+}
+
 function handleClick(e) {
   const { x, y } = getXY(e);
   for (let obj of objects) {
     if (obj.isClicked(x, y)) {
-      if (obj.label.includes("Product")) {
-        window.location.href = "product.html";
-      } else if (obj.label.includes("Graphic")) {
-        window.location.href = "graphic.html";
-      } else if (obj.label.includes("Motion")) {
-        window.location.href = "motion.html";
-      }
+      if (obj.label.includes("Product")) transitionToPage("product.html");
+      if (obj.label.includes("Graphic")) transitionToPage("graphic.html");
+      if (obj.label.includes("Motion")) transitionToPage("motion.html");
     }
   }
 }
-
 sceneCanvas.addEventListener("click", handleClick);
-sceneCanvas.addEventListener("touchstart", (e) => {
+sceneCanvas.addEventListener("touchstart", e => {
   if (e.touches.length === 1) {
-    const touch = e.touches[0];
-    setTimeout(() => handleClick({ clientX: touch.clientX, clientY: touch.clientY }), 0);
+    const t = e.touches[0];
+    setTimeout(() => handleClick({ clientX: t.clientX, clientY: t.clientY }), 0);
   }
 }, { passive: true });
 
-// === Animation loop ===
+// === Animate ===
 function animate() {
   sceneCtx.clearRect(0, 0, width, height);
+  let hoverTarget = null;
   for (let obj of objects) {
     obj.update();
-    obj.draw(sceneCtx);
+    if (mouse.x && mouse.y && obj.isClicked(mouse.x, mouse.y)) {
+      hoverTarget = obj;
+    }
+  }
+  for (let obj of objects) {
+    obj.draw(sceneCtx, obj === hoverTarget);
   }
   requestAnimationFrame(animate);
 }
 animate();
+
 
     
 
