@@ -1,15 +1,15 @@
-/* Reset and full screen */
 body, html {
   margin: 0;
   padding: 0;
   overflow: hidden;
   background: #000fff;
   height: 100%;
+  font-family: sans-serif;
 }
 
 .scene {
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   margin: auto;
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
@@ -23,13 +23,13 @@ body, html {
   position: relative;
   transform-style: preserve-3d;
   transform: rotateX(0deg) rotateY(0deg);
-  animation: spin 8s linear infinite;
+  cursor: grab;
 }
 
 .face {
   position: absolute;
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   background: white;
   opacity: 0.9;
   display: flex;
@@ -37,27 +37,21 @@ body, html {
   align-items: center;
   font-weight: bold;
   color: #000fff;
-  border: 2px solid #000fff;
+  border: 1px solid #000fff;
+  font-size: 14px;
 }
 
-/* Position each face */
-.front  { transform: rotateY(  0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY( 90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX( 90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+/* Face positions */
+.front  { transform: rotateY(  0deg) translateZ(50px); }
+.back   { transform: rotateY(180deg) translateZ(50px); }
+.right  { transform: rotateY( 90deg) translateZ(50px); }
+.left   { transform: rotateY(-90deg) translateZ(50px); }
+.top    { transform: rotateX( 90deg) translateZ(50px); }
+.bottom { transform: rotateX(-90deg) translateZ(50px); }
 
-@keyframes spin {
-  0%   { transform: rotateX(0deg) rotateY(0deg); }
-  100% { transform: rotateX(360deg) rotateY(360deg); }
-}
-
-/* Canvas for mouse trail */
 #trailCanvas {
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1;
-    
 }
