@@ -11,12 +11,12 @@
 <body>
   <div class="scene">
     <div class="cube" id="cube">
-      <div class="face front">Front</div>
-      <div class="face back">Back</div>
-      <div class="face left">Left</div>
-      <div class="face right">Right</div>
-      <div class="face top">Top</div>
-      <div class="face bottom">Bottom</div>
+      <div class="face front">Andrija</div>
+      <div class="face back">Andrija</div>
+      <div class="face left">Andrija</div>
+      <div class="face right">Andrija</div>
+      <div class="face top">Andrija</div>
+      <div class="face bottom">Andrija</div>
     </div>
   </div>
 
@@ -30,7 +30,7 @@
 
 <script>
 
-// Resize canvas to fill screen
+// Mouse Trail Logic
 const canvas = document.getElementById("trailCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -41,17 +41,13 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Store points of the trail
 let trail = [];
-
 window.addEventListener("mousemove", (e) => {
   trail.push({ x: e.clientX, y: e.clientY, alpha: 1.0 });
 });
 
-// Animate the trail
 function drawTrail() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
   for (let i = 0; i < trail.length; i++) {
     let p = trail[i];
     ctx.beginPath();
@@ -62,17 +58,55 @@ function drawTrail() {
       ctx.lineTo(p.x, p.y);
     }
     ctx.stroke();
-
-    p.alpha -= 0.02; // fade out
+    p.alpha -= 0.02;
   }
-
-  // Remove invisible points
   trail = trail.filter(p => p.alpha > 0);
-
   requestAnimationFrame(drawTrail);
 }
-
 drawTrail();
+
+// Cube Auto & Interactive Rotation
+const cube = document.getElementById("cube");
+let rotationX = 0;
+let rotationY = 0;
+let autoRotate = true;
+let isDragging = false;
+let lastMouseX, lastMouseY;
+
+function animateCube() {
+  if (autoRotate) {
+    rotationY += 0.3;
+    rotationX += 0.15;
+  }
+  cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+  requestAnimationFrame(animateCube);
+}
+animateCube();
+
+cube.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  autoRotate = false;
+  lastMouseX = e.clientX;
+  lastMouseY = e.clientY;
+  cube.style.cursor = "grabbing";
+});
+
+window.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    const dx = e.clientX - lastMouseX;
+    const dy = e.clientY - lastMouseY;
+    rotationY += dx * 0.5;
+    rotationX -= dy * 0.5;
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+  }
+});
+
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+  cube.style.cursor = "grab";
+  setTimeout(() => autoRotate = true, 3000); // resume spin after 3s
+});
 
 </script>
 
