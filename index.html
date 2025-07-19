@@ -209,7 +209,30 @@ function onDrag(e) {
   }
 }
 
-function endDrag() {
+function endDrag()
+    
+sceneCanvas.addEventListener("click", (e) => {
+  const { x, y } = getXY(e);
+  if (draggingObject) return; // don't open if dragging
+
+  for (let obj of objects) {
+    if (
+      x > obj.centerX - 50 &&
+      x < obj.centerX + 50 &&
+      y > obj.centerY - 50 &&
+      y < obj.centerY + 50
+    ) {
+      if (obj.label.includes("Product")) {
+        window.location.href = "product.html";
+      } else if (obj.label.includes("Graphic")) {
+        window.location.href = "graphic.html";
+      } else if (obj.label.includes("Motion")) {
+        window.location.href = "motion.html";
+      }
+    }
+  }
+});
+    {
   if (draggingObject) {
     setTimeout(() => draggingObject.autoRotate = true, 2000);
     draggingObject = null;
