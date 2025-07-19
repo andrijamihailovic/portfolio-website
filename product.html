@@ -12,31 +12,60 @@
       color: white;
       font-family: sans-serif;
       height: 100%;
-      overflow: hidden;
+      overflow-y: auto; /* allow vertical scroll on mobile */
     }
     h1 {
       text-align: center;
       margin-top: 50px;
       font-size: 2rem;
     }
+    #back-arrow {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 2rem;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+    #back-arrow:hover {
+      color: #ccc;
+    }
     #about-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%;
+      position: relative;
+      margin: 50px auto 50px auto;
       max-width: 600px;
+      width: 80%;
       line-height: 1.5;
       font-size: 1.2rem;
-      white-space: pre-line; /* Preserve line breaks */
+      white-space: pre-line; /* preserve line breaks */
     }
     .float-text span {
       display: inline-block;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      #about-container {
+        width: 90%;
+        font-size: 1rem;
+      }
+      #back-arrow {
+        font-size: 1.5rem;
+        top: 15px;
+        left: 15px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div id="back-arrow" title="Go Back">&#8592;</div>
   <h1>About Me</h1>
   <div id="about-container">
     <p class="float-text">
@@ -46,6 +75,12 @@
 
   <script>
     const floatText = document.querySelector('.float-text');
+    const backArrow = document.getElementById('back-arrow');
+
+    backArrow.addEventListener('click', () => {
+      history.back();
+    });
+
     const sentence = `Andrija Mihailović (born 2000) graduated in 2022 in Industrial Design from the Academy of Fine Arts and Design (ALUO) in Ljubljana. He continued his studies at the master’s level and completed the program with honors, Cum Laude, in 2024.
 During his studies and various projects, he explored different design fields while consistently maintaining and incorporating key elements of social and sustainable impact. Over time, he noticed that conventional approaches limited him and did not satisfy his curiosity, so he began to include thinking beyond established design frameworks in his work.
 He is especially interested in the intersection between design and other fields, adding content and broader context to projects.
