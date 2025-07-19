@@ -1,8 +1,8 @@
 body, html {
   margin: 0;
   padding: 0;
-  background: #000fff;
   overflow: hidden;
+  background: #000fff;
   font-family: sans-serif;
 }
 
@@ -13,7 +13,7 @@ header {
   text-align: center;
   font-size: 32px;
   color: white;
-  z-index: 3;
+  z-index: 10;
   pointer-events: none;
 }
 
