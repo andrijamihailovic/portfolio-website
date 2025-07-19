@@ -29,9 +29,9 @@
       line-height: 1.5;
       font-size: 1.2rem;
     }
-    .float-text {
-      position: relative;
-      transition: transform 0.2s ease-out;
+    .float-text span {
+      display: inline-block;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
   </style>
 </head>
@@ -39,24 +39,37 @@
   <h1>About Me</h1>
   <div id="about-container">
     <p class="float-text">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus.
+      <!-- Text will be injected here by JS -->
     </p>
   </div>
 
   <script>
-    const text = document.querySelector('.float-text');
-    document.addEventListener('mousemove', (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      text.style.transform = `translate(${x}px, ${y}px)`;
+    const floatText = document.querySelector('.float-text');
+    const sentence = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus.";
+
+    // Break the sentence into spans
+    sentence.split('').forEach(char => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      floatText.appendChild(span);
     });
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) {
-        const x = (e.touches[0].clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.touches[0].clientY / window.innerHeight - 0.5) * 20;
-        text.style.transform = `translate(${x}px, ${y}px)`;
+
+    // Add hover effect
+    floatText.addEventListener('mouseover', (e) => {
+      if (e.target.tagName === 'SPAN') {
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 50 + 20;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
+        e.target.style.opacity = 0;
+        setTimeout(() => {
+          e.target.style.transform = 'translate(0, 0)';
+          e.target.style.opacity = 1;
+        }, 1000);
       }
-    }, { passive: true });
+    });
   </script>
 </body>
 </html>
+
