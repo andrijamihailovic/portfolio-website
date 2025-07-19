@@ -38,7 +38,7 @@ window.addEventListener("resize", () => {
   positionObjects();
 });
 
-// === MOUSE TRAIL ===
+// === Mouse Trail ===
 let trail = [];
 window.addEventListener("mousemove", e => {
   trail.push({ x: e.clientX, y: e.clientY, alpha: 1.0 });
@@ -62,7 +62,7 @@ function drawTrail() {
 }
 drawTrail();
 
-// === 3D OBJECT CLASS ===
+// === Object Class ===
 class Object3D {
   constructor(points, edges, label, centerX, centerY) {
     this.points = points;
@@ -114,9 +114,14 @@ class Object3D {
       this.rotation.y += 0.01;
     }
   }
+
+  isClicked(x, y) {
+    return x > this.centerX - 60 && x < this.centerX + 60 &&
+           y > this.centerY - 60 && y < this.centerY + 60;
+  }
 }
 
-// === SHAPE DATA ===
+// === 3D Shapes ===
 const cube = new Object3D(
   [
     {x:-30,y:-30,z:-30}, {x:30,y:-30,z:-30}, {x:30,y:30,z:-30}, {x:-30,y:30,z:-30},
@@ -145,7 +150,6 @@ const polygon = new Object3D(
 
 const objects = [cube, pyramid, polygon];
 
-// === POSITION BASED ON SCREEN SIZE ===
 function positionObjects() {
   if (width < 768) {
     cube.centerX = width / 2;
@@ -165,18 +169,9 @@ function positionObjects() {
 }
 positionObjects();
 
-// === MOUSE/TAP INTERACTION ===
+// === Dragging ===
 let draggingObject = null;
 let lastX, lastY;
-
-sceneCanvas.addEventListener("mousedown", startDrag);
-sceneCanvas.addEventListener("touchstart", startDrag, { passive: false });
-
-sceneCanvas.addEventListener("mousemove", onDrag);
-sceneCanvas.addEventListener("touchmove", onDrag, { passive: false });
-
-sceneCanvas.addEventListener("mouseup", endDrag);
-sceneCanvas.addEventListener("touchend", endDrag);
 
 function getXY(e) {
   return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : { x: e.clientX, y: e.clientY };
@@ -185,7 +180,7 @@ function getXY(e) {
 function startDrag(e) {
   const { x, y } = getXY(e);
   for (let obj of objects) {
-    if (x > obj.centerX - 50 && x < obj.centerX + 50 && y > obj.centerY - 50 && y < obj.centerY + 50) {
+    if (obj.isClicked(x, y)) {
       draggingObject = obj;
       draggingObject.autoRotate = false;
       lastX = x;
@@ -209,19 +204,27 @@ function onDrag(e) {
   }
 }
 
-function endDrag()
-    
+function endDrag() {
+  if (draggingObject) {
+    setTimeout(() => draggingObject.autoRotate = true, 2000);
+    draggingObject = null;
+  }
+}
+
+sceneCanvas.addEventListener("mousedown", startDrag);
+sceneCanvas.addEventListener("touchstart", startDrag, { passive: false });
+sceneCanvas.addEventListener("mousemove", onDrag);
+sceneCanvas.addEventListener("touchmove", onDrag, { passive: false });
+sceneCanvas.addEventListener("mouseup", endDrag);
+sceneCanvas.addEventListener("touchend", endDrag);
+
+// === Click Navigation ===
 sceneCanvas.addEventListener("click", (e) => {
   const { x, y } = getXY(e);
-  if (draggingObject) return; // don't open if dragging
+  if (draggingObject) return;
 
   for (let obj of objects) {
-    if (
-      x > obj.centerX - 50 &&
-      x < obj.centerX + 50 &&
-      y > obj.centerY - 50 &&
-      y < obj.centerY + 50
-    ) {
+    if (obj.isClicked(x, y)) {
       if (obj.label.includes("Product")) {
         window.location.href = "product.html";
       } else if (obj.label.includes("Graphic")) {
@@ -232,14 +235,8 @@ sceneCanvas.addEventListener("click", (e) => {
     }
   }
 });
-    {
-  if (draggingObject) {
-    setTimeout(() => draggingObject.autoRotate = true, 2000);
-    draggingObject = null;
-  }
-}
 
-// === RENDER LOOP ===
+// === Animate ===
 function animate() {
   sceneCtx.clearRect(0, 0, width, height);
   for (let obj of objects) {
@@ -249,6 +246,7 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+
 
 </script>
 
