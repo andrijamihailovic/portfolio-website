@@ -1,16 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Product Design</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me - Andrija</title>
   <style>
-    body { background: #000fff; color: white; font-family: sans-serif; padding: 2em; }
-    a { color: white; text-decoration: underline; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000fff;
+      color: white;
+      font-family: sans-serif;
+      height: 100%;
+      overflow: hidden;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 2rem;
+    }
+    #about-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 600px;
+      line-height: 1.5;
+      font-size: 1.2rem;
+    }
+    .float-text {
+      position: relative;
+      transition: transform 0.2s ease-out;
+    }
   </style>
 </head>
 <body>
-  <h1>Product Design</h1>
-  <p>This page is about your Product Design work.</p>
-  <a href="index.html">← Back to home</a>
+  <h1>About Me</h1>
+  <div id="about-container">
+    <p class="float-text">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus.
+    </p>
+  </div>
+
+  <script>
+    const text = document.querySelector('.float-text');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      text.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const x = (e.touches[0].clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.touches[0].clientY / window.innerHeight - 0.5) * 20;
+        text.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    }, { passive: true });
+  </script>
 </body>
 </html>
