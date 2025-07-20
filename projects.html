@@ -6,35 +6,76 @@
   <title>Projects</title>
   <style>
     body {
-      background: #0033cc; /* blue background to match your site */
+      background: #0033cc; /* blue background */
       color: white;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
     }
 
+    /* Container for arrow + title, horizontally aligned */
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
     #back-arrow {
-      display: inline-block;
-      font-size: 20px;
+      font-size: 24px;
       color: white;
       text-decoration: none;
       cursor: pointer;
       user-select: none;
-      margin-bottom: 20px;
       transition: color 0.3s ease;
     }
 
     #back-arrow:hover {
       color: #ddd;
     }
+
+    h1 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    /* Container for your project images */
+    .projects-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .projects-container img {
+      width: 200px;
+      height: auto;
+      border: 2px solid white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .projects-container img:hover {
+      transform: scale(1.05);
+      border-color: #ddd;
+    }
   </style>
 </head>
 <body>
 
-  <a href="#" id="back-arrow" title="Go back">&#8592; Back</a>
+  <div class="header-row">
+    <a href="#" id="back-arrow" title="Go back">&#8592;</a>
+    <h1>Projects</h1>
+  </div>
 
-  <h1>Projects</h1>
-  <p>Here are some of my projects...</p>
+  <div class="projects-container">
+    <!-- Replace src with your actual images -->
+    <img src="images/image1.jpg" alt="Project 1" />
+    <img src="images/image2.jpg" alt="Project 2" />
+    <img src="images/image3.jpg" alt="Project 3" />
+  </div>
 
   <script>
     document.getElementById('back-arrow').addEventListener('click', function(e) {
@@ -42,7 +83,6 @@
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        // fallback if no history: go to homepage or any page you want
         window.location.href = 'index.html';
       }
     });
@@ -50,4 +90,3 @@
 
 </body>
 </html>
-``
