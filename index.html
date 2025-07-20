@@ -9,12 +9,19 @@
 <body>
   <h1>Andrija_studios</h1>
 
-  <!-- Canvases -->
+  <!-- Labels -->
+  <div id="label-cube" class="label">About me</div>
+  <div id="label-pyramid" class="label">Projects</div>
+  <div id="label-polygon" class="label">Resume</div>
+
+  <!-- Canvas for 3D shapes and cursor trail -->
   <canvas id="trailCanvas"></canvas>
   <canvas id="sceneCanvas"></canvas>
 
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <!-- Clock Footer -->
+  <footer id="clockFooter">Local Time: <span id="clock">--:--:--</span></footer>
+
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
@@ -251,5 +258,14 @@ const polygon = new Object3D(
     requestAnimationFrame(animate);
   }
   animate();
+
+  setInterval(() => {
+  const now = new Date();
+  const clock = document.getElementById("clock");
+  if (clock) {
+    clock.textContent = now.toLocaleTimeString();
+  }
+}, 1000);
+
 </script>
 
