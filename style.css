@@ -1,17 +1,94 @@
-body {
+/* Reset */
+* {
   margin: 0;
-  overflow: hidden;
-  background: #000fff;
-  font-family: sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212;
   color: white;
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
 }
 
-body.fade-in {
-  opacity: 1;
+h1 {
+  font-weight: 700;
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  user-select: none;
 }
 
-.fade-out {
-  opacity: 0 !important;
+.label {
+  position: absolute;
+  font-size: 1.1rem;
+  background: rgba(255 255 255 / 0.1);
+  padding: 5px 15px;
+  border-radius: 25px;
+  pointer-events: none;
+  user-select: none;
+  font-weight: 600;
+  color: #eee;
+  text-shadow: 0 0 5px rgba(0,0,0,0.6);
+  transition: background 0.3s ease;
+}
+
+/* Position labels near each shape on larger screens */
+@media (min-width: 768px) {
+  #label-cube {
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, 80%);
+  }
+  #label-pyramid {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 80%);
+  }
+  #label-polygon {
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, 80%);
+  }
+}
+
+/* Position labels vertically on smaller screens */
+@media (max-width: 767px) {
+  #label-cube {
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+  #label-pyramid {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+  #label-polygon {
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+}
+
+canvas#scene {
+  display: block;
+  width: 100vw;
+  height: 80vh;
+  background: transparent;
+  cursor: grab;
+  user-select: none;
+  margin-top: 30px;
+}
+
+/* Grab cursor style while dragging */
+canvas#scene:active {
+  cursor: grabbing;
 }
