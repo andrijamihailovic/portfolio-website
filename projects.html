@@ -39,6 +39,15 @@
 
 
   <script>
+       document.getElementById('back-arrow').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+    
 document.querySelectorAll('.project-item img').forEach(img => {
   img.addEventListener('click', function () {
     const lightbox = document.getElementById('lightbox');
