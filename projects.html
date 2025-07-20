@@ -75,27 +75,84 @@
 
 
   <script>
-       document.getElementById('back-arrow').addEventListener('click', function(e) {
-      e.preventDefault();
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = 'index.html';
-      }
-    });
-    
-document.querySelectorAll('.project-item img').forEach(img => {
-  img.addEventListener('click', function () {
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    lightboxImg.src = this.src;
-    lightbox.style.display = 'flex';
+      document.addEventListener('DOMContentLoaded', () => {
+  const isMobile = window.innerWidth <= 768;
+
+  const images = [
+    { src: 'images/image1.jpg', title: 'Project One' },
+    { src: 'images/image2.jpg', title: 'Project Two' },
+    { src: 'images/image3.jpg', title: 'Project Three' },
+    { src: 'images/image4.jpg', title: 'Project Four' }
+    // Add more as needed
+  ];
+
+  const container = document.querySelector('.projects-container');
+
+  images.forEach((img, index) => {
+    const item = document.createElement('div');
+    item.className = 'project-item';
+
+    // random vertical position for desktop animation
+    if (!isMobile) {
+      item.style.top = `${Math.random() * 60 + 20}px`; // Between 20px and 80px
+      item.style.left = `${-300 - Math.random() * 500}px`;
+      item.style.animationDelay = `${Math.random() * 15}s`;
+    }
+
+    const image = document.createElement('img');
+    image.src = img.src;
+    image.alt = img.title;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+
+    const title = document.createElement('span');
+    title.textContent = img.title;
+
+    overlay.appendChild(title);
+    item.appendChild(image);
+    item.appendChild(overlay);
+    container.appendChild(item);
+
+    // Click handler for full-screen view
+    item.addEventListener('click', () => openModal(img.src, img.title));
   });
+
+  // === Modal popup ===
+  const modal = document.createElement('div');
+  modal.id = 'image-modal';
+  modal.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  `;
+
+  const modalImg = document.createElement('img');
+  modalImg.style.cssText = `
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    box-shadow: 0 0 20px black;
+  `;
+
+  modal.appendChild(modalImg);
+  document.body.appendChild(modal);
+
+  modal.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  function openModal(src, title) {
+    modalImg.src = src;
+    modalImg.alt = title;
+    modal.style.display = 'flex';
+  }
 });
 
-document.querySelector('.lightbox .close').addEventListener('click', function () {
-  document.getElementById('lightbox').style.display = 'none';
-});
   </script>
 
 </body>
