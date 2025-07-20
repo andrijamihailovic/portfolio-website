@@ -1,98 +1,69 @@
-html, body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+body {
   background-color: #000fff;
   overflow: hidden;
   font-family: sans-serif;
   color: white;
 }
-
-h1 {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 2rem;
-  z-index: 2;
-  position: relative;
-}
-
 canvas {
   position: absolute;
   top: 0;
   left: 0;
 }
-
+.title {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  z-index: 2;
+  font-size: 1.5rem;
+  color: white;
+}
 .label {
   position: absolute;
-  font-size: 1.2rem;
   color: white;
   text-align: center;
+  font-size: 1.1rem;
+  z-index: 3;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  pointer-events: auto;
-  z-index: 2;
+  transform: translateX(-50%);
 }
-
-.label:hover {
-  transform: scale(1.2);
-}
-
 #label-cube {
   left: 25%;
-  top: 55%;
-  transform: translate(-50%, -50%);
+  top: 60%;
 }
 #label-pyramid {
   left: 50%;
-  top: 55%;
-  transform: translate(-50%, -50%);
+  top: 60%;
 }
 #label-polygon {
   left: 75%;
-  top: 55%;
-  transform: translate(-50%, -50%);
+  top: 60%;
 }
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   #label-cube {
-    top: 20%;
     left: 50%;
+    top: 25%;
   }
   #label-pyramid {
-    top: 50%;
     left: 50%;
+    top: 50%;
   }
   #label-polygon {
-    top: 80%;
     left: 50%;
+    top: 75%;
   }
 }
-
-/* Trail effect */
-.trail {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.8;
-  animation: fadeOut 2s forwards;
-}
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: scale(2);
-  }
-}
-
-/* Clock footer */
-footer#clockFooter {
+footer {
   position: fixed;
-  bottom: 10px;
-  right: 20px;
-  font-size: 0.9rem;
+  bottom: 5px;
+  width: 100%;
+  text-align: center;
   color: white;
-  z-index: 2;
-  pointer-events: none;
+  font-size: 0.9rem;
+  z-index: 5;
 }
