@@ -2,37 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Projects – Andrija Studios</title>
-  <link rel="stylesheet" href="projects.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects</title>
+  <style>
+    body {
+      background: #0033cc; /* blue background to match your site */
+      color: white;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #back-arrow {
+      display: inline-block;
+      font-size: 20px;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    #back-arrow:hover {
+      color: #ddd;
+    }
+  </style>
 </head>
 <body>
+
+  <a href="#" id="back-arrow" title="Go back">&#8592; Back</a>
+
   <h1>Projects</h1>
-  <div class="floating-container">
-    <img src="images/image1.jpg" alt="Project image" />
-<img src="images/image1.jpg" alt="Project image" />
-<img src="images/image1.jpg" alt="Project image" />
-
-    <!-- Add more images as needed -->
-  </div>
-
-  <footer>
-    <span id="clock"></span>
-  </footer>
+  <p>Here are some of my projects...</p>
 
   <script>
-    // Live time
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-    
-    document.getElementById("back-arrow").addEventListener("click", function(e) {
-  e.preventDefault();  // prevent default anchor behavior
-  window.history.back();
-});
+    document.getElementById('back-arrow').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // fallback if no history: go to homepage or any page you want
+        window.location.href = 'index.html';
+      }
+    });
   </script>
+
 </body>
 </html>
+``
