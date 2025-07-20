@@ -2,105 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Projects</title>
-  <style>
-    body {
-      background: #0033cc; /* blue background */
-      color: white;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-
-    /* Container for arrow + title, horizontally aligned */
-    .header-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-
-    #back-arrow {
-      font-size: 24px;
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-
-    #back-arrow:hover {
-      color: #ddd;
-    }
-
-    h1 {
-      margin: 0;
-      font-weight: 600;
-      font-size: 2rem;
-    }
-
-    /* Container for your project images */
-    .projects-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-    }
-
-    .projects-container img {
-      width: 200px;
-      height: auto;
-      border: 2px solid white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .projects-container img:hover {
-      transform: scale(1.05);
-      border-color: #ddd;
-    }
-  </style>
+  <link rel="stylesheet" href="projects.css" />
 </head>
 <body>
-
-  <div class="header-row">
-    <a href="#" id="back-arrow" title="Go back">&#8592;</a>
+  <header>
+    <a href="index.html" class="back-arrow">&#8592;</a>
     <h1>Projects</h1>
+  </header>
+
+  <div class="projects-container">
+    <div class="project-item">
+      <img src="images/image1.jpg" alt="Project 1" />
+      <div class="overlay"><span>Project Title 1</span></div>
+    </div>
+    <div class="project-item">
+      <img src="images/image2.jpg" alt="Project 2" />
+      <div class="overlay"><span>Project Title 2</span></div>
+    </div>
+    <div class="project-item">
+      <img src="images/image3.jpg" alt="Project 3" />
+      <div class="overlay"><span>Project Title 3</span></div>
+    </div>
   </div>
 
- <div class="projects-container">
-  <div class="project-item">
-    <img src="images/image1.jpg" alt="Project 1" />
-    <div class="overlay">
-      <span>Do You Speak Flower</span>
-    </div>
+  <!-- Lightbox viewer -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" />
   </div>
-  <div class="project-item">
-    <img src="images/image2.jpg" alt="Project 2" />
-    <div class="overlay">
-      <span>Project Title 2</span>
-    </div>
-  </div>
-  <div class="project-item">
-    <img src="images/image3.jpg" alt="Project 3" />
-    <div class="overlay">
-      <span>Project Title 3</span>
-    </div>
-  </div>
-</div>
+
+  <script src="projects.js"></script>
+</body>
+</html>
 
 
   <script>
-    document.getElementById('back-arrow').addEventListener('click', function(e) {
-      e.preventDefault();
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = 'index.html';
-      }
-    });
+document.querySelectorAll('.project-item img').forEach(img => {
+  img.addEventListener('click', function () {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    lightboxImg.src = this.src;
+    lightbox.style.display = 'flex';
+  });
+});
+
+document.querySelector('.lightbox .close').addEventListener('click', function () {
+  document.getElementById('lightbox').style.display = 'none';
+});
   </script>
 
 </body>
