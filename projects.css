@@ -1,1 +1,73 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #000fff;
+  font-family: sans-serif;
+  overflow: hidden;
+  color: white;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 2rem;
+}
+
+.floating-container {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.floating {
+  position: absolute;
+  width: 150px;
+  height: auto;
+  animation: float 20s linear infinite;
+  pointer-events: none;
+  border-radius: 10px;
+}
+
+.floating:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floating:nth-child(2) {
+  top: 40%;
+  left: 30%;
+  animation-delay: 5s;
+}
+
+.floating:nth-child(3) {
+  top: 70%;
+  left: 60%;
+  animation-delay: 10s;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Footer clock */
+footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .floating {
+    width: 100px;
+  }
+}
 
