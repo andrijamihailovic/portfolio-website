@@ -40,6 +40,7 @@ header {
 .project-item {
   position: relative;
   width: 220px;
+  height: 220px; /* Make it square */
   cursor: pointer;
   overflow: hidden;
   border-radius: 0;
@@ -47,7 +48,8 @@ header {
 
 .project-item img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fills the square without distortion */
   display: block;
   transition: transform 0.3s ease;
   border: none;
