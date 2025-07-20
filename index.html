@@ -1,170 +1,126 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Andrija Mihailović</title>
-  <link rel="icon" type="images/x-icon" href="images/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrija Studios</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: #000fff;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-    canvas {
-      display: block;
-    }
-    h1 {
-      color: white;
-      text-align: center;
-      margin-top: 20px;
-      font-size: 2rem;
-    }
-    .label {
-      color: white;
-      text-align: center;
-      position: absolute;
-      width: 100%;
-      font-size: 1.2rem;
-      pointer-events: auto;
-      cursor: pointer;
-    }
-    #label-cube { top: 20%; }
-    #label-pyramid { top: 50%; }
-    #label-polygon { top: 80%; }
-    .trail {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: white;
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0.8;
-      animation: fadeOut 1.5s forwards;
-    }
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        transform: scale(2);
-      }
-    }
-  </style>
 </head>
-
 <body>
   <h1>Andrija_studios</h1>
+
+  <!-- Labels -->
   <div id="label-cube" class="label">About me</div>
   <div id="label-pyramid" class="label">Projects</div>
   <div id="label-polygon" class="label">Resume</div>
-  <canvas id="sceneCanvas"></canvas>
+
+  <!-- Canvas for 3D -->
+  <canvas id="scene"></canvas>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
-    let scene, camera, renderer;
-    let cube, pyramid, polygon;
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-    const objects = [];
+   let scene, camera, renderer;
+let cube, pyramid, polygon;
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2();
+const objects = [];
 
-    init();
-    animate();
+init();
+animate();
 
-    function init() {
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 5;
+function init() {
+  scene = new THREE.Scene();
 
-      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("sceneCanvas"), alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
+  camera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.z = 5;
 
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+  renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("scene"), alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-      const material = new THREE.MeshNormalMaterial();
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
 
-      // Cube
-      cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), material);
-      cube.position.y = 1.5;
-      scene.add(cube);
-      objects.push(cube);
+  const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true });
 
-      // Pyramid
-      pyramid = new THREE.Mesh(new THREE.TetrahedronGeometry(1), material);
-      scene.add(pyramid);
-      objects.push(pyramid);
+  // Minimal, small shapes
+  cube = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.8, 0.8), material);
+  cube.position.x = -2;
+  scene.add(cube);
+  objects.push(cube);
 
-      // Polygon
-      polygon = new THREE.Mesh(new THREE.DodecahedronGeometry(1), material);
-      polygon.position.y = -1.5;
-      scene.add(polygon);
-      objects.push(polygon);
+  pyramid = new THREE.Mesh(new THREE.TetrahedronGeometry(0.8), material);
+  scene.add(pyramid);
+  objects.push(pyramid);
 
-      // Cursor trail
-      document.addEventListener('mousemove', e => {
-        const trail = document.createElement('div');
-        trail.className = 'trail';
-        trail.style.left = `${e.pageX}px`;
-        trail.style.top = `${e.pageY}px`;
-        document.body.appendChild(trail);
-        setTimeout(() => trail.remove(), 1500);
-      });
+  polygon = new THREE.Mesh(new THREE.DodecahedronGeometry(0.8), material);
+  polygon.position.x = 2;
+  scene.add(polygon);
+  objects.push(polygon);
 
-      // Object click
-      document.addEventListener('click', (event) => {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(objects);
-
-        if (intersects.length > 0) {
-          const clicked = intersects[0].object;
-          if (clicked === cube) window.location.href = 'about.html';
-          if (clicked === pyramid) window.location.href = 'projects.html';
-          if (clicked === polygon) window.location.href = 'resume.html';
-        }
-      });
-
-      // Touch support
-      document.addEventListener('touchstart', (event) => {
-        const touch = event.touches[0];
-        mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(objects);
-
-        if (intersects.length > 0) {
-          const clicked = intersects[0].object;
-          if (clicked === cube) window.location.href = 'about.html';
-          if (clicked === pyramid) window.location.href = 'projects.html';
-          if (clicked === polygon) window.location.href = 'resume.html';
-        }
-      });
-
-      // Label clicks
-      document.getElementById("label-cube").addEventListener("click", () => window.location.href = "about.html");
-      document.getElementById("label-pyramid").addEventListener("click", () => window.location.href = "projects.html");
-      document.getElementById("label-polygon").addEventListener("click", () => window.location.href = "resume.html");
+  // Click/tap interactions
+  document.addEventListener("click", onClick);
+  document.addEventListener("touchstart", (e) => {
+    if (e.touches.length > 0) {
+      onClick(e.touches[0]);
     }
+  });
 
-    function animate() {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      pyramid.rotation.x += 0.01;
-      pyramid.rotation.y += 0.01;
-      polygon.rotation.x += 0.01;
-      polygon.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    }
+  // Clickable labels
+  document.getElementById("label-cube").onclick = () => window.location.href = "about.html";
+  document.getElementById("label-pyramid").onclick = () => window.location.href = "projects.html";
+  document.getElementById("label-polygon").onclick = () => window.location.href = "resume.html";
+
+  // Cursor trail
+  document.addEventListener("mousemove", e => {
+    const trail = document.createElement("div");
+    trail.className = "trail";
+    trail.style.left = `${e.pageX}px`;
+    trail.style.top = `${e.pageY}px`;
+    document.body.appendChild(trail);
+    setTimeout(() => trail.remove(), 2000);
+  });
+}
+
+function onClick(event) {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(objects);
+
+  if (intersects.length > 0) {
+    const clicked = intersects[0].object;
+    if (clicked === cube) window.location.href = "about.html";
+    if (clicked === pyramid) window.location.href = "projects.html";
+    if (clicked === polygon) window.location.href = "resume.html";
+  }
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.01;
+  pyramid.rotation.x += 0.01;
+  pyramid.rotation.y += 0.01;
+  polygon.rotation.x += 0.01;
+  polygon.rotation.y += 0.01;
+
+  renderer.render(scene, camera);
+}
+
   </script>
 </body>
 </html>
