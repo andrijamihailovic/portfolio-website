@@ -1,20 +1,11 @@
-/* General Reset and Base Styles */
-* {
-  box-sizing: border-box;
+body, html {
   margin: 0;
   padding: 0;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  background: #000fff;
   overflow: hidden;
+  background: #000fff;
   font-family: sans-serif;
-  position: relative;
 }
 
-/* Heading */
 h1 {
   color: white;
   text-align: center;
@@ -24,55 +15,39 @@ h1 {
   position: relative;
 }
 
-/* Canvas covers screen */
 canvas {
   display: block;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
 }
 
-/* Text Labels */
 .label {
   color: white;
-  text-align: center;
   position: absolute;
-  width: 100%;
-  font-size: 1.2rem;
-  pointer-events: auto;
+  font-size: 1rem;
   cursor: pointer;
-  z-index: 5;
   user-select: none;
+  z-index: 10;
+  transform: translateX(-50%);
   transition: transform 0.2s ease;
 }
 
-#label-cube {
-  top: 25%;
-}
-#label-pyramid {
-  top: 50%;
-}
-#label-polygon {
-  top: 75%;
-}
-
-/* Hover Effect for Labels */
 .label:hover {
-  transform: scale(1.1);
+  transform: translateX(-50%) scale(1.1);
 }
 
-/* Cursor Trail */
+/* Cursor trail */
 .trail {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background: white;
   border-radius: 50%;
   pointer-events: none;
   opacity: 0.9;
-  z-index: 1000;
-  animation: fadeOut 1.8s forwards;
+  animation: fadeOut 2s forwards;
+  z-index: 100;
 }
 
 @keyframes fadeOut {
@@ -82,24 +57,33 @@ canvas {
   }
 }
 
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 1.5rem;
-    margin-top: 10px;
-  }
-
-  .label {
-    font-size: 1rem;
-  }
-
+/* Responsive label placement */
+@media (min-width: 768px) {
   #label-cube {
-    top: 30%;
+    top: 80%;
+    left: 25%;
   }
   #label-pyramid {
-    top: 55%;
+    top: 80%;
+    left: 50%;
   }
   #label-polygon {
     top: 80%;
+    left: 75%;
+  }
+}
+
+@media (max-width: 767px) {
+  #label-cube {
+    top: 70%;
+    left: 50%;
+  }
+  #label-pyramid {
+    top: 80%;
+    left: 50%;
+  }
+  #label-polygon {
+    top: 90%;
+    left: 50%;
   }
 }
