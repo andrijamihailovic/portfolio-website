@@ -1,122 +1,63 @@
-body {
+* {
   margin: 0;
-  background-color: #004cff;
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1em;
-  position: relative;
-}
-
-.back-arrow {
-  position: absolute;
-  left: 20px;
-  text-decoration: none;
-  font-size: 1.5em;
-  color: white;
-}
-
-h1 {
-  margin: 0;
-  font-size: 2em;
-  text-align: center;
-}
-
-.project-container {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  margin-top: 2em;
-  overflow: hidden;
-}
-
-.project-item {
-  position: absolute;
-  top: 0;
-  width: 200px;
-  height: 200px;
-  margin: 10px;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.project-item img {
+body, html {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
-  border: none;
-  border-radius: 0;
+  background: #000fff;
+  font-family: sans-serif;
+  overflow: hidden;
+  position: relative;
 }
-
-.project-item .overlay {
+h1 {
+  color: white;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2rem;
+  position: relative;
+  z-index: 10;
+}
+canvas {
   position: absolute;
-  bottom: 0;
+  top: 0;
+  left: 0;
+  display: block;
+}
+footer#clock {
+  position: fixed;
+  bottom: 10px;
   width: 100%;
   text-align: center;
-  background: rgba(0, 0, 0, 0.5);
   color: white;
-  padding: 0.5em 0;
-  font-size: 1em;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  font-size: 1rem;
+  z-index: 10;
+}
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+  footer#clock {
+    font-size: 0.9rem;
+  }
 }
 
-.project-item:hover {
-  transform: scale(1.1);
+canvas#trailCanvas {
+  z-index: 0;
+  pointer-events: none; /* So it doesn't block clicks */
 }
 
-.project-item:hover .overlay {
-  opacity: 1;
+canvas#sceneCanvas {
+  z-index: 1;
+  pointer-events: auto;
 }
 
-/* Fullscreen overlay */
-.fullscreen-overlay {
-  display: none;
-  position: fixed;
+canvas {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.95);
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  flex-direction: column;
-}
-
-.fullscreen-overlay img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-}
-
-#closeBtn {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  color: white;
-  font-size: 2em;
-  cursor: pointer;
-}
-
-/* Mobile adjustments */
-@media (max-width: 767px) {
-  .project-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-  }
-
-  .project-item {
-    position: static;
-    margin-bottom: 2em;
-  }
 }
