@@ -28,6 +28,11 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
+    
+    document.getElementById("back-arrow").addEventListener("click", function(e) {
+  e.preventDefault();  // prevent default anchor behavior
+  window.history.back();
+});
   </script>
 </body>
 </html>
