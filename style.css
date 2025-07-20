@@ -1,94 +1,74 @@
-/* Reset */
-* {
+html, body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #000fff;
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow-x: hidden;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
+  background: #000fff; /* Blue background */
+  overflow: hidden;
+  font-family: sans-serif;
+  height: 100%;
+  width: 100%;
 }
 
 h1 {
-  font-weight: 700;
-  font-size: 2.8rem;
-  margin-bottom: 20px;
-  letter-spacing: 2px;
-  user-select: none;
+  color: white;
+  text-align: center;
+  font-size: 2rem;
+  margin: 20px 0;
+  z-index: 2;
+  position: relative;
 }
 
 .label {
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+  cursor: pointer;
   position: absolute;
-  font-size: 1.1rem;
-  background: rgba(255 255 255 / 0.1);
-  padding: 5px 15px;
-  border-radius: 25px;
+  width: 100%;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+#label-cube { top: 20%; }
+#label-pyramid { top: 45%; }
+#label-polygon { top: 70%; }
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* Mouse trail effect */
+.trail {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
   pointer-events: none;
-  user-select: none;
-  font-weight: 600;
-  color: #eee;
-  text-shadow: 0 0 5px rgba(0,0,0,0.6);
-  transition: background 0.3s ease;
+  opacity: 0.8;
+  animation: fadeOut 1.5s forwards;
 }
 
-/* Position labels near each shape on larger screens */
-@media (min-width: 768px) {
-  #label-cube {
-    top: 50%;
-    left: 25%;
-    transform: translate(-50%, 80%);
-  }
-  #label-pyramid {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 80%);
-  }
-  #label-polygon {
-    top: 50%;
-    left: 75%;
-    transform: translate(-50%, 80%);
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(2);
   }
 }
 
-/* Position labels vertically on smaller screens */
-@media (max-width: 767px) {
-  #label-cube {
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0);
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
   }
-  #label-pyramid {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
-  #label-polygon {
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
-}
 
-canvas#scene {
-  display: block;
-  width: 100vw;
-  height: 80vh;
-  background: transparent;
-  cursor: grab;
-  user-select: none;
-  margin-top: 30px;
-}
+  .label {
+    font-size: 1rem;
+  }
 
-/* Grab cursor style while dragging */
-canvas#scene:active {
-  cursor: grabbing;
+  #label-cube { top: 20%; }
+  #label-pyramid { top: 50%; }
+  #label-polygon { top: 80%; }
 }
