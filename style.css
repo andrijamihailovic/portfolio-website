@@ -1,89 +1,17 @@
-body, html {
+body {
   margin: 0;
-  padding: 0;
   overflow: hidden;
   background: #000fff;
   font-family: sans-serif;
-}
-
-h1 {
   color: white;
-  text-align: center;
-  margin-top: 20px;
-  font-size: 2rem;
-  z-index: 10;
-  position: relative;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-canvas {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+body.fade-in {
+  opacity: 1;
 }
 
-.label {
-  color: white;
-  position: absolute;
-  font-size: 1rem;
-  cursor: pointer;
-  user-select: none;
-  z-index: 10;
-  transform: translateX(-50%);
-  transition: transform 0.2s ease;
-}
-
-.label:hover {
-  transform: translateX(-50%) scale(1.1);
-}
-
-/* Cursor trail */
-.trail {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: white;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.9;
-  animation: fadeOut 2s forwards;
-  z-index: 100;
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: scale(2);
-  }
-}
-
-/* Responsive label placement */
-@media (min-width: 768px) {
-  #label-cube {
-    top: 80%;
-    left: 25%;
-  }
-  #label-pyramid {
-    top: 80%;
-    left: 50%;
-  }
-  #label-polygon {
-    top: 80%;
-    left: 75%;
-  }
-}
-
-@media (max-width: 767px) {
-  #label-cube {
-    top: 70%;
-    left: 50%;
-  }
-  #label-pyramid {
-    top: 80%;
-    left: 50%;
-  }
-  #label-polygon {
-    top: 90%;
-    left: 50%;
-  }
+.fade-out {
+  opacity: 0 !important;
 }
