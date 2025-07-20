@@ -2,49 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Andrija Studios</title>
-  <style>
-    /* Fullscreen canvas layers */
-    body, html {
-      margin: 0; padding: 0; overflow: hidden;
-      background: #000;
-      font-family: sans-serif;
-      color: white;
-      user-select: none;
-    }
-    h1 {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      top: 20px;
-      font-weight: 400;
-      font-size: 2rem;
-      z-index: 10;
-      pointer-events: none;
-    }
-    canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      display: block;
-      pointer-events: none; /* Allow mouse events to pass */
-    }
-    #sceneCanvas {
-      z-index: 1;
-    }
-    #trailCanvas {
-      z-index: 2;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h1>Andrija_studios</h1>
 
-<h1>Andrija_studios</h1>
+  <!-- Clickable Labels -->
+  <div id="label-cube" class="label">About me</div>
+  <div id="label-pyramid" class="label">Projects</div>
+  <div id="label-polygon" class="label">Resume</div>
 
-<canvas id="sceneCanvas"></canvas>
-<canvas id="trailCanvas"></canvas>
+  <!-- Canvases -->
+  <canvas id="trailCanvas"></canvas>
+  <canvas id="sceneCanvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
 
 <script>
   const sceneCanvas = document.getElementById("sceneCanvas");
@@ -279,5 +257,3 @@ const polygon = new Object3D(
   animate();
 </script>
 
-</body>
-</html>
