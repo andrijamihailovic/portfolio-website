@@ -71,3 +71,18 @@ footer {
   }
 }
 
+#back-arrow {
+  display: inline-block;
+  font-size: 18px;
+  color: white;  /* or any color that fits your design */
+  text-decoration: none;
+  cursor: pointer;
+  margin: 20px;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+#back-arrow:hover {
+  color: #ddd;
+}
+
