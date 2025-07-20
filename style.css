@@ -1,45 +1,74 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #000fff; /* Blue background */
+  background-color: #000fff;
   overflow: hidden;
   font-family: sans-serif;
-  height: 100%;
-  width: 100%;
+  color: white;
 }
 
 h1 {
-  color: white;
   text-align: center;
+  margin-top: 20px;
   font-size: 2rem;
-  margin: 20px 0;
   z-index: 2;
   position: relative;
 }
-
-.label {
-  color: white;
-  text-align: center;
-  font-size: 1.2rem;
-  cursor: pointer;
-  position: absolute;
-  width: 100%;
-  z-index: 2;
-  pointer-events: auto;
-}
-
-#label-cube { top: 20%; }
-#label-pyramid { top: 45%; }
-#label-polygon { top: 70%; }
 
 canvas {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 0;
 }
 
-/* Mouse trail effect */
+.label {
+  position: absolute;
+  font-size: 1.2rem;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.label:hover {
+  transform: scale(1.2);
+}
+
+#label-cube {
+  left: 25%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+#label-pyramid {
+  left: 50%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+#label-polygon {
+  left: 75%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #label-cube {
+    top: 20%;
+    left: 50%;
+  }
+  #label-pyramid {
+    top: 50%;
+    left: 50%;
+  }
+  #label-polygon {
+    top: 80%;
+    left: 50%;
+  }
+}
+
+/* Trail effect */
 .trail {
   position: absolute;
   width: 4px;
@@ -48,9 +77,8 @@ canvas {
   border-radius: 50%;
   pointer-events: none;
   opacity: 0.8;
-  animation: fadeOut 1.5s forwards;
+  animation: fadeOut 2s forwards;
 }
-
 @keyframes fadeOut {
   to {
     opacity: 0;
@@ -58,17 +86,13 @@ canvas {
   }
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  .label {
-    font-size: 1rem;
-  }
-
-  #label-cube { top: 20%; }
-  #label-pyramid { top: 50%; }
-  #label-polygon { top: 80%; }
+/* Clock footer */
+footer#clockFooter {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  font-size: 0.9rem;
+  color: white;
+  z-index: 2;
+  pointer-events: none;
 }
