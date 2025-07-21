@@ -28,22 +28,23 @@ h1 {
   text-align: center;
 }
 
+/* ✅ Grid layout for images */
 .project-container {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  margin-top: 2em;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .project-item {
-  position: absolute;
-  top: 0;
-  width: 200px;
-  height: 200px;
-  margin: 10px;
-  transition: transform 0.3s ease;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .project-item img {
@@ -69,7 +70,7 @@ h1 {
 }
 
 .project-item:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .project-item:hover .overlay {
@@ -109,14 +110,8 @@ h1 {
 /* Mobile adjustments */
 @media (max-width: 767px) {
   .project-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-  }
-
-  .project-item {
-    position: static;
-    margin-bottom: 2em;
+    grid-template-columns: 1fr;
+    padding: 1rem;
   }
 }
+
