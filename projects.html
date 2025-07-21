@@ -12,7 +12,7 @@
     <h1>Projects</h1>
   </header>
 
-  <div class="project-container"></div>
+  <div class="project-container" id="projectContainer"></div>
 
   <!-- Fullscreen preview -->
   <div class="fullscreen-overlay" id="fullscreenOverlay">
@@ -33,15 +33,14 @@
   { src: "images/image2.jpg", title: "P I P P O N G" }
 ];
 
-const container = document.querySelector(".project-container");
+const container = document.getElementById("projectContainer");
 const overlay = document.getElementById("fullscreenOverlay");
 const fullscreenImage = document.getElementById("fullscreenImage");
 const closeBtn = document.getElementById("closeBtn");
 
-imageData.forEach((img, index) => {
+imageData.forEach((img) => {
   const item = document.createElement("div");
   item.className = "project-item";
-  item.style.left = `${index * 30 + 10}%`;
 
   const image = document.createElement("img");
   image.src = img.src;
@@ -63,25 +62,16 @@ imageData.forEach((img, index) => {
 
 closeBtn.addEventListener("click", () => {
   overlay.style.display = "none";
+  fullscreenImage.src = "";
 });
 
 overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) overlay.style.display = "none";
+  if (e.target === overlay) {
+    overlay.style.display = "none";
+    fullscreenImage.src = "";
+  }
 });
 
-// Desktop animation: float to left and reappear on right
-function animateItems() {
-  const items = document.querySelectorAll(".project-item");
-  items.forEach(item => {
-    let currentLeft = parseFloat(item.style.left);
-    currentLeft -= 0.1;
-    if (currentLeft < -25) currentLeft = 110;
-    item.style.left = `${currentLeft}%`;
-  });
-  requestAnimationFrame(animateItems);
-}
-
-if (window.innerWidth >= 768) animateItems();
 
 
   </script>
