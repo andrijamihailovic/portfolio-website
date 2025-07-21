@@ -31,21 +31,21 @@
 
 
   <script>
-      const imageData = [
+const imageData = [
   {
     src: "images/image1.jpg",
     title: "Do You Speak Flower",
-    description: "An exploration of visual language in botanical illustrations."
+    description: "A visual language experiment using floral elements."
   },
   {
     src: "images/image2.jpg",
     title: "P I P P O N G",
-    description: "A bold, graphic-driven poster series for a ping pong event."
+    description: "Branding and poster series for a ping pong tournament."
   },
   {
     src: "images/image3.png",
     title: "TOZD bar",
-    description: "Branding and identity for a local alternative café."
+    description: "Logo and brand identity design for a local cafe bar."
   },
   {
     src: "images/image2.jpg",
@@ -57,14 +57,12 @@
 const container = document.querySelector(".project-container");
 const overlay = document.getElementById("fullscreenOverlay");
 const fullscreenImage = document.getElementById("fullscreenImage");
-const fullscreenTitle = document.getElementById("fullscreenTitle");
 const fullscreenDescription = document.getElementById("fullscreenDescription");
 const closeBtn = document.getElementById("closeBtn");
 
-imageData.forEach((img, index) => {
+imageData.forEach((img) => {
   const item = document.createElement("div");
   item.className = "project-item";
-  item.style.left = `${index * 30 + 10}%`;
 
   const image = document.createElement("img");
   image.src = img.src;
@@ -76,7 +74,6 @@ imageData.forEach((img, index) => {
 
   image.addEventListener("click", () => {
     fullscreenImage.src = img.src;
-    fullscreenTitle.textContent = img.title;
     fullscreenDescription.textContent = img.description;
     overlay.style.display = "flex";
   });
@@ -93,20 +90,6 @@ closeBtn.addEventListener("click", () => {
 overlay.addEventListener("click", (e) => {
   if (e.target === overlay) overlay.style.display = "none";
 });
-
-function animateItems() {
-  const items = document.querySelectorAll(".project-item");
-  items.forEach(item => {
-    let currentLeft = parseFloat(item.style.left);
-    currentLeft -= 0.1;
-    if (currentLeft < -25) currentLeft = 110;
-    item.style.left = `${currentLeft}%`;
-  });
-  requestAnimationFrame(animateItems);
-}
-
-if (window.innerWidth >= 768) animateItems();
-
 
 
   </script>
