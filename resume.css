@@ -1,1 +1,54 @@
+body {
+  margin: 0;
+  background-color: #000fff;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1em;
+}
+
+.back-arrow {
+  position: absolute;
+  left: 20px;
+  text-decoration: none;
+  font-size: 1.5em;
+  color: white;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2em;
+  text-align: center;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.folder {
+  text-align: center;
+  color: white;
+  text-decoration: none;
+}
+
+.folder img {
+  width: 100px;
+  height: 100px;
+  image-rendering: pixelated; /* makes it look more old-school */
+}
+
+.folder span {
+  display: block;
+  margin-top: 0.5em;
+  font-size: 1.1em;
+}
 
