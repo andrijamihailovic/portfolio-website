@@ -5,11 +5,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Andrija Studios</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Minimal inline fix for buttons and canvas layering */
+    #themeButtons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+    #themeButtons button {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    #themeButtons button.theme-blue { background: #000fff; }
+    #themeButtons button.theme-black { background: black; }
+    #themeButtons button.theme-green { background: #3a9d23; }
+    #themeButtons button.theme-brown { background: #804000; }
+
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      overflow: hidden;
+    }
+    canvas {
+      position: absolute;
+      top: 0; left: 0;
+      display: block;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    #trailCanvas {
+      pointer-events: none; /* Allow clicks to pass through trail */
+      z-index: 5;
+    }
+    #sceneCanvas {
+      z-index: 1;
+    }
+    h1 {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-family: sans-serif;
+      z-index: 10;
+      user-select: none;
+    }
+    footer#clock {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-family: monospace;
+      z-index: 10;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
   <h1>Andrija_studio</h1>
+
   <canvas id="trailCanvas"></canvas>
   <canvas id="sceneCanvas"></canvas>
+
   <footer id="clock"></footer>
 
   <div id="themeButtons" aria-label="Select theme">
@@ -19,224 +83,225 @@
     <button class="theme-btn theme-brown" data-theme="theme-brown" aria-label="Brown theme"></button>
   </div>
 
-  <script>
-    // Apply saved theme on load or default to blue
-    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-blue';
-    document.body.className = savedTheme;
+<script>
+  // Apply saved theme on load or default to blue
+  const savedTheme = localStorage.getItem('selectedTheme') || 'theme-blue';
+  document.body.className = savedTheme;
 
-    // Theme buttons logic
-    const themeButtons = document.querySelectorAll("#themeButtons .theme-btn");
-    themeButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        const selectedTheme = button.dataset.theme;
-        document.body.className = selectedTheme;
-        localStorage.setItem('selectedTheme', selectedTheme);
-      });
+  // Theme buttons logic
+  const themeButtons = document.querySelectorAll("#themeButtons .theme-btn");
+  themeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const selectedTheme = button.dataset.theme;
+      document.body.className = selectedTheme;
+      localStorage.setItem('selectedTheme', selectedTheme);
     });
+  });
 
-    // Rest of your canvas & 3D code below (unchanged)...
+  const sceneCanvas = document.getElementById("sceneCanvas");
+  const trailCanvas = document.getElementById("trailCanvas");
+  const sceneCtx = sceneCanvas.getContext("2d");
+  const trailCtx = trailCanvas.getContext("2d");
 
-    const sceneCanvas = document.getElementById("sceneCanvas");
-    const trailCanvas = document.getElementById("trailCanvas");
-    const sceneCtx = sceneCanvas.getContext("2d");
-    const trailCtx = trailCanvas.getContext("2d");
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  sceneCanvas.width = trailCanvas.width = width;
+  sceneCanvas.height = trailCanvas.height = height;
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+  window.addEventListener("resize", () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
     sceneCanvas.width = trailCanvas.width = width;
     sceneCanvas.height = trailCanvas.height = height;
-
-    window.addEventListener("resize", () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      sceneCanvas.width = trailCanvas.width = width;
-      sceneCanvas.height = trailCanvas.height = height;
-      positionObjects();
-    });
-
-    let trail = [];
-    function addToTrail(x, y) {
-      trail.push({ x, y, alpha: 1 });
-      if (trail.length > 100) trail.shift();
-    }
-    window.addEventListener("mousemove", e => addToTrail(e.clientX, e.clientY));
-    window.addEventListener("touchmove", e => {
-      const t = e.touches[0];
-      addToTrail(t.clientX, t.clientY);
-    }, { passive: true });
-
-    function drawTrail() {
-      trailCtx.clearRect(0, 0, width, height);
-      for (let i = 1; i < trail.length; i++) {
-        const p1 = trail[i - 1];
-        const p2 = trail[i];
-        trailCtx.strokeStyle = `rgba(255,255,255,${p2.alpha})`;
-        trailCtx.lineWidth = 2;
-        trailCtx.beginPath();
-        trailCtx.moveTo(p1.x, p1.y);
-        trailCtx.lineTo(p2.x, p2.y);
-        trailCtx.stroke();
-        p2.alpha -= 0.01;
-      }
-      trail = trail.filter(p => p.alpha > 0);
-      requestAnimationFrame(drawTrail);
-    }
-    drawTrail();
-
-    class Object3D {
-      constructor(points, edges, label, centerX, centerY) {
-        this.points = points;
-        this.edges = edges;
-        this.label = label;
-        this.centerX = centerX;
-        this.centerY = centerY;
-        this.rotation = { x: 0, y: 0 };
-        this.autoRotate = true;
-        this.hovered = false;
-      }
-
-      rotatePoint(p, ax, ay) {
-        let { x, y, z } = p;
-        let y1 = y * Math.cos(ax) - z * Math.sin(ax);
-        let z1 = y * Math.sin(ax) + z * Math.cos(ax);
-        let x1 = x * Math.cos(ay) + z1 * Math.sin(ay);
-        let z2 = -x * Math.sin(ay) + z1 * Math.cos(ay);
-        return { x: x1, y: y1, z: z2 };
-      }
-
-      draw(ctx) {
-        let scaleMultiplier = this.hovered ? 1.4 : 1;
-        let projected = this.points.map(p => {
-          let rotated = this.rotatePoint(p, this.rotation.x, this.rotation.y);
-          let scale = 500 / (500 + rotated.z);
-          return {
-            x: this.centerX + rotated.x * scale * scaleMultiplier,
-            y: this.centerY + rotated.y * scale * scaleMultiplier
-          };
-        });
-
-        ctx.strokeStyle = "white";
-        ctx.beginPath();
-        for (let [a, b] of this.edges) {
-          ctx.moveTo(projected[a].x, projected[a].y);
-          ctx.lineTo(projected[b].x, projected[b].y);
-        }
-        ctx.stroke();
-
-        ctx.fillStyle = "white";
-        ctx.font = "16px sans-serif";
-        ctx.textAlign = "center";
-        ctx.fillText(this.label, this.centerX, this.centerY + 70);
-      }
-
-      update() {
-        if (this.autoRotate) {
-          this.rotation.x += 0.005;
-          this.rotation.y += 0.01;
-        }
-      }
-
-      isHovered(x, y) {
-        return x > this.centerX - 50 && x < this.centerX + 50 &&
-               y > this.centerY - 50 && y < this.centerY + 50;
-      }
-
-      isClicked(x, y) {
-        return this.isHovered(x, y);
-      }
-    }
-
-    const cube = new Object3D(
-      [
-        {x:-30,y:-30,z:-30},{x:30,y:-30,z:-30},{x:30,y:30,z:-30},{x:-30,y:30,z:-30},
-        {x:-30,y:-30,z:30},{x:30,y:-30,z:30},{x:30,y:30,z:30},{x:-30,y:30,z:30}
-      ],
-      [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]],
-      "About me", 0, 0
-    );
-
-    const pyramid = new Object3D(
-      [
-        {x:-30,y:30,z:-30},{x:30,y:30,z:-30},{x:30,y:30,z:30},{x:-30,y:30,z:30},{x:0,y:-40,z:0}
-      ],
-      [[0,1],[1,2],[2,3],[3,0],[0,4],[1,4],[2,4],[3,4]],
-      "Projects", 0, 0
-    );
-
-    const polygon = new Object3D(
-      [
-        {x:0,y:-40,z:0},{x:40,y:0,z:0},{x:20,y:40,z:30},
-        {x:-20,y:40,z:30},{x:-40,y:0,z:0},{x:-20,y:-40,z:-30}
-      ],
-      [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[2,5],[0,2]],
-      "Resume", 0, 0
-    );
-
-    const objects = [cube, pyramid, polygon];
-
-    function positionObjects() {
-      if (width < 768) {
-        const spacing = height / 4;
-        cube.centerX = width / 2;
-        cube.centerY = spacing;
-        pyramid.centerX = width / 2;
-        pyramid.centerY = spacing * 2;
-        polygon.centerX = width / 2;
-        polygon.centerY = spacing * 3;
-      } else {
-        const spacing = width / 4;
-        cube.centerX = spacing;
-        cube.centerY = height / 2;
-        pyramid.centerX = spacing * 2;
-        pyramid.centerY = height / 2;
-        polygon.centerX = spacing * 3;
-        polygon.centerY = height / 2;
-      }
-    }
     positionObjects();
+  });
 
-    sceneCanvas.style.position = 'absolute';
-    sceneCanvas.style.top = 0;
-    sceneCanvas.style.left = 0;
-    trailCanvas.style.position = 'absolute';
-    trailCanvas.style.top = 0;
-    trailCanvas.style.left = 0;
-    trailCanvas.style.pointerEvents = "none"; // Allow clicks to pass through trail canvas
+  // Mouse trail effect
+  let trail = [];
+  function addToTrail(x, y) {
+    trail.push({ x, y, alpha: 1 });
+    if (trail.length > 100) trail.shift();
+  }
+  window.addEventListener("mousemove", e => addToTrail(e.clientX, e.clientY));
+  window.addEventListener("touchmove", e => {
+    const t = e.touches[0];
+    addToTrail(t.clientX, t.clientY);
+  }, { passive: true });
 
-    sceneCanvas.addEventListener("mousemove", e => {
-      const x = e.clientX, y = e.clientY;
-      for (let obj of objects) {
-        obj.hovered = obj.isHovered(x, y);
-      }
-    });
-
-    sceneCanvas.addEventListener("click", e => {
-      const x = e.clientX, y = e.clientY;
-      for (let obj of objects) {
-        if (obj.isClicked(x, y)) {
-          if (obj.label === "About me") window.location.href = "about.html";
-          if (obj.label === "Projects") window.location.href = "projects.html";
-          if (obj.label === "Resume") window.location.href = "resume.html";
-        }
-      }
-    });
-
-    function animate() {
-      sceneCtx.clearRect(0, 0, width, height);
-      for (let obj of objects) {
-        obj.update();
-        obj.draw(sceneCtx);
-      }
-      requestAnimationFrame(animate);
+  function drawTrail() {
+    trailCtx.clearRect(0, 0, width, height);
+    for (let i = 1; i < trail.length; i++) {
+      const p1 = trail[i - 1];
+      const p2 = trail[i];
+      trailCtx.strokeStyle = `rgba(255,255,255,${p2.alpha})`;
+      trailCtx.lineWidth = 2;
+      trailCtx.beginPath();
+      trailCtx.moveTo(p1.x, p1.y);
+      trailCtx.lineTo(p2.x, p2.y);
+      trailCtx.stroke();
+      p2.alpha -= 0.01;
     }
-    animate();
+    trail = trail.filter(p => p.alpha > 0);
+    requestAnimationFrame(drawTrail);
+  }
+  drawTrail();
 
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent = now.toLocaleTimeString();
+  class Object3D {
+    constructor(points, edges, label, centerX, centerY) {
+      this.points = points;
+      this.edges = edges;
+      this.label = label;
+      this.centerX = centerX;
+      this.centerY = centerY;
+      this.rotation = { x: 0, y: 0 };
+      this.autoRotate = true;
+      this.hovered = false;
     }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
+
+    rotatePoint(p, ax, ay) {
+      let { x, y, z } = p;
+      let y1 = y * Math.cos(ax) - z * Math.sin(ax);
+      let z1 = y * Math.sin(ax) + z * Math.cos(ax);
+      let x1 = x * Math.cos(ay) + z1 * Math.sin(ay);
+      let z2 = -x * Math.sin(ay) + z1 * Math.cos(ay);
+      return { x: x1, y: y1, z: z2 };
+    }
+
+    draw(ctx) {
+      let scaleMultiplier = this.hovered ? 1.4 : 1;
+      let projected = this.points.map(p => {
+        let rotated = this.rotatePoint(p, this.rotation.x, this.rotation.y);
+        let scale = 500 / (500 + rotated.z);
+        return {
+          x: this.centerX + rotated.x * scale * scaleMultiplier,
+          y: this.centerY + rotated.y * scale * scaleMultiplier
+        };
+      });
+
+      ctx.strokeStyle = "white";
+      ctx.beginPath();
+      for (let [a, b] of this.edges) {
+        ctx.moveTo(projected[a].x, projected[a].y);
+        ctx.lineTo(projected[b].x, projected[b].y);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = "white";
+      ctx.font = "16px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(this.label, this.centerX, this.centerY + 70);
+    }
+
+    update() {
+      if (this.autoRotate) {
+        this.rotation.x += 0.005;
+        this.rotation.y += 0.01;
+      }
+    }
+
+    isHovered(x, y) {
+      // simple bounding box check around center (adjust size as needed)
+      return x > this.centerX - 50 && x < this.centerX + 50 &&
+             y > this.centerY - 50 && y < this.centerY + 50;
+    }
+
+    isClicked(x, y) {
+      return this.isHovered(x, y);
+    }
+  }
+
+  // Define the 3D objects
+  const cube = new Object3D(
+    [
+      {x:-30,y:-30,z:-30},{x:30,y:-30,z:-30},{x:30,y:30,z:-30},{x:-30,y:30,z:-30},
+      {x:-30,y:-30,z:30},{x:30,y:-30,z:30},{x:30,y:30,z:30},{x:-30,y:30,z:30}
+    ],
+    [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]],
+    "About me", 0, 0
+  );
+
+  const pyramid = new Object3D(
+    [
+      {x:-30,y:30,z:-30},{x:30,y:30,z:-30},{x:30,y:30,z:30},{x:-30,y:30,z:30},{x:0,y:-40,z:0}
+    ],
+    [[0,1],[1,2],[2,3],[3,0],[0,4],[1,4],[2,4],[3,4]],
+    "Projects", 0, 0
+  );
+
+  const polygon = new Object3D(
+    [
+      {x:0,y:-40,z:0},{x:40,y:0,z:0},{x:20,y:40,z:30},
+      {x:-20,y:40,z:30},{x:-40,y:0,z:0},{x:-20,y:-40,z:-30}
+    ],
+    [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[2,5],[0,2]],
+    "Resume", 0, 0
+  );
+
+  const objects = [cube, pyramid, polygon];
+
+  function positionObjects() {
+    if (width < 768) {
+      const spacing = height / 4;
+      cube.centerX = width / 2;
+      cube.centerY = spacing;
+      pyramid.centerX = width / 2;
+      pyramid.centerY = spacing * 2;
+      polygon.centerX = width / 2;
+      polygon.centerY = spacing * 3;
+    } else {
+      const spacing = width / 4;
+      cube.centerX = spacing;
+      cube.centerY = height / 2;
+      pyramid.centerX = spacing * 2;
+      pyramid.centerY = height / 2;
+      polygon.centerX = spacing * 3;
+      polygon.centerY = height / 2;
+    }
+  }
+  positionObjects();
+
+  // Mouse move changes hover state on objects
+  sceneCanvas.addEventListener("mousemove", e => {
+    const x = e.clientX, y = e.clientY;
+    let anyHover = false;
+    for (let obj of objects) {
+      obj.hovered = obj.isHovered(x, y);
+      if (obj.hovered) anyHover = true;
+    }
+    // Change cursor style based on hover
+    sceneCanvas.style.cursor = anyHover ? 'pointer' : 'default';
+  });
+
+  // Click event to navigate to pages
+  sceneCanvas.addEventListener("click", e => {
+    const x = e.clientX, y = e.clientY;
+    for (let obj of objects) {
+      if (obj.isClicked(x, y)) {
+        if (obj.label === "About me") window.location.href = "about.html";
+        if (obj.label === "Projects") window.location.href = "projects.html";
+        if (obj.label === "Resume") window.location.href = "resume.html";
+        break; // stop after first match
+      }
+    }
+  });
+
+  function animate() {
+    sceneCtx.clearRect(0, 0, width, height);
+    for (let obj of objects) {
+      obj.update();
+      obj.draw(sceneCtx);
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Clock in footer
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").textContent = now.toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
 </body>
 </html>
