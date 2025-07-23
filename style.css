@@ -41,7 +41,6 @@ footer#clock {
   font-family: monospace;
   font-size: 1.1rem;
   padding: 5px 0;
-  background-color: #000fff; /* Always main blue */
   user-select: none;
   z-index: 10;
 }
