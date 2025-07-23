@@ -3,70 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Andrija Studios</title>
+  <title>Andrija Studio</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* Minimal inline fix for buttons and canvas layering */
-    #themeButtons {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-    }
-    #themeButtons button {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-    }
-    #themeButtons button.theme-blue { background: #000fff; }
-    #themeButtons button.theme-black { background: black; }
-    #themeButtons button.theme-green { background: #3a9d23; }
-    #themeButtons button.theme-brown { background: #804000; }
-
-    body, html {
-      margin: 0; padding: 0; height: 100%;
-      overflow: hidden;
-    }
-    canvas {
-      position: absolute;
-      top: 0; left: 0;
-      display: block;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
-    }
-    #trailCanvas {
-      pointer-events: none; /* Allow clicks to pass through trail */
-      z-index: 5;
-    }
-    #sceneCanvas {
-      z-index: 1;
-    }
-    h1 {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-family: sans-serif;
-      z-index: 10;
-      user-select: none;
-    }
-    footer#clock {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-family: monospace;
-      z-index: 10;
-      user-select: none;
-    }
-  </style>
 </head>
 <body>
   <h1>Andrija_studio</h1>
@@ -84,8 +22,22 @@
   </div>
 
 <script>
-  // Apply saved theme on load or default to blue
+(() => {
+  const isMainPage = window.location.pathname.endsWith("index.html") || window.location.pathname === "/";
+
+  // Apply saved theme or default blue
   const savedTheme = localStorage.getItem('selectedTheme') || 'theme-blue';
+
+  if (!isMainPage) {
+    // On other pages: hide theme buttons and just apply saved theme
+    const themeButtons = document.getElementById("themeButtons");
+    if (themeButtons) themeButtons.style.display = "none";
+    document.body.className = savedTheme;
+    return; // no further script for other pages
+  }
+
+  // MAIN PAGE SCRIPT STARTS HERE
+
   document.body.className = savedTheme;
 
   // Theme buttons logic
@@ -98,6 +50,7 @@
     });
   });
 
+  // Setup canvas and sizes
   const sceneCanvas = document.getElementById("sceneCanvas");
   const trailCanvas = document.getElementById("trailCanvas");
   const sceneCtx = sceneCanvas.getContext("2d");
@@ -200,9 +153,9 @@
     }
 
     isHovered(x, y) {
-      // simple bounding box check around center (adjust size as needed)
-      return x > this.centerX - 50 && x < this.centerX + 50 &&
-             y > this.centerY - 50 && y < this.centerY + 50;
+      // bounding box around center (adjusted to 70x70 for better hit area)
+      return x > this.centerX - 35 && x < this.centerX + 35 &&
+             y > this.centerY - 35 && y < this.centerY + 35;
     }
 
     isClicked(x, y) {
@@ -210,7 +163,7 @@
     }
   }
 
-  // Define the 3D objects
+  // Define 3D objects
   const cube = new Object3D(
     [
       {x:-30,y:-30,z:-30},{x:30,y:-30,z:-30},{x:30,y:30,z:-30},{x:-30,y:30,z:-30},
@@ -260,7 +213,7 @@
   }
   positionObjects();
 
-  // Mouse move changes hover state on objects
+  // Hover effect and cursor pointer on sceneCanvas
   sceneCanvas.addEventListener("mousemove", e => {
     const x = e.clientX, y = e.clientY;
     let anyHover = false;
@@ -268,19 +221,18 @@
       obj.hovered = obj.isHovered(x, y);
       if (obj.hovered) anyHover = true;
     }
-    // Change cursor style based on hover
     sceneCanvas.style.cursor = anyHover ? 'pointer' : 'default';
   });
 
-  // Click event to navigate to pages
+  // Click navigation
   sceneCanvas.addEventListener("click", e => {
     const x = e.clientX, y = e.clientY;
     for (let obj of objects) {
       if (obj.isClicked(x, y)) {
         if (obj.label === "About me") window.location.href = "about.html";
-        if (obj.label === "Projects") window.location.href = "projects.html";
-        if (obj.label === "Resume") window.location.href = "resume.html";
-        break; // stop after first match
+        else if (obj.label === "Projects") window.location.href = "projects.html";
+        else if (obj.label === "Resume") window.location.href = "resume.html";
+        break;
       }
     }
   });
@@ -295,13 +247,16 @@
   }
   animate();
 
-  // Clock in footer
+  // Clock footer
   function updateClock() {
     const now = new Date();
     document.getElementById("clock").textContent = now.toLocaleTimeString();
   }
   setInterval(updateClock, 1000);
   updateClock();
+
+})();
 </script>
+
 </body>
 </html>
