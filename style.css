@@ -118,4 +118,24 @@ footer#clock {
   #themeButtons {
     display: none; /* Hide theme selector on mobile */
   }
+
+@media (max-width: 768px) {
+  body {
+    background-color: #000fff !important;
+    color: white !important;
+  }
+
+  /* Ensure footer text stays white and background blue */
+  footer#clock {
+    background-color: #000fff !important;
+    color: white !important;
+  }
+
+  /* If you have other text elements that may inherit color from theme, 
+     you can force their color too */
+  h1, #themeButtons {
+    color: white !important;
+  }
+}
+
 }
