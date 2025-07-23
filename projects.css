@@ -109,10 +109,7 @@ h1 {
 .fullscreen-info {
   font-size: 1em;
   max-width: 600px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1em;
-  border-radius: 8px;
-}
+ }
 
 #closeBtn {
   position: absolute;
@@ -141,4 +138,23 @@ h1 {
     width: 80%;
     height: auto;
   }
+  @media (max-width: 767px) {
+  .fullscreen-overlay {
+    padding: 1em;
+    align-items: center;
+    text-align: center;
+  }
+
+  .fullscreen-overlay img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .fullscreen-info {
+    width: 100%;
+    max-width: 90%;
+    margin-top: 1em;
+  }
+}
+
 }
