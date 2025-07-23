@@ -12,30 +12,33 @@
       color: white;
       font-family: sans-serif;
       height: 100%;
-      overflow-y: auto; /* allow vertical scroll on mobile */
+      overflow-y: auto;
     }
+
     h1 {
-        color: white;
-  text-align: center;
-  margin: 20px 0;
-  font-size: 2rem;
-  position: relative;
-  z-index: 10;
+      color: white;
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+      position: relative;
+      z-index: 10;
     }
-    #back-arrow {
+
+    a.back-arrow {
       position: fixed;
       top: 20px;
       left: 20px;
       font-size: 2rem;
-      cursor: pointer;
-      user-select: none;
       color: white;
-      transition: color 0.3s ease;
+      text-decoration: none;
+      user-select: none;
       z-index: 10;
     }
-    #back-arrow:hover {
+
+    a.back-arrow:hover {
       color: #ccc;
     }
+
     #about-container {
       position: relative;
       margin: 50px auto 50px auto;
@@ -43,23 +46,25 @@
       width: 80%;
       line-height: 1.5;
       font-size: 1.2rem;
-      white-space: pre-line; /* preserve line breaks */
+      white-space: pre-line;
     }
+
     .float-text span {
       display: inline-block;
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
-    /* Mobile adjustments */
     @media (max-width: 600px) {
       h1 {
         font-size: 1.5rem;
       }
+
       #about-container {
         width: 90%;
         font-size: 1rem;
       }
-      #back-arrow {
+
+      a.back-arrow {
         font-size: 1.5rem;
         top: 15px;
         left: 15px;
@@ -68,59 +73,53 @@
   </style>
 </head>
 <body>
-  <div id="back-arrow" title="Go Back">&#8592;</div>
-  <a id="back-arrow" href="index.html" title="Back to Main Page">&#8592;</a>
+
+  <a href="index.html" class="back-arrow" title="Back to Main Page">&#8592;</a>
   <h1>About Me</h1>
+
   <div id="about-container">
     <p class="float-text">
-      <!-- Text injected by JS -->
+      <!-- JS will inject floating text here -->
     </p>
   </div>
 
-<script>
-  const floatText = document.querySelector('.float-text');
-  const backArrow = document.getElementById('back-arrow');
+  <script>
+    const floatText = document.querySelector('.float-text');
 
-  backArrow.addEventListener('click', () => {
-    history.back();
-  });
-
-  const sentence = `Andrija Mihailović (born 2000) graduated in 2022 in Industrial Design from the Academy of Fine Arts and Design (ALUO) in Ljubljana. He continued his studies at the master’s level and completed the program with honors, Cum Laude, in 2024.
+    const sentence = `Andrija Mihailović (born 2000) graduated in 2022 in Industrial Design from the Academy of Fine Arts and Design (ALUO) in Ljubljana. He continued his studies at the master’s level and completed the program with honors, Cum Laude, in 2024.
 During his studies and various projects, he explored different design fields while consistently maintaining and incorporating key elements of social and sustainable impact. Over time, he noticed that conventional approaches limited him and did not satisfy his curiosity, so he began to include thinking beyond established design frameworks in his work.
 He is especially interested in the intersection between design and other fields, adding content and broader context to projects.
 He collaborated on research projects with ALUO, local brands, and creative collectives. In 2024, as part of a team, he designed a pavilion representing the design department at Milan Design Week, for which the team received recognition from the University of Ljubljana.
 In 2023, he worked at the Berlin research institute Matters of Activity, focusing on research design. This experience deepened his understanding and enthusiasm for multidisciplinary work. In 2025, he also participated in the research project Recare about shoes under LUCA School of Arts in Ghent, successfully transferring research approaches into practice in collaboration with local companies.
 During his time abroad, he organized and participated in numerous international workshops and lectures, including at Humboldt University in Berlin, the Department of Applied and Molecular Microbiology at TU Berlin, and LUCA School of Arts in Ghent.`;
 
-  floatText.innerHTML = '';
+    floatText.innerHTML = '';
 
-  sentence.split('').forEach(char => {
-    if (char === ' ') {
-      floatText.appendChild(document.createTextNode(' '));
-    } else {
-      const span = document.createElement('span');
-      span.textContent = char;
-      floatText.appendChild(span);
-    }
-  });
+    sentence.split('').forEach(char => {
+      if (char === ' ') {
+        floatText.appendChild(document.createTextNode(' '));
+      } else {
+        const span = document.createElement('span');
+        span.textContent = char;
+        floatText.appendChild(span);
+      }
+    });
 
-  floatText.addEventListener('mouseover', (e) => {
-    if (e.target.tagName === 'SPAN') {
-      const angle = Math.random() * Math.PI * 2;
-      const distance = Math.random() * 50 + 20;
-      const x = Math.cos(angle) * distance;
-      const y = Math.sin(angle) * distance;
-      e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
-      e.target.style.opacity = 0;
-      setTimeout(() => {
-        e.target.style.transform = 'translate(0, 0)';
-        e.target.style.opacity = 1;
-      }, 1000);
-    }
-  });
-</script>
+    floatText.addEventListener('mouseover', (e) => {
+      if (e.target.tagName === 'SPAN') {
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 50 + 20;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
+        e.target.style.opacity = 0;
+        setTimeout(() => {
+          e.target.style.transform = 'translate(0, 0)';
+          e.target.style.opacity = 1;
+        }, 1000);
+      }
+    });
+  </script>
 
 </body>
 </html>
-
-
