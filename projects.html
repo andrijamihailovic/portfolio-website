@@ -7,11 +7,10 @@
   <link rel="stylesheet" href="projects.css" />
 </head>
 <body>
-<header>
-  <a href="index.html" class="back-arrow" title="Back to Main Page">&#8592;</a>
-  <h1>Projects</h1>
-</header>
-
+  <header>
+    <a href="index.html" class="back-arrow" title="Back to Main Page">&#8592;</a>
+    <h1>Projects</h1>
+  </header>
 
   <div class="project-container"></div>
 
@@ -25,115 +24,108 @@
     <span id="closeBtn">×</span>
   </div>
 
-  <script src="projects.js"></script>
-</body>
-</html>
-
-
-
   <script>
-const imageData = [
-  {
-    src: "images/image1.jpg",
-    title: "Do You Speak Flower",
-    description: "A visual language experiment using floral elements."
-  },
-  {
-    src: "images/image2.jpg",
-    title: "P I P P O N G",
-    description: "Branding and poster series for a ping pong tournament."
-  },
-  {
-    src: "images/image3.png",
-    title: "TOZD bar",
-    description: "Logo and brand identity design for a local cafe bar."
-  },
-  {
-    src: "images/image4.jpg",
-    title: "Taipei Exibithion poster",
-    description: "Poster for a Photography Exibithion in Taipei by Eva Brank."
-   },
-  {
-    src: "images/image5.gif",
-    title: "JUTRO Coffee Table",
-    description: "Coffee table out of plexiglass."
-   },
-  {
-    src: "images/image6.jpg",
-    title: "Echoes of Tomorrow",
-    description: "Exibithion design for Milano Design Week, representing Pjorkala and 40 years of ALUO Product design (Authors of the exhibition concept and design: Zoja Čepin, Domen Klinc, Maša Kralj, Jure Kralj, Andrija Mihailović, Črt Štrubelj Authors of the exhibition graphic design: Hana Jelovšek, Gal Šnajder Mentors: Rok Kuhar, Jure Miklavc, Janez Mesarič, Barbara Predan, Roman Ražman)."
-   },
-  {
-    src: "images/image7.png",
-    title: "Kaslc",
-    description: "Project based on helping young farmers with the selling point of produce was created in collaboration with Esma Hajdarpašić for Ministry of Agriculture Slovenia."
-   },
-  {
-    src: "images/image8.png",
-    title: "Throat Sprayer",
-    description: "We were working on a real project of TaticDesign studio and finding alternative design options for specific user cases. The user case in this scenario was army and military use of the throat spray. Together with Urh Furlanič (BA Industrial design) we came to this rugged design."
-   },
-  {
-    src: "images/image9.jpg",
-    title: "P I P P O N G",
-    description: "Cover design for all streaming platforms."
-   },
-  {
-    src: "images/image2.jpg",
-    title: "P I P P O N G",
-    description: "Duplicate entry for layout testing."
-   },
-  {
-    src: "images/image2.jpg",
-    title: "P I P P O N G",
-    description: "Duplicate entry for layout testing."
-   },
-  {
-    src: "images/image2.jpg",
-    title: "P I P P O N G",
-    description: "Duplicate entry for layout testing."
-  }
-];
+    const imageData = [
+      {
+        src: "images/image1.jpg",
+        title: "Do You Speak Flower",
+        description: "A visual language experiment using floral elements."
+      },
+      {
+        src: "images/image2.jpg",
+        title: "P I P P O N G",
+        description: "Branding and poster series for a ping pong tournament."
+      },
+      {
+        src: "images/image3.png",
+        title: "TOZD bar",
+        description: "Logo and brand identity design for a local cafe bar."
+      },
+      {
+        src: "images/image4.jpg",
+        title: "Taipei Exhibition Poster",
+        description: "Poster for a photography exhibition in Taipei by Eva Brank."
+      },
+      {
+        src: "images/image5.gif",
+        title: "JUTRO Coffee Table",
+        description: "Coffee table made out of plexiglass."
+      },
+      {
+        src: "images/image6.jpg",
+        title: "Echoes of Tomorrow",
+        description: "Exhibition design for Milan Design Week representing Pjorkala and 40 years of ALUO Product Design."
+      },
+      {
+        src: "images/image7.png",
+        title: "Kaslc",
+        description: "Helping young farmers sell produce — created with Esma Hajdarpašić for the Ministry of Agriculture Slovenia."
+      },
+      {
+        src: "images/image8.png",
+        title: "Throat Sprayer",
+        description: "Military-grade redesign of a throat sprayer for TaticDesign studio, made with Urh Furlanič."
+      },
+      {
+        src: "images/image9.jpg",
+        title: "P I P P O N G",
+        description: "Cover design for all streaming platforms."
+      },
+      {
+        src: "images/image2.jpg",
+        title: "P I P P O N G",
+        description: "Duplicate entry for layout testing."
+      },
+      {
+        src: "images/image2.jpg",
+        title: "P I P P O N G",
+        description: "Duplicate entry for layout testing."
+      },
+      {
+        src: "images/image2.jpg",
+        title: "P I P P O N G",
+        description: "Duplicate entry for layout testing."
+      }
+    ];
 
-const container = document.querySelector(".project-container");
-const overlay = document.getElementById("fullscreenOverlay");
-const fullscreenImage = document.getElementById("fullscreenImage");
-const fullscreenDescription = document.getElementById("fullscreenDescription");
-const closeBtn = document.getElementById("closeBtn");
+    const container = document.querySelector(".project-container");
+    const overlay = document.getElementById("fullscreenOverlay");
+    const fullscreenImage = document.getElementById("fullscreenImage");
+    const fullscreenTitle = document.getElementById("fullscreenTitle");
+    const fullscreenDescription = document.getElementById("fullscreenDescription");
+    const closeBtn = document.getElementById("closeBtn");
 
-imageData.forEach((img) => {
-  const item = document.createElement("div");
-  item.className = "project-item";
+    imageData.forEach((img) => {
+      const item = document.createElement("div");
+      item.className = "project-item";
 
-  const image = document.createElement("img");
-  image.src = img.src;
-  image.alt = img.title;
+      const image = document.createElement("img");
+      image.src = img.src;
+      image.alt = img.title;
 
-  const titleOverlay = document.createElement("div");
-  titleOverlay.className = "overlay";
-  titleOverlay.textContent = img.title;
+      const titleOverlay = document.createElement("div");
+      titleOverlay.className = "overlay";
+      titleOverlay.textContent = img.title;
 
-  image.addEventListener("click", () => {
-    fullscreenImage.src = img.src;
-    fullscreenDescription.textContent = img.description;
-    overlay.style.display = "flex";
-  });
+      image.addEventListener("click", () => {
+        fullscreenImage.src = img.src;
+        fullscreenTitle.textContent = img.title;
+        fullscreenDescription.textContent = img.description;
+        overlay.style.display = "flex";
+      });
 
-  item.appendChild(image);
-  item.appendChild(titleOverlay);
-  container.appendChild(item);
-});
+      item.appendChild(image);
+      item.appendChild(titleOverlay);
+      container.appendChild(item);
+    });
 
-closeBtn.addEventListener("click", () => {
-  overlay.style.display = "none";
-});
+    closeBtn.addEventListener("click", () => {
+      overlay.style.display = "none";
+    });
 
-overlay.addEventListener("click", (e) => {
-  if (e.target === overlay) overlay.style.display = "none";
-});
-
-
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.style.display = "none";
+    });
   </script>
-
 </body>
 </html>
