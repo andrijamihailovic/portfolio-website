@@ -1,23 +1,14 @@
-body {
-  margin: 0;
-  background-color: #000fff;
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow-x: hidden;
-}
-
 header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1em;
   position: relative;
+  text-align: center;
+  padding: 1.5em 0;
 }
 
 .back-arrow {
-  position: fixed;
-  top: 20px;
+  position: absolute;
+  top: 50%;
   left: 20px;
+  transform: translateY(-50%);
   font-size: 1.5rem;
   color: white;
   text-decoration: none;
@@ -27,6 +18,12 @@ header {
 
 .back-arrow:hover {
   color: #ccc;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2em;
+  color: white;
 }
 
 @media (max-width: 600px) {
