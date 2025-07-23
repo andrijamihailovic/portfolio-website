@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Andrija Studios</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="theme-blue">
-  <select id="themeSelector">
-    <option value="theme-blue">Blue</option>
-    <option value="theme-black">Black</option>
-    <option value="theme-white">White</option>
-    <option value="theme-green">Poisonous Green</option>
-    <option value="theme-brown">Brown</option>
-  </select>
 
   <h1>Andrija_studio</h1>
   <canvas id="trailCanvas"></canvas>
   <canvas id="sceneCanvas"></canvas>
   <footer id="clock"></footer>
+
+  <div id="themeButtons" aria-label="Select theme">
+    <button class="theme-btn theme-blue" data-theme="theme-blue" aria-label="Blue theme"></button>
+    <button class="theme-btn theme-black" data-theme="theme-black" aria-label="Black theme"></button>
+    <button class="theme-btn theme-green" data-theme="theme-green" aria-label="Poisonous Green theme"></button>
+    <button class="theme-btn theme-brown" data-theme="theme-brown" aria-label="Brown theme"></button>
+  </div>
 
   <script>
     const sceneCanvas = document.getElementById("sceneCanvas");
@@ -215,9 +215,14 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    document.getElementById("themeSelector").addEventListener("change", e => {
-      document.body.className = e.target.value;
+    // Theme buttons logic
+    const themeButtons = document.querySelectorAll("#themeButtons .theme-btn");
+    themeButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        document.body.className = button.dataset.theme;
+      });
     });
   </script>
+
 </body>
 </html>
