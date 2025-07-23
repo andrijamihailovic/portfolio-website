@@ -102,9 +102,21 @@ body {
 
 /* Style the select dropdown a bit */
 #themeSelector {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
   padding: 5px 10px;
   font-size: 1rem;
   border-radius: 4px;
   border: none;
   cursor: pointer;
 }
+
+/* Hide theme selector on mobile */
+@media (max-width: 768px) {
+  #themeSelector {
+    display: none;
+  }
+}
+
