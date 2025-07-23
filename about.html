@@ -114,3 +114,12 @@ During his time abroad, he organized and participated in numerous international 
         e.target.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
         e.target.style.opacity = 0;
         setTimeout(() => {
+          e.target.style.transform = 'translate(0, 0)';
+          e.target.style.opacity = 1;
+        }, 1000);
+      }
+    });
+  </script>
+
+</body>
+</html>
