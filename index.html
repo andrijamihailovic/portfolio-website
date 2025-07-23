@@ -6,8 +6,7 @@
   <title>Andrija Studios</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="theme-blue">
-
+<body>
   <h1>Andrija_studio</h1>
   <canvas id="trailCanvas"></canvas>
   <canvas id="sceneCanvas"></canvas>
@@ -21,6 +20,22 @@
   </div>
 
   <script>
+    // Apply saved theme on load or default to blue
+    const savedTheme = localStorage.getItem('selectedTheme') || 'theme-blue';
+    document.body.className = savedTheme;
+
+    // Theme buttons logic
+    const themeButtons = document.querySelectorAll("#themeButtons .theme-btn");
+    themeButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const selectedTheme = button.dataset.theme;
+        document.body.className = selectedTheme;
+        localStorage.setItem('selectedTheme', selectedTheme);
+      });
+    });
+
+    // Rest of your canvas & 3D code below (unchanged)...
+
     const sceneCanvas = document.getElementById("sceneCanvas");
     const trailCanvas = document.getElementById("trailCanvas");
     const sceneCtx = sceneCanvas.getContext("2d");
@@ -180,6 +195,14 @@
     }
     positionObjects();
 
+    sceneCanvas.style.position = 'absolute';
+    sceneCanvas.style.top = 0;
+    sceneCanvas.style.left = 0;
+    trailCanvas.style.position = 'absolute';
+    trailCanvas.style.top = 0;
+    trailCanvas.style.left = 0;
+    trailCanvas.style.pointerEvents = "none"; // Allow clicks to pass through trail canvas
+
     sceneCanvas.addEventListener("mousemove", e => {
       const x = e.clientX, y = e.clientY;
       for (let obj of objects) {
@@ -214,15 +237,6 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
-
-    // Theme buttons logic
-    const themeButtons = document.querySelectorAll("#themeButtons .theme-btn");
-    themeButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        document.body.className = button.dataset.theme;
-      });
-    });
   </script>
-
 </body>
 </html>
