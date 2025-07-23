@@ -80,13 +80,13 @@ footer#clock {
 }
 
 .theme-green {
-  background-color: #39ff14;
+  background-color: #146321;
   border-color: orange;
 }
 
 .theme-brown {
   background-color: #8b4513;
-  border-color: #0080ff;
+  border-color: #000fff;
 }
 
 /* Theme background and text */
@@ -102,13 +102,13 @@ footer#clock {
 }
 
 .theme-green {
-  background-color: #39ff14;
+  background-color: #146321;
   color: orange;
 }
 
 .theme-brown {
   background-color: #8b4513;
-  color: #0080ff;
+  color: #000fff;
 }
 
 /* Responsive: vertical layout on mobile */
