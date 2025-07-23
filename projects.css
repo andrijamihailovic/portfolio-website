@@ -15,11 +15,25 @@ header {
 }
 
 .back-arrow {
-  position: absolute;
+  position: fixed;
+  top: 20px;
   left: 20px;
-  text-decoration: none;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   color: white;
+  text-decoration: none;
+  user-select: none;
+  z-index: 10;
+}
+
+.back-arrow:hover {
+  color: #ccc;
+}
+
+@media (max-width: 600px) {
+  .back-arrow {
+    font-size: 1.2rem;
+    top: 15px;
+    left: 15px;
 }
 
 h1 {
