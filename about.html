@@ -20,11 +20,9 @@
       text-align: center;
       margin: 20px 0;
       font-size: 2rem;
-      position: relative;
-      z-index: 10;
     }
 
-    a.back-arrow {
+    .back-arrow {
       position: fixed;
       top: 20px;
       left: 20px;
@@ -35,13 +33,12 @@
       z-index: 10;
     }
 
-    a.back-arrow:hover {
+    .back-arrow:hover {
       color: #ccc;
     }
 
     #about-container {
-      position: relative;
-      margin: 50px auto 50px auto;
+      margin: 50px auto;
       max-width: 600px;
       width: 80%;
       line-height: 1.5;
@@ -64,7 +61,7 @@
         font-size: 1rem;
       }
 
-      a.back-arrow {
+      .back-arrow {
         font-size: 1.2rem;
         top: 15px;
         left: 15px;
@@ -78,9 +75,7 @@
   <h1>About Me</h1>
 
   <div id="about-container">
-    <p class="float-text">
-      <!-- JS will inject floating text here -->
-    </p>
+    <p class="float-text"></p>
   </div>
 
   <script>
@@ -92,8 +87,6 @@ He is especially interested in the intersection between design and other fields,
 He collaborated on research projects with ALUO, local brands, and creative collectives. In 2024, as part of a team, he designed a pavilion representing the design department at Milan Design Week, for which the team received recognition from the University of Ljubljana.
 In 2023, he worked at the Berlin research institute Matters of Activity, focusing on research design. This experience deepened his understanding and enthusiasm for multidisciplinary work. In 2025, he also participated in the research project Recare about shoes under LUCA School of Arts in Ghent, successfully transferring research approaches into practice in collaboration with local companies.
 During his time abroad, he organized and participated in numerous international workshops and lectures, including at Humboldt University in Berlin, the Department of Applied and Molecular Microbiology at TU Berlin, and LUCA School of Arts in Ghent.`;
-
-    floatText.innerHTML = '';
 
     sentence.split('').forEach(char => {
       if (char === ' ') {
