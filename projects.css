@@ -1,3 +1,11 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #000fff;
+  font-family: sans-serif;
+  color: white;
+}
+
 header {
   position: relative;
   text-align: center;
@@ -24,19 +32,6 @@ h1 {
   margin: 0;
   font-size: 2em;
   color: white;
-}
-
-@media (max-width: 600px) {
-  .back-arrow {
-    font-size: 1.2rem;
-    top: 15px;
-    left: 15px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 2em;
-  text-align: center;
 }
 
 .project-container {
@@ -111,7 +106,7 @@ h1 {
   margin-bottom: 1em;
 }
 
-.fullscreen-description {
+.fullscreen-info {
   font-size: 1em;
   max-width: 600px;
   background: rgba(255, 255, 255, 0.1);
@@ -130,6 +125,12 @@ h1 {
 
 /* Mobile adjustments */
 @media (max-width: 767px) {
+  .back-arrow {
+    font-size: 1.2rem;
+    top: 15px;
+    left: 15px;
+  }
+
   .project-container {
     flex-direction: column;
     align-items: center;
