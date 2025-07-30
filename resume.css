@@ -47,15 +47,13 @@ main {
 }
 
 main {
-  display: flex;
-  justify-content: center; /* center icons horizontally */
-  gap: 60px; /* space between the two folder icons */
-  margin-top: 50px;
+  position: relative; /* to contain absolutely positioned children */
+  height: 100vh; /* or whatever height you want */
+  /* remove flex styles */
 }
 
 .folder {
   display: flex;
-  flex-direction: column; /* stack icon and text vertically */
   align-items: center;
   text-decoration: none;
   color: white; /* or your preferred color */
