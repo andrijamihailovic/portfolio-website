@@ -3,6 +3,8 @@ body {
   background-color: #000fff;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent scrollbars */
+  height: 100vh;
 }
 
 header {
@@ -28,42 +30,33 @@ h1 {
 }
 
 main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
+  position: relative; /* contain absolutely positioned children */
+  height: calc(100vh - 70px); /* full height minus header approx */
+  overflow: hidden;
 }
 
 .folder {
+  position: absolute; /* for JS random placement */
   text-align: center;
   color: white;
   text-decoration: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1em;
+  cursor: pointer;
+  user-select: none;
+  width: 100px; /* fixed width for easier positioning */
+}
+
+.folder img {
+  display: block;
+  width: 80px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .folder span {
   display: block;
   margin-top: 0.5em;
   font-size: 1.1em;
+  color: white;
 }
-
-main {
-  position: relative; /* to contain absolutely positioned children */
-  height: 100vh; /* or whatever height you want */
-  /* remove flex styles */
-}
-
-.folder {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: white; /* or your preferred color */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 0.8rem;
-  gap: 8px; /* space between icon and text */
-}
-
-.folder img {
-  width: 80px; /* or your preferred size */
-  height: auto;
-}
-
