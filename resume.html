@@ -2,25 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Resume</title>
   <link rel="stylesheet" href="resume.css" />
 </head>
 <body>
   <header>
-    <a href="index.html" class="back-arrow">←</a>
+    <a href="index.html" class="back-arrow" aria-label="Back to main page">←</a>
     <h1>Resume</h1>
   </header>
 
   <main>
-    <a href="images/andrija_cv.pdf" target="_blank" class="folder">
+    <a href="images/andrija_cv.pdf" target="_blank" class="folder" aria-label="Open andrija_cv PDF">
       <img src="images/folder-icon.png" alt="Folder Icon" />
       <span>andrija_cv</span>
     </a>
-    <a href="images/andrija_CV_eng.pdf" target="_blank" class="folder">
+    <a href="images/andrija_CV_eng.pdf" target="_blank" class="folder" aria-label="Open andrija_cv English PDF">
       <img src="images/folder-icon.png" alt="Folder Icon" />
       <span>andrija_cv_ENG</span>
     </a>
   </main>
+
+  <script>
+    window.addEventListener('load', () => {
+      const main = document.querySelector('main');
+      const folders = document.querySelectorAll('main .folder');
+      const padding = 20; // padding from edges
+
+      const mainRect = main.getBoundingClientRect();
+
+      folders.forEach(folder => {
+        // Make sure the element is visible and sized before measuring
+        folder.style.position = 'absolute';
+
+        const folderWidth = folder.offsetWidth;
+        const folderHeight = folder.offsetHeight;
+
+        // Calculate random positions inside main container boundaries with padding
+        const randomX = Math.floor(Math.random() * (mainRect.width - folderWidth - padding * 2)) + padding;
+        const randomY = Math.floor(Math.random() * (mainRect.height - folderHeight - padding * 2)) + padding;
+
+        folder.style.left = randomX + 'px';
+        folder.style.top = randomY + 'px';
+      });
+    });
+  </script>
 </body>
 </html>
