@@ -3,7 +3,7 @@ body {
   background-color: #000fff;
   color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden; /* Prevent scrollbars */
+  overflow: hidden;
   height: 100vh;
 }
 
@@ -30,13 +30,15 @@ h1 {
 }
 
 main {
-  position: relative; /* contain absolutely positioned children */
-  height: calc(100vh - 70px); /* full height minus header approx */
+  position: relative; /* container for absolute children */
+  height: calc(100vh - 70px); /* full viewport height minus header */
   overflow: hidden;
 }
 
 .folder {
-  position: absolute; /* for JS random placement */
+  /* Initially position absolute for JS, but no explicit left/top so they start at 0,0 */
+  position: absolute;
+  width: 100px; /* fixed width for consistent sizing */
   text-align: center;
   color: white;
   text-decoration: none;
@@ -44,7 +46,6 @@ main {
   font-size: 1.1em;
   cursor: pointer;
   user-select: none;
-  width: 100px; /* fixed width for easier positioning */
 }
 
 .folder img {
@@ -57,6 +58,5 @@ main {
 .folder span {
   display: block;
   margin-top: 0.5em;
-  font-size: 1.1em;
   color: white;
 }
