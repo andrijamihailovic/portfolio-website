@@ -5,10 +5,10 @@
     display:grid;
 
     grid-template-columns:
-    repeat(8,1fr);
+    repeat(8, 1fr);
 
     grid-template-rows:
-    repeat(4,1fr);
+    repeat(4, 1fr);
 
 }
 
@@ -32,8 +32,10 @@
 
     object-fit:cover;
 
+    display:block;
+
     transition:
-    transform .45s ease;
+    transform .4s ease;
 
 }
 
@@ -41,6 +43,6 @@
 
 .project:hover img{
 
-    transform:scale(1.04);
+    transform:scale(1.05);
 
 }
