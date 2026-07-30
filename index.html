@@ -3,26 +3,12 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Andrija — Studio</title>
+<title>Andrija</title>
 
-    <meta name="description" content="Creative design portfolio">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/gallery.css">
-    <link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -30,137 +16,134 @@
 <body>
 
 
-    <!-- Custom Cursor -->
-    <div class="cursor">
-        <span></span>
-    </div>
+<div class="page">
 
 
+    <!-- HEADER -->
 
-    <!-- Navigation -->
+    <header class="header">
 
-    <header class="nav">
-
-        <a class="logo" href="/">
-            A.
-        </a>
+        <div class="name">
+            Andrija
+        </div>
 
 
-        <button class="index-button">
-            Index
-        </button>
+        <nav class="menu">
+
+            <button data-page="projects">
+                Projects
+            </button>
+
+            <button data-page="about">
+                About
+            </button>
+
+            <button data-page="cv">
+                CV
+            </button>
+
+        </nav>
+
 
     </header>
 
 
 
 
-    <!-- Main Experience -->
 
-    <main class="experience">
+    <!-- MAIN GRID -->
 
-
-        <!-- Intro -->
-
-        <section class="intro">
+    <main class="content">
 
 
-            <div class="intro-dot"></div>
+
+        <!-- PROJECT PAGE -->
+
+        <section class="projects">
 
 
-            <h1 class="hidden">
+            <div class="project">
+                <img src="images/project-01.jpg" alt="Project 01">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-02.jpg" alt="Project 02">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-03.jpg" alt="Project 03">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-04.jpg" alt="Project 04">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-05.jpg" alt="Project 05">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-06.jpg" alt="Project 06">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-07.jpg" alt="Project 07">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-08.jpg" alt="Project 08">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-09.jpg" alt="Project 09">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-10.jpg" alt="Project 10">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-11.jpg" alt="Project 11">
+            </div>
+
+
+            <div class="project">
+                <img src="images/project-12.jpg" alt="Project 12">
+            </div>
+
+
+        </section>
+
+
+
+
+
+
+
+        <!-- ABOUT PAGE -->
+
+
+        <section class="about">
+
+            <h1>
                 Andrija
             </h1>
 
 
-        </section>
-
-
-
-
-
-        <!-- Project Canvas -->
-
-
-        <section class="gallery">
-
-
-            <article class="project project-one">
-
-                <div class="project-image">
-
-                    <img 
-                    src="images/project-01.jpg"
-                    alt="Project one">
-
-                </div>
-
-            </article>
-
-
-
-
-
-            <article class="project project-two">
-
-                <div class="project-image">
-
-                    <img 
-                    src="images/project-02.jpg"
-                    alt="Project two">
-
-                </div>
-
-            </article>
-
-
-
-
-
-            <article class="project project-three">
-
-                <div class="project-image">
-
-                    <img 
-                    src="images/project-03.jpg"
-                    alt="Project three">
-
-                </div>
-
-            </article>
-
-
-
-
-
-
-            <article class="project project-four">
-
-                <div class="project-image">
-
-                    <img 
-                    src="images/project-04.jpg"
-                    alt="Project four">
-
-                </div>
-
-            </article>
-
-
-
-
-
-            <article class="project project-five">
-
-                <div class="project-image">
-
-                    <img 
-                    src="images/project-05.jpg"
-                    alt="Project five">
-
-                </div>
-
-            </article>
+            <p>
+                Designer creating visual identities,
+                digital experiences and creative systems.
+            </p>
 
 
         </section>
@@ -170,25 +153,58 @@
 
 
 
-        <!-- Project Overlay -->
-
-        <div class="project-view">
-
-            <button class="close-project">
-                Close
-            </button>
 
 
-            <div class="project-content">
+        <!-- CV PAGE -->
 
-                <img src="" alt="">
+
+        <section class="cv">
+
+
+            <div class="cv-row">
+
+                <span>
+                    2026
+                </span>
+
+                <span>
+                    Designer
+                </span>
 
             </div>
 
 
-        </div>
+
+            <div class="cv-row">
+
+                <span>
+                    2025
+                </span>
+
+                <span>
+                    Creative Developer
+                </span>
+
+            </div>
 
 
+
+
+            <div class="cv-row">
+
+                <span>
+                    2024
+                </span>
+
+                <span>
+                    Graphic Design
+                </span>
+
+            </div>
+
+
+
+        </section>
 
 
 
@@ -200,11 +216,24 @@
 
 
 
-    <!-- Scripts -->
+    <!-- FOOTER -->
 
-    <script src="js/app.js"></script>
+
+    <footer class="footer">
+
+        <span class="blue-dot"></span>
+
+    </footer>
+
+
+
+</div>
+
+
+
+<script src="script.js"></script>
+
 
 </body>
-
 
 </html>
