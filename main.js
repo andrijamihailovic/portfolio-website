@@ -94,6 +94,10 @@ const panel = document.getElementById('panel');
 const panelClose = document.getElementById('panel-close');
 const panelProject = document.getElementById('panel-project');
 const panelAbout = document.getElementById('panel-about');
+const panelImage = document.getElementById('panel-image');
+const panelImageImg = document.getElementById('panel-image-img');
+const panelImageCaption = document.getElementById('panel-image-caption');
+const panelImageClose = document.getElementById('panel-image-close');
 const pencilBtn = document.getElementById('pencil-tool');
 const eraserBtn = document.getElementById('eraser-tool');
 const drawCanvas = document.getElementById('draw-canvas');
@@ -104,8 +108,8 @@ const marginLine = document.querySelector('.margin-line');
 const COLS = 20;
 const ROWS = 12;
 const GRID_RATIO = 1.45;
-const PROJECT_BOOST = 1.2;
-const MAX_OVERLAP = 0.42;
+const PROJECT_BOOST = 1.35;
+const MAX_OVERLAP = 0.24;
 const ROW_BANDS = [
   { min: 1, max: 4 },
   { min: 4, max: 8 },
@@ -513,14 +517,17 @@ function openAboutPanel() {
   panelProject.hidden = true;
   panelAbout.hidden = false;
   panel.classList.add('open');
+  panel.classList.add('panel--about');
   panel.setAttribute('aria-hidden', 'false');
+  closeImagePanel();
 }
 
-function openProjectPanel(projectId) {
+function openProjectPanel(projectId, imgSrc, caption) {
   const p = projects[projectId];
   if (!p) return;
   panelAbout.hidden = true;
   panelProject.hidden = false;
+  panel.classList.remove('panel--about');
   document.getElementById('panel-tag').textContent = p.tag;
   document.getElementById('panel-title').textContent = p.title;
   document.getElementById('panel-text').textContent = p.text;
@@ -529,11 +536,27 @@ function openProjectPanel(projectId) {
   if (p.link) link.href = p.link;
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
+
+  if (panelImage && panelImageImg && imgSrc) {
+    panelImageImg.src = imgSrc;
+    panelImageImg.alt = p.title;
+    if (panelImageCaption) panelImageCaption.textContent = caption || p.title;
+    panelImage.classList.add('open');
+    panelImage.setAttribute('aria-hidden', 'false');
+  }
+}
+
+function closeImagePanel() {
+  if (!panelImage) return;
+  panelImage.classList.remove('open');
+  panelImage.setAttribute('aria-hidden', 'true');
 }
 
 function closePanel() {
   panel.classList.remove('open');
+  panel.classList.remove('panel--about');
   panel.setAttribute('aria-hidden', 'true');
+  closeImagePanel();
 }
 
 function initPanel() {
@@ -542,11 +565,18 @@ function initPanel() {
       if (drawMode) return;
       e.stopPropagation();
       e.preventDefault();
-      openProjectPanel(parseInt(block.dataset.project, 10));
+      const img = block.querySelector('img');
+      const caption = block.querySelector('.caption')?.textContent?.trim();
+      openProjectPanel(
+        parseInt(block.dataset.project, 10),
+        img?.src,
+        caption
+      );
     });
   });
 
   panelClose.addEventListener('click', closePanel);
+  if (panelImageClose) panelImageClose.addEventListener('click', closePanel);
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closePanel();
