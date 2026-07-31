@@ -315,6 +315,10 @@ body.draw-mode .pencil-cursor { display: block; }
   cursor: pointer;
 }
 
+.block-portrait {
+  aspect-ratio: 1;
+}
+
 .block-img:hover img,
 .block-portrait:hover img { filter: grayscale(0%); }
 
