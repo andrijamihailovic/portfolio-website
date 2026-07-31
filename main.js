@@ -105,6 +105,7 @@ const COLS = 20;
 const ROWS = 12;
 const GRID_RATIO = 1.45;
 const PROJECT_BOOST = 1.2;
+const MAX_OVERLAP = 0.42;
 const MOBILE = () => window.innerWidth <= 768;
 
 let panX = 0;
@@ -138,14 +139,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('resize', () => {
     if (MOBILE() && drawMode) toggleDraw(false);
-    init();
+    init(true);
   });
 });
 
-function init() {
+function init(preserveDrawing = false) {
   resizeGrid();
   layoutBlocks();
-  resizeDrawCanvas();
+  resizeDrawCanvas(preserveDrawing);
   if (!MOBILE()) {
     fitToView();
   } else {
@@ -279,6 +280,64 @@ function layoutBlocks() {
     block.style.zIndex = z;
     block.style.transform = `rotate(${rot}deg)`;
   });
+}
+
+function blockRect(block, cellW, cellH) {
+  const col = +block.dataset.col;
+  const row = +block.dataset.row;
+  const w = +block.dataset.w;
+  const h = +block.dataset.h;
+  const ox = +(block.dataset.ox || 0);
+  const oy = +(block.dataset.oy || 0);
+  const boost = block.classList.contains('block-img') ? PROJECT_BOOST : 1;
+  const baseW = w * cellW;
+  const baseH = h * cellH;
+  const bw = baseW * boost;
+  const bh = baseH * boost;
+  const bx = (col - 1) * cellW + ox - (bw - baseW) / 2;
+  const by = (row - 1) * cellH + oy - (bh - baseH) / 2;
+  return { left: bx, top: by, width: bw, height: bh, right: bx + bw, bottom: by + bh, area: bw * bh };
+}
+
+function overlapArea(a, b) {
+  const w = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+  const h = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+  return w * h;
+}
+
+function projectOverlapOk(rect, placed) {
+  for (const other of placed) {
+    const overlap = overlapArea(rect, other);
+    const limit = Math.min(rect.area, other.area) * MAX_OVERLAP;
+    if (overlap > limit) return false;
+  }
+  return true;
+}
+
+function randomPlacement(block, cellW, cellH, placedProjects, maxAttempts = 100) {
+  const w = +block.dataset.w;
+  const h = +block.dataset.h;
+  const isProject = block.classList.contains('block-img');
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    block.dataset.col = String(2 + Math.floor(Math.random() * (COLS - w - 2)));
+    block.dataset.row = String(2 + Math.floor(Math.random() * (ROWS - h - 2)));
+    block.dataset.ox = String(Math.floor(Math.random() * 20 - 10));
+    block.dataset.oy = String(Math.floor(Math.random() * 20 - 10));
+    block.dataset.rot = ((Math.random() - 0.5) * 4).toFixed(1);
+    block.dataset.z = String(5 + Math.floor(Math.random() * 12));
+
+    if (!isProject) return true;
+
+    const rect = blockRect(block, cellW, cellH);
+    if (projectOverlapOk(rect, placedProjects)) return true;
+  }
+
+  if (isProject) {
+    block.dataset.ox = '0';
+    block.dataset.oy = '0';
+  }
+  return true;
 }
 
 function fitToView() {
@@ -444,16 +503,19 @@ function initShuffle() {
     }
 
     field.classList.add('shuffling');
+    const cellW = getCellW();
+    const cellH = getCellH();
+    const placedProjects = [];
 
-    field.querySelectorAll('.block-img, .block-portrait').forEach(block => {
-      const w = +block.dataset.w;
-      const h = +block.dataset.h;
-      block.dataset.col = 4 + Math.floor(Math.random() * (COLS - w - 4));
-      block.dataset.row = 2 + Math.floor(Math.random() * (ROWS - h - 2));
-      block.dataset.ox = Math.floor(Math.random() * 24 - 12);
-      block.dataset.oy = Math.floor(Math.random() * 24 - 12);
-      block.dataset.rot = ((Math.random() - 0.5) * 5).toFixed(1);
-      block.dataset.z = 5 + Math.floor(Math.random() * 12);
+    const shuffleBlocks = [
+      ...field.querySelectorAll('.block-note, .block-list, .block-portrait, .block-contact, .block-img')
+    ].sort(() => Math.random() - 0.5);
+
+    shuffleBlocks.forEach(block => {
+      randomPlacement(block, cellW, cellH, placedProjects);
+      if (block.classList.contains('block-img')) {
+        placedProjects.push(blockRect(block, cellW, cellH));
+      }
     });
 
     layoutBlocks();
@@ -462,7 +524,7 @@ function initShuffle() {
 }
 
 function initDraw() {
-  if (MOBILE()) return;
+  if (MOBILE() || !drawCanvas || !pencilBtn || !eraserBtn) return;
 
   pencilEl = document.createElement('div');
   pencilEl.className = 'pencil-cursor';
@@ -476,17 +538,25 @@ function initDraw() {
   drawCtx.lineWidth = 2;
   resizeDrawCanvas();
 
-  pencilBtn.addEventListener('click', () => toggleDraw(!drawMode));
-  eraserBtn.addEventListener('click', clearDrawings);
+  pencilBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleDraw(!drawMode);
+  });
+  eraserBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    clearDrawings();
+  });
 
   document.addEventListener('pointermove', e => {
-    if (!drawMode) return;
+    if (!drawMode || !pencilEl) return;
     pencilEl.style.left = `${e.clientX}px`;
     pencilEl.style.top = `${e.clientY}px`;
   });
 
   drawCanvas.addEventListener('pointerdown', e => {
-    if (!drawMode) return;
+    if (!drawMode || !drawCtx) return;
+    e.preventDefault();
+    e.stopPropagation();
     drawing = true;
     const { x, y } = canvasPoint(e);
     drawCtx.beginPath();
@@ -495,15 +565,25 @@ function initDraw() {
   });
 
   drawCanvas.addEventListener('pointermove', e => {
-    if (!drawing || !drawMode) return;
+    if (!drawing || !drawMode || !drawCtx) return;
+    e.preventDefault();
     const { x, y } = canvasPoint(e);
     drawCtx.lineTo(x, y);
     drawCtx.stroke();
-    pencilEl.style.left = `${e.clientX}px`;
-    pencilEl.style.top = `${e.clientY}px`;
+    if (pencilEl) {
+      pencilEl.style.left = `${e.clientX}px`;
+      pencilEl.style.top = `${e.clientY}px`;
+    }
   });
 
-  drawCanvas.addEventListener('pointerup', () => { drawing = false; });
+  drawCanvas.addEventListener('pointerup', e => {
+    drawing = false;
+    if (drawCanvas.hasPointerCapture(e.pointerId)) {
+      drawCanvas.releasePointerCapture(e.pointerId);
+    }
+  });
+
+  drawCanvas.addEventListener('pointercancel', () => { drawing = false; });
 }
 
 function clearDrawings() {
@@ -526,26 +606,44 @@ function canvasPoint(e) {
   };
 }
 
-function resizeDrawCanvas() {
+function resizeDrawCanvas(preserve = false) {
   if (!drawCanvas) return;
-  const rect = stage.getBoundingClientRect();
+
+  let snapshot = null;
+  if (preserve && drawCtx && drawCanvas.width > 0 && drawCanvas.height > 0) {
+    snapshot = drawCanvas.toDataURL();
+  }
+
   const dpr = window.devicePixelRatio || 1;
-  drawCanvas.width = rect.width * dpr;
-  drawCanvas.height = rect.height * dpr;
-  drawCanvas.style.width = `${rect.width}px`;
-  drawCanvas.style.height = `${rect.height}px`;
+  const w = window.innerWidth;
+  const h = window.innerHeight - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h')) || 36);
+
+  drawCanvas.width = w * dpr;
+  drawCanvas.height = h * dpr;
+  drawCanvas.style.width = `${w}px`;
+  drawCanvas.style.height = `${h}px`;
+
   if (drawCtx) {
     drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     drawCtx.lineCap = 'round';
     drawCtx.lineJoin = 'round';
     drawCtx.strokeStyle = '#0a0a0a';
     drawCtx.lineWidth = 2;
+
+    if (snapshot) {
+      const img = new Image();
+      img.onload = () => drawCtx.drawImage(img, 0, 0, w, h);
+      img.src = snapshot;
+    }
   }
 }
 
 function toggleDraw(on) {
   drawMode = on;
   document.body.classList.toggle('draw-mode', on);
-  pencilBtn.classList.toggle('active', on);
-  if (on) closePanel();
+  if (pencilBtn) pencilBtn.classList.toggle('active', on);
+  if (on) {
+    closePanel();
+    isDragging = false;
+  }
 }
