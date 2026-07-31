@@ -130,7 +130,11 @@ const projects = {
     text: 'Studio photos and expressive posters with photographer Andraž Fijavž Bačovnik for band promotion.',
     link: 'https://leleeband.com/photos/press',
     image: 'images/projects/lelee-main.webp',
-    gallery: []
+    gallery: [
+      'images/projects/lelee-02.webp',
+      'images/projects/lelee-03.webp',
+      'images/projects/lelee-04.webp'
+    ]
   },
   15: {
     slug: 'zbornica',
