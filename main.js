@@ -68,6 +68,20 @@ const projects = {
       'images/projects/speak-flower-03.webp'
     ]
   },
+  7: {
+    slug: 'pippong',
+    tag: 'album',
+    title: 'PIPPONG',
+    text: 'PIPPONG is a game of table tennis between Nejc Pipp and a selection of producers whose work he simply respects. Over the last few years Pipp produced an incredible amount of half baked beats, loops, sketches and ideas. These were the starting point, the first serve of a back and forth in different techniques and styles. Not just a remix project, this is a playful collaboration album.',
+    credits: 'Released March 28, 2025\n\nThe starter: Nejc Pipp\nDesign, print, animation, much: Andrija Mihailović\nA&R: Borka\nPrint: Leon Zuodar Lele',
+    link: 'https://rxtx.bandcamp.com/album/pippong',
+    image: 'images/projects/pippong-main.webp',
+    gallery: [
+      'images/projects/pippong-02.webp',
+      'images/projects/pippong-03.webp',
+      'images/projects/pippong-04.webp'
+    ]
+  },
   9: {
     slug: 'drozjar',
     tag: 'packaging',
@@ -658,6 +672,16 @@ function openProjectPanel(projectId, caption) {
     }
   }
   document.getElementById('panel-text').textContent = p.text;
+  const creditsEl = document.getElementById('panel-credits');
+  if (creditsEl) {
+    if (p.credits) {
+      creditsEl.textContent = p.credits;
+      creditsEl.hidden = false;
+    } else {
+      creditsEl.textContent = '';
+      creditsEl.hidden = true;
+    }
+  }
   const link = document.getElementById('panel-link');
   link.hidden = !p.link;
   if (p.link) link.href = p.link;
