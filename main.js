@@ -116,6 +116,15 @@ const projects = {
       'images/projects/bezigrad-05.webp'
     ]
   },
+  11: {
+    slug: 'trma-jersey',
+    tag: 'graphic',
+    title: 'TRMA Jersey',
+    text: 'Designed the TRMA jersey for TRMA Studio.',
+    link: 'https://trmastudio.com',
+    image: 'images/projects/trma-jersey-main.webp',
+    gallery: ['images/projects/trma-jersey-02.webp']
+  },
   12: {
     slug: 'tozd',
     tag: 'graphic',
