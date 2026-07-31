@@ -64,14 +64,38 @@ const projects = {
   }
 };
 
+/* Mobile collage: align + width ratio per block for natural scatter */
+const MOBILE_LAYOUT = [
+  { align: 'center', w: 0.78, aspect: 0.9 },
+  { align: 'right', w: 0.52, aspect: 1.0 },
+  { align: 'left', w: 0.58, aspect: 0.95 },
+  { align: 'center', w: 0.65, aspect: 0.88 },
+  { align: 'left', w: 0.48, aspect: 1.15 },
+  { align: 'right', w: 0.72, aspect: 0.85 },
+  { align: 'center', w: 0.88, aspect: 0.2, marquee: true },
+  { align: 'right', w: 0.56, aspect: 1.05 },
+  { align: 'center', w: 0.82, aspect: 0.75 },
+  { align: 'left', w: 0.54, aspect: 1.1 },
+  { align: 'right', w: 0.68, aspect: 0.92 },
+  { align: 'center', w: 0.5, aspect: 1.0 },
+  { align: 'left', w: 0.74, aspect: 0.8 },
+  { align: 'right', w: 0.6, aspect: 1.05 },
+  { align: 'center', w: 0.86, aspect: 0.7 },
+  { align: 'left', w: 0.52, aspect: 1.0 },
+  { align: 'right', w: 0.7, aspect: 0.88 },
+  { align: 'center', w: 0.58, aspect: 1.12 }
+];
+
 const field = document.getElementById('field');
 const stage = document.getElementById('stage');
-const coordsEl = document.getElementById('coords');
 const clockEl = document.getElementById('clock');
 const shuffleBtn = document.getElementById('shuffle');
 const panel = document.getElementById('panel');
 const panelClose = document.getElementById('panel-close');
+const panelProject = document.getElementById('panel-project');
+const panelAbout = document.getElementById('panel-about');
 const pencilBtn = document.getElementById('pencil-tool');
+const eraserBtn = document.getElementById('eraser-tool');
 const drawCanvas = document.getElementById('draw-canvas');
 const cornerName = document.getElementById('corner-name');
 
@@ -111,12 +135,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   window.addEventListener('resize', () => {
+    if (MOBILE() && drawMode) toggleDraw(false);
     resizeGrid();
     layoutBlocks();
     resizeDrawCanvas();
     if (!MOBILE()) fitToView();
   });
 });
+
+function layoutBlocksMobileShuffled() {
+  let y = 0;
+  const gap = 18;
+  const blocks = [...field.querySelectorAll('.block')];
+
+  blocks.forEach((block, i) => {
+    const orderIdx = parseInt(block.dataset.mobileOrder ?? i, 10);
+    const cfg = MOBILE_LAYOUT[orderIdx % MOBILE_LAYOUT.length];
+    const width = Math.round((window.innerWidth - 32) * cfg.w);
+    const height = cfg.marquee ? 28 : Math.round(width / cfg.aspect);
+    const left = mobileLeft(width, cfg.align);
+    const rot = ((orderIdx * 7 + 3) % 11 - 5) * 0.35;
+
+    block.style.left = `${left}px`;
+    block.style.top = `${y}px`;
+    block.style.width = `${width}px`;
+    block.style.height = `${height}px`;
+    block.style.zIndex = 5 + (i % 10);
+    block.style.transform = `rotate(${rot}deg)`;
+
+    y += height + gap - (i % 3) * 6;
+  });
+
+  field.style.height = `${y + 60}px`;
+}
 
 function getCell() {
   return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell')) || 52;
@@ -125,9 +176,8 @@ function getCell() {
 function resizeGrid() {
   const hud = 36;
   const pad = 16;
-  const mobile = MOBILE();
 
-  if (mobile) {
+  if (MOBILE()) {
     document.documentElement.style.setProperty('--cell', '42px');
     document.documentElement.style.setProperty('--cols', 8);
     document.documentElement.style.setProperty('--rows', 1);
@@ -143,34 +193,21 @@ function resizeGrid() {
   document.documentElement.style.setProperty('--rows', ROWS);
 }
 
+function mobileLeft(width, align) {
+  const margin = 16;
+  const maxW = window.innerWidth - margin * 2;
+
+  if (align === 'center') return margin + (maxW - width) / 2;
+  if (align === 'right') return window.innerWidth - margin - width;
+  return margin;
+}
+
 function layoutBlocks() {
   const cell = getCell();
-  const mobile = MOBILE();
   const blocks = [...field.querySelectorAll('.block')];
 
-  if (mobile) {
-    const gap = 10;
-    let y = 0;
-    const colWidths = [0.55, 0.4, 0.48, 0.52, 0.45, 0.5, 0.42, 0.48, 0.55, 0.46, 0.5];
-
-    blocks.forEach((block, i) => {
-      const wRatio = colWidths[i % colWidths.length];
-      const aspect = block.classList.contains('block-img') ? 1.1 : 0.85;
-      const w = Math.min(window.innerWidth - 24, window.innerWidth * wRatio);
-      const h = block.classList.contains('block-marquee') ? 32 : w / aspect;
-      const offsetX = (i % 3 - 1) * 14;
-
-      block.style.left = `${12 + offsetX}px`;
-      block.style.top = `${y}px`;
-      block.style.width = `${w}px`;
-      block.style.height = `${h}px`;
-      block.style.zIndex = 5 + (i % 8);
-      block.style.transform = `rotate(${(i % 5 - 2) * 0.8}deg)`;
-
-      y += h + gap - (i % 4) * 8;
-    });
-
-    field.style.height = `${y + 40}px`;
+  if (MOBILE()) {
+    layoutBlocksMobileShuffled();
     return;
   }
 
@@ -221,7 +258,6 @@ function clampPan() {
 function applyTransform() {
   clampPan();
   field.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-  coordsEl.textContent = `${panX.toFixed(0).padStart(3, '0')} / ${panY.toFixed(0).padStart(3, '0')}`;
 }
 
 function initPan() {
@@ -229,7 +265,7 @@ function initPan() {
     if (drawMode) return;
     if (e.target.closest('.block-img') || e.target.closest('.block-portrait') ||
         e.target.closest('.panel') || e.target.closest('.hud-shuffle') ||
-        e.target.closest('.pencil-tool') || e.target.closest('.corner-name') ||
+        e.target.closest('.draw-tools') || e.target.closest('.corner-name') ||
         e.target.closest('a')) return;
     if (MOBILE()) return;
 
@@ -281,9 +317,18 @@ function startInertia() {
   tick();
 }
 
-function openPanel(projectId) {
+function openAboutPanel() {
+  panelProject.hidden = true;
+  panelAbout.hidden = false;
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+}
+
+function openProjectPanel(projectId) {
   const p = projects[projectId];
   if (!p) return;
+  panelAbout.hidden = true;
+  panelProject.hidden = false;
   document.getElementById('panel-tag').textContent = p.tag;
   document.getElementById('panel-title').textContent = p.title;
   document.getElementById('panel-text').textContent = p.text;
@@ -305,7 +350,7 @@ function initPanel() {
       if (drawMode) return;
       e.stopPropagation();
       e.preventDefault();
-      openPanel(parseInt(block.dataset.project, 10));
+      openProjectPanel(parseInt(block.dataset.project, 10));
     });
   });
 
@@ -321,12 +366,8 @@ function initPanel() {
 function initCornerName() {
   cornerName.addEventListener('click', e => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    if (!MOBILE()) {
-      panX = 0;
-      panY = 0;
-      fitToView();
-    }
+    if (drawMode) toggleDraw(false);
+    openAboutPanel();
   });
 }
 
@@ -341,7 +382,12 @@ function initClock() {
 function initShuffle() {
   shuffleBtn.addEventListener('click', () => {
     if (MOBILE()) {
-      layoutBlocks();
+      const blocks = [...field.querySelectorAll('.block')];
+      const order = blocks.map((_, i) => i).sort(() => Math.random() - 0.5);
+      blocks.forEach((block, i) => {
+        block.dataset.mobileOrder = order[i];
+      });
+      layoutBlocksMobileShuffled();
       return;
     }
 
@@ -364,6 +410,8 @@ function initShuffle() {
 }
 
 function initDraw() {
+  if (MOBILE()) return;
+
   pencilEl = document.createElement('div');
   pencilEl.className = 'pencil-cursor';
   pencilEl.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 21l3.75-1 11-11-2.75-2.75-11 11L3 21z" fill="none" stroke="#0a0a0a" stroke-width="1.5"/><path d="M14 4l2.75 2.75" fill="none" stroke="#0a0a0a" stroke-width="1.5"/></svg>';
@@ -377,6 +425,7 @@ function initDraw() {
   resizeDrawCanvas();
 
   pencilBtn.addEventListener('click', () => toggleDraw(!drawMode));
+  eraserBtn.addEventListener('click', clearDrawings);
 
   document.addEventListener('pointermove', e => {
     if (!drawMode) return;
@@ -405,6 +454,18 @@ function initDraw() {
   drawCanvas.addEventListener('pointerup', () => { drawing = false; });
 }
 
+function clearDrawings() {
+  if (!drawCtx || !drawCanvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  drawCtx.setTransform(1, 0, 0, 1, 0, 0);
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawCtx.lineCap = 'round';
+  drawCtx.lineJoin = 'round';
+  drawCtx.strokeStyle = '#0a0a0a';
+  drawCtx.lineWidth = 2;
+}
+
 function canvasPoint(e) {
   const rect = drawCanvas.getBoundingClientRect();
   return {
@@ -414,6 +475,7 @@ function canvasPoint(e) {
 }
 
 function resizeDrawCanvas() {
+  if (!drawCanvas) return;
   const rect = stage.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   drawCanvas.width = rect.width * dpr;
