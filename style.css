@@ -112,7 +112,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   position: fixed;
   right: 14px;
   bottom: 14px;
-  z-index: 60;
+  z-index: 260;
   display: flex;
   gap: 8px;
 }
@@ -212,21 +212,9 @@ body.draw-mode .pencil-cursor { display: block; }
   right: 0;
   top: var(--hud-h);
   bottom: 0;
-  width: 100%;
-  height: calc(100% - var(--hud-h));
   pointer-events: none;
-  z-index: 90;
+  z-index: 200;
   touch-action: none;
-}
-
-body.draw-mode #draw-canvas {
-  pointer-events: auto;
-  cursor: none;
-  z-index: 120;
-}
-
-body.draw-mode .field {
-  pointer-events: none;
 }
 
 /* Blocks — absolute, overlapping */
