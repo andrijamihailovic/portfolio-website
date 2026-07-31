@@ -122,8 +122,8 @@ const projects = {
     title: 'TRMA Jersey',
     text: 'Designed the TRMA jersey for TRMA Studio.',
     link: 'https://trmastudio.com',
-    image: 'images/projects/trma-jersey-main.webp',
-    gallery: ['images/projects/trma-jersey-02.webp']
+    image: 'images/projects/jersey-main.gif',
+    gallery: ['images/projects/jersey-02.gif']
   },
   12: {
     slug: 'tozd',
