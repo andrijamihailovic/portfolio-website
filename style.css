@@ -365,9 +365,9 @@ body.draw-mode .pencil-cursor { display: block; }
 .panel {
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 58%;
   z-index: 250;
-  width: min(340px, 90vw);
+  width: min(340px, 42vw);
   background: var(--paper);
   border: 1px solid var(--ink);
   box-shadow: 6px 6px 0 var(--ink);
@@ -381,6 +381,54 @@ body.draw-mode .pencil-cursor { display: block; }
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
+.panel.open.panel--about {
+  left: 50%;
+}
+
+.panel-image {
+  position: fixed;
+  top: 50%;
+  left: 42%;
+  z-index: 249;
+  width: min(480px, 46vw);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  transform: translate(-50%, -50%) scale(0.92) rotate(0.5deg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, transform 0.3s, visibility 0.25s;
+  padding: 0;
+  overflow: hidden;
+}
+
+.panel-image.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
+.panel-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(72vh, 640px);
+  object-fit: contain;
+  background: var(--paper);
+  filter: none;
+}
+
+.panel-image-caption {
+  display: block;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-top: 1px solid var(--ink);
+  background: var(--paper);
 }
 
 .panel-close {
@@ -494,6 +542,29 @@ body.draw-mode .pencil-cursor { display: block; }
     width: 92vw;
     max-height: 80vh;
     overflow-y: auto;
+    left: 50% !important;
+    top: auto;
+    bottom: 6%;
+    transform: translate(-50%, 0) scale(0.96);
+  }
+
+  .panel.open {
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  .panel-image {
+    width: 92vw;
+    left: 50% !important;
+    top: 14%;
+    transform: translate(-50%, 0) scale(0.96);
+  }
+
+  .panel-image.open {
+    transform: translate(-50%, 0) scale(1);
+  }
+
+  .panel-image img {
+    max-height: 38vh;
   }
 }
 
