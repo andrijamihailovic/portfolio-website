@@ -231,6 +231,7 @@ function init(preserveDrawing = false, skipMarquee = false) {
   }
   layoutBlocks();
   resizeDrawCanvas(preserveDrawing);
+  field.classList.add('ready');
   if (!MOBILE()) {
     fitToView();
     avoidCornerOverlap();
