@@ -101,6 +101,8 @@ const cornerName = document.getElementById('corner-name');
 
 const COLS = 20;
 const ROWS = 12;
+const GRID_RATIO = 1.45;
+const PROJECT_BOOST = 1.12;
 const MOBILE = () => window.innerWidth <= 768;
 
 let panX = 0;
@@ -151,7 +153,7 @@ function layoutBlocksMobileShuffled() {
   blocks.forEach((block, i) => {
     const orderIdx = parseInt(block.dataset.mobileOrder ?? i, 10);
     const cfg = MOBILE_LAYOUT[orderIdx % MOBILE_LAYOUT.length];
-    const width = Math.round((window.innerWidth - 32) * cfg.w);
+    const width = Math.round((window.innerWidth - 32) * cfg.w * (block.classList.contains('block-img') ? PROJECT_BOOST : 1));
     const height = cfg.marquee ? 28 : Math.round(width / cfg.aspect);
     const left = mobileLeft(width, cfg.align);
     const rot = ((orderIdx * 7 + 3) % 11 - 5) * 0.35;
@@ -169,8 +171,12 @@ function layoutBlocksMobileShuffled() {
   field.style.height = `${y + 60}px`;
 }
 
-function getCell() {
-  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell')) || 52;
+function getCellW() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell-w')) || 64;
+}
+
+function getCellH() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell-h')) || 44;
 }
 
 function resizeGrid() {
@@ -178,17 +184,24 @@ function resizeGrid() {
   const pad = 16;
 
   if (MOBILE()) {
-    document.documentElement.style.setProperty('--cell', '42px');
+    document.documentElement.style.setProperty('--cell-w', '56px');
+    document.documentElement.style.setProperty('--cell-h', '40px');
     document.documentElement.style.setProperty('--cols', 8);
     document.documentElement.style.setProperty('--rows', 1);
     return;
   }
 
-  const cellW = (window.innerWidth - pad) / COLS;
-  const cellH = (window.innerHeight - hud - pad) / ROWS;
-  const cell = Math.floor(Math.min(cellW, cellH));
+  let cellH = Math.floor((window.innerHeight - hud - pad) / ROWS);
+  let cellW = Math.floor(cellH * GRID_RATIO);
 
-  document.documentElement.style.setProperty('--cell', `${cell}px`);
+  const maxW = Math.floor((window.innerWidth - pad) / COLS);
+  if (cellW > maxW) {
+    cellW = maxW;
+    cellH = Math.floor(cellW / GRID_RATIO);
+  }
+
+  document.documentElement.style.setProperty('--cell-w', `${cellW}px`);
+  document.documentElement.style.setProperty('--cell-h', `${cellH}px`);
   document.documentElement.style.setProperty('--cols', COLS);
   document.documentElement.style.setProperty('--rows', ROWS);
 }
@@ -203,7 +216,8 @@ function mobileLeft(width, align) {
 }
 
 function layoutBlocks() {
-  const cell = getCell();
+  const cellW = getCellW();
+  const cellH = getCellH();
   const blocks = [...field.querySelectorAll('.block')];
 
   if (MOBILE()) {
@@ -220,11 +234,17 @@ function layoutBlocks() {
     const oy = +(block.dataset.oy || 0);
     const rot = +(block.dataset.rot || 0);
     const z = +(block.dataset.z || 1);
+    const boost = block.classList.contains('block-img') ? PROJECT_BOOST : 1;
 
-    block.style.left = `${(col - 1) * cell + ox}px`;
-    block.style.top = `${(row - 1) * cell + oy}px`;
-    block.style.width = `${w * cell}px`;
-    block.style.height = `${h * cell}px`;
+    const bw = w * cellW * boost;
+    const bh = h * cellH * boost;
+    const bx = (col - 1) * cellW + ox - (bw - w * cellW) / 2;
+    const by = (row - 1) * cellH + oy - (bh - h * cellH) / 2;
+
+    block.style.left = `${bx}px`;
+    block.style.top = `${by}px`;
+    block.style.width = `${bw}px`;
+    block.style.height = `${bh}px`;
     block.style.zIndex = z;
     block.style.transform = `rotate(${rot}deg)`;
   });
@@ -291,16 +311,6 @@ function initPan() {
   });
 
   stage.addEventListener('pointerup', () => { isDragging = false; });
-
-  stage.addEventListener('wheel', e => {
-    if (drawMode || MOBILE()) return;
-    e.preventDefault();
-    const prev = scale;
-    scale = Math.min(1.12, Math.max(0.88, scale + (e.deltaY > 0 ? -0.03 : 0.03)));
-    panX *= scale / prev;
-    panY *= scale / prev;
-    applyTransform();
-  }, { passive: false });
 }
 
 function startInertia() {
