@@ -82,6 +82,18 @@ const projects = {
       'images/projects/pippong-04.webp'
     ]
   },
+  8: {
+    slug: 'echoes-tomorrow',
+    tag: 'exhibition',
+    title: 'Echoes of Tomorrow — Milan Design Week',
+    text: 'The process of designing the exhibition was undertaken by a diverse group of under- and postgraduate students of industrial design and visual communications design under the mentorship of professors from both of the design departments at the Academy of Fine Arts and Design of the University of Ljubljana. The research portion of the process was carried out by master\'s students in the 2022/2023 academic year. The design work was taken over in the next academic year, 2023/2024, by a group of undergraduate students along with a smaller number of master\'s students whose involvement was otherwise primarily in research.\n\nThe shadow play serves as a subtle invitation to visitors to interact with and develop their own interpretation of the pavilion. The circular design of the pavilion suggests the cycling of water and the interdependence of seemingly non-related factors; the play of reflections and the sounds of water, meanwhile, create a meditative atmosphere that encourages the visitors to immerse themselves in the content. The materiality of the pavilion combines the softness and permeability of the fabric with the resistance, strength and lightness of the sheet metal. The central island where the product is exhibited is a water “fountain”—the focal and starting point of the pavilion that is intended to create a sense of mutual belonging.\n\nIn designing the pavilion, we chose approaches that minimise the environmental impact. The pavilion features a modular design that reduces the carbon footprint of its transport and extends the lifetime of the installation. The pavilion can be exhibited in a wide variety of spatial contexts without major alterations. With this as the premise, we consciously used durable materials in the design of the pavilion that will withstand installation in high-traffic exhibition spaces. At the end of its lifetime, all the elements of the pavilion can be reused or recycled.',
+    image: 'images/projects/echoes-tomorrow-main.webp',
+    gallery: [
+      'images/projects/echoes-tomorrow-02.webp',
+      'images/projects/echoes-tomorrow-03.webp',
+      'images/projects/echoes-tomorrow-04.webp'
+    ]
+  },
   9: {
     slug: 'drozjar',
     tag: 'packaging',
