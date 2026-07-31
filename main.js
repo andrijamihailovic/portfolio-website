@@ -9,7 +9,8 @@ const projects = {
       'images/projects/modular-safety-shoe-02.webp',
       'images/projects/modular-safety-shoe-03.webp',
       'images/projects/modular-safety-shoe-04.webp'
-    ]
+    ],
+    link: 'https://www.omvorm.studio/work/emma'
   },
   1: {
     slug: 'coffee-mushrooms',
@@ -128,8 +129,8 @@ const clockEl = document.getElementById('clock');
 const shuffleBtn = document.getElementById('shuffle');
 const panel = document.getElementById('panel');
 const panelClose = document.getElementById('panel-close');
-const panelProject = document.getElementById('panel-project');
-const panelAbout = document.getElementById('panel-about');
+const projectView = document.getElementById('project-view');
+const panelProjectClose = document.getElementById('panel-project-close');
 const panelImage = document.getElementById('panel-image');
 const panelImageImg = document.getElementById('panel-image-img');
 const panelImageCaption = document.getElementById('panel-image-caption');
@@ -522,7 +523,8 @@ function initPan() {
   stage.addEventListener('pointerdown', e => {
     if (drawMode) return;
     if (e.target.closest('.block-img') || e.target.closest('.block-portrait') ||
-        e.target.closest('.panel') || e.target.closest('.hud-shuffle') ||
+        e.target.closest('.panel') || e.target.closest('.project-view') ||
+        e.target.closest('.hud-shuffle') ||
         e.target.closest('.draw-tools') || e.target.closest('.corner-name') ||
         e.target.closest('a')) return;
     if (MOBILE()) return;
@@ -566,12 +568,9 @@ function startInertia() {
 }
 
 function openAboutPanel() {
-  panelProject.hidden = true;
-  panelAbout.hidden = false;
+  closeProjectView();
   panel.classList.add('open');
-  panel.classList.add('panel--about');
   panel.setAttribute('aria-hidden', 'false');
-  closeImagePanel();
 }
 
 function projectImages(p) {
@@ -625,41 +624,44 @@ function buildGallery(p) {
 function openProjectPanel(projectId, caption) {
   const p = projects[projectId];
   if (!p) return;
-  panelAbout.hidden = true;
-  panelProject.hidden = false;
-  panel.classList.remove('panel--about');
+
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden', 'true');
+
   document.getElementById('panel-tag').textContent = p.tag;
   document.getElementById('panel-title').textContent = p.title;
   document.getElementById('panel-text').textContent = p.text;
   const link = document.getElementById('panel-link');
   link.hidden = !p.link;
   if (p.link) link.href = p.link;
-  panel.classList.add('open');
-  panel.setAttribute('aria-hidden', 'false');
 
-  if (panelImage && panelImageImg) {
+  if (panelImageImg) {
     panelImageImg.alt = p.title;
     if (panelImageCaption) panelImageCaption.textContent = caption || p.title;
     buildGallery(p);
-    panelImage.classList.add('open');
-    panelImage.setAttribute('aria-hidden', 'false');
+  }
+
+  if (projectView) {
+    projectView.classList.add('open');
+    projectView.setAttribute('aria-hidden', 'false');
   }
 }
 
-function closeImagePanel() {
-  if (!panelImage) return;
-  panelImage.classList.remove('open');
-  panelImage.setAttribute('aria-hidden', 'true');
+function closeProjectView() {
+  if (projectView) {
+    projectView.classList.remove('open');
+    projectView.setAttribute('aria-hidden', 'true');
+  }
   galleryImages = [];
   galleryIndex = 0;
   if (panelGallery) panelGallery.innerHTML = '';
+  if (panelImageImg) panelImageImg.src = '';
 }
 
 function closePanel() {
   panel.classList.remove('open');
-  panel.classList.remove('panel--about');
   panel.setAttribute('aria-hidden', 'true');
-  closeImagePanel();
+  closeProjectView();
 }
 
 function initPanel() {
@@ -683,6 +685,7 @@ function initPanel() {
 
   panelClose.addEventListener('click', closePanel);
   if (panelImageClose) panelImageClose.addEventListener('click', closePanel);
+  if (panelProjectClose) panelProjectClose.addEventListener('click', closePanel);
   if (panelImagePrev) {
     panelImagePrev.addEventListener('click', e => {
       e.stopPropagation();
@@ -701,7 +704,7 @@ function initPanel() {
       if (drawMode) toggleDraw(false);
       return;
     }
-    if (!panelImage?.classList.contains('open') || galleryImages.length < 2) return;
+    if (!projectView?.classList.contains('open') || galleryImages.length < 2) return;
     if (e.key === 'ArrowLeft') showGalleryImage(galleryIndex - 1);
     if (e.key === 'ArrowRight') showGalleryImage(galleryIndex + 1);
   });
@@ -795,7 +798,8 @@ function drawTarget(e) {
   return e.target.closest('.draw-tools') ||
     e.target.closest('.corner-name') ||
     e.target.closest('.hud') ||
-    e.target.closest('.panel');
+    e.target.closest('.panel') ||
+    e.target.closest('.project-view');
 }
 
 function onDrawStart(e) {
