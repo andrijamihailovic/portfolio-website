@@ -299,7 +299,8 @@ function layoutBlocksMobileShuffled() {
     const cfg = MOBILE_LAYOUT[orderIdx % MOBILE_LAYOUT.length];
     const width = Math.round((window.innerWidth - 32) * cfg.w * (block.classList.contains('block-img') ? PROJECT_BOOST : 1));
     let height = cfg.marquee ? 28 : Math.round(width / cfg.aspect);
-    if (block.classList.contains('block-portrait')) height = width;
+    if (block.classList.contains('block-portrait') || block.classList.contains('block-img--square')) height = width;
+    else if (block.classList.contains('block-img--vertical')) height = Math.round(width / 0.72);
     const left = mobileLeft(width, cfg.align);
     const rot = ((orderIdx * 7 + 3) % 11 - 5) * 0.35;
 
@@ -418,7 +419,8 @@ function layoutBlocks() {
     const baseH = h * cellH;
     let bw = baseW * boost;
     let bh = baseH * boost;
-    if (isPortrait) bh = bw;
+    if (isPortrait || block.classList.contains('block-img--square')) bh = bw;
+    else if (block.classList.contains('block-img--vertical')) bh = bw * 1.45;
     const bx = (col - 1) * cellW + ox - (bw - baseW) / 2;
     const by = (row - 1) * cellH + oy - (bh - baseH) / 2;
 
@@ -443,7 +445,8 @@ function blockRect(block, cellW, cellH) {
   const baseH = h * cellH;
   let bw = baseW * boost;
   let bh = baseH * boost;
-  if (block.classList.contains('block-portrait')) bh = bw;
+  if (block.classList.contains('block-portrait') || block.classList.contains('block-img--square')) bh = bw;
+  else if (block.classList.contains('block-img--vertical')) bh = bw * 1.45;
   const bx = (col - 1) * cellW + ox - (bw - baseW) / 2;
   const by = (row - 1) * cellH + oy - (bh - baseH) / 2;
   return { left: bx, top: by, width: bw, height: bh, right: bx + bw, bottom: by + bh, area: bw * bh };
