@@ -106,10 +106,14 @@ const projects = {
     slug: 'tozd',
     tag: 'graphic',
     title: 'TOZD Bar',
-    text: 'Unified graphic design for a new bar in Ljubljana — inox, plexiglass, menus, garments, coasters, stickers across all touchpoints.',
+    text: 'Holistic graphic design for a new bar in Ljubljana — inox, plexiglass, menus, garments, coasters, stickers across all touchpoints.',
     link: 'https://www.instagram.com/tozdbar/',
     image: 'images/projects/tozd-main.webp',
-    gallery: []
+    gallery: [
+      'images/projects/tozd-02.webp',
+      'images/projects/tozd-03.webp',
+      'images/projects/tozd-04.webp'
+    ]
   },
   13: {
     slug: 'isa',
