@@ -56,6 +56,18 @@ const projects = {
     image: 'images/projects/kaslc-main.webp',
     gallery: []
   },
+  6: {
+    slug: 'speak-flower',
+    tag: 'exhibition',
+    title: 'Do you speak flower? — Milan Design Week 2025',
+    authors: ['Živa Vaukan', 'Sunwoo Lee'],
+    text: 'Since the Victorian era, flowers have never ceased to communicate cryptic messages. Subtle yet powerful, this language has accompanied committed figures and movements of hope, from the Flower Power of the 1960s, symbol of the peaceful protests in San Francisco, to the bouquets discreetly placed by Ray & Charles Eames in their designs to soften the tensions of the Cold War, to the secret herbarium compiled by Rosa Luxemburg in hiding while leading the Spartacist League.\n\nThese references run through the project, reminding us that flowers are never merely decorative: they are also vehicles of resistance and complicity.\n\nThe project also echoes a striking moment in history: during the Vietnam War, American Admiral Jeremiah Denton managed to signal the word "T-O-R-T-U-R-E – T-O-R-T-U-R-E" in morse code by blinking during a televised interview, despite being forced to speak under duress. This coded, barely perceptible yet decisive language was broadcast on ABC and aired a few days later in the United States, on May 17, 1966, confirming the torture endured by prisoners of war.\n\nCreated especially for the 60th edition of the Ljubljana Design Biennale (November 2024 – April 2025), Do you speak flower? unveils a new iteration for the Salone del Mobile 2025. Transformed into vases and adorned with fresh flowers, the luminous boxes discreetly scatter their messages, hidden in plain sight, while gracefully serving a decorative purpose.',
+    image: 'images/projects/speak-flower-main.webp',
+    gallery: [
+      'images/projects/speak-flower-02.webp',
+      'images/projects/speak-flower-03.webp'
+    ]
+  },
   9: {
     slug: 'drozjar',
     tag: 'packaging',
@@ -630,6 +642,16 @@ function openProjectPanel(projectId, caption) {
 
   document.getElementById('panel-tag').textContent = p.tag;
   document.getElementById('panel-title').textContent = p.title;
+  const authorsEl = document.getElementById('panel-authors');
+  if (authorsEl) {
+    if (p.authors?.length) {
+      authorsEl.textContent = `with ${p.authors.join(' & ')}`;
+      authorsEl.hidden = false;
+    } else {
+      authorsEl.textContent = '';
+      authorsEl.hidden = true;
+    }
+  }
   document.getElementById('panel-text').textContent = p.text;
   const link = document.getElementById('panel-link');
   link.hidden = !p.link;
