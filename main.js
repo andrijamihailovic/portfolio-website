@@ -1,66 +1,102 @@
 const projects = {
   0: {
-    tag: 'object',
-    title: 'Throat Sprayer — TaticDesign Milano',
-    text: 'The focus was ideation, form development and design detailing for realistic project requirements. Alternative rugged design for army and military use of throat spray, developed with Urh Furlanič.',
-    link: 'https://www.instagram.com/p/Cmg_0dHtkSv/?img_index=6'
+    slug: 'modular-safety-shoe',
+    tag: 'product',
+    title: 'Modular Safety Shoe',
+    text: 'The safety footwear industry relies heavily on multi-material composites that are glued together and virtually impossible to recycle — a systemic problem that generates significant material waste at end of life. During my time as a junior design intern at Omvorm, an Antwerp-based design studio, I contributed to reimagining this standard for Dutch safety footwear brand Emma.\n\nThe project was rooted in extensive design research, which informed the development of a modular safety footwear system built specifically for the logistics sector. The result is a mechanically assembled shoe — using no adhesives — that meets all required safety protocols while remaining fully repairable and durable. Each component can be replaced independently, extending the product\'s lifecycle far beyond conventional alternatives.\n\nThe design is further supported by a digital product passport and a unique digital ID, enabling seamless part exchange and repair tracking through an accompanying digital platform. Together, these elements represent a holistic approach to sustainable product design — one where circularity is built into the object itself, not treated as an afterthought.\n\nDeveloped at Omvorm, this project marks a meaningful step toward truly sustainable safety footwear.',
+    image: 'images/projects/modular-safety-shoe-main.webp',
+    gallery: [
+      'images/projects/modular-safety-shoe-02.webp',
+      'images/projects/modular-safety-shoe-03.webp',
+      'images/projects/modular-safety-shoe-04.webp'
+    ]
   },
   1: {
+    slug: 'coffee-mushrooms',
     tag: 'research',
     title: 'Coffee Waste Management',
     text: 'Research into unregulated waste separation in catering and recycling coffee waste into substrates for growing nutritious and medicinal mushrooms. BA thesis project.',
-    link: 'https://repozitorij.uni-lj.si/IzpisGradiva.php?id=140616'
+    link: 'https://repozitorij.uni-lj.si/IzpisGradiva.php?id=140616',
+    image: 'images/projects/coffee-mushrooms-main.webp',
+    gallery: []
   },
   2: {
+    slug: 'panj-glamping',
     tag: 'architecture',
     title: 'PANJ Glamping House',
-    text: 'A glamping experience inspired by Slovenian beekeeping. Parametric wall allows privacy with controlled morning sun views. Surrounded by greenery that attracts bees.'
+    text: 'A glamping experience inspired by Slovenian beekeeping. Parametric wall allows privacy with controlled morning sun views. Surrounded by greenery that attracts bees.',
+    image: 'images/projects/panj-glamping-main.webp',
+    gallery: []
   },
   3: {
+    slug: 'planty',
     tag: 'system',
     title: 'Planty — Returnable System',
     text: 'Modern twist on traditional milk bottle design for plant-based milk. Returnable service at local coffee shops — circular economy, pure taste in glass.',
-    link: 'https://glassberriesawards.com/the-glassberries/'
+    link: 'https://glassberriesawards.com/the-glassberries/',
+    image: 'images/projects/planty-main.webp',
+    gallery: []
   },
   4: {
+    slug: 'mycelium',
     tag: 'research',
     title: 'Mycelium Panels',
     text: 'Sustainable insulation and acoustic panels grown from mycelium and raw wool. Workshop at Matters of Activity, Berlin with Folke Köbberling and team.',
-    link: 'https://zur-nachahmung-empfohlen.de/workshop-rohwolle/'
+    link: 'https://zur-nachahmung-empfohlen.de/workshop-rohwolle/',
+    image: 'images/projects/mycelium-main.webp',
+    gallery: []
   },
   5: {
+    slug: 'kaslc',
     tag: 'platform',
     title: 'Kaslc',
     text: 'Solution for farmers to sell produce directly to end customers — inspired by the milking machine. MA thesis WIP with Esma Hajderpasić.',
-    link: 'https://multidisciplinaren.si/posts/2022-projekt-digitalizacija-kmetij/PREDSTAVITVE/2023_kaslc.pdf'
+    link: 'https://multidisciplinaren.si/posts/2022-projekt-digitalizacija-kmetij/PREDSTAVITVE/2023_kaslc.pdf',
+    image: 'images/projects/kaslc-main.webp',
+    gallery: []
   },
   9: {
+    slug: 'drozjar',
     tag: 'packaging',
     title: 'Sourdough Starter-Kit — Drožjar',
-    text: 'Packaging that communicates effortless sourdough baking. Glazed print symbolizes water; inner opening mimics a fresh bag of flour.'
+    text: 'Packaging that communicates effortless sourdough baking. Glazed print symbolizes water; inner opening mimics a fresh bag of flour.',
+    image: 'images/projects/drozjar-main.webp',
+    gallery: []
   },
   12: {
+    slug: 'tozd',
     tag: 'graphic',
     title: 'TOZD Bar',
     text: 'Unified graphic design for a new bar in Ljubljana — inox, plexiglass, menus, garments, coasters, stickers across all touchpoints.',
-    link: 'https://www.instagram.com/tozdbar/'
+    link: 'https://www.instagram.com/tozdbar/',
+    image: 'images/projects/tozd-main.webp',
+    gallery: []
   },
   13: {
+    slug: 'isa',
     tag: 'graphic',
     title: 'Isa Kombucha',
-    text: 'Merchandise with vibrant 90s graphic t-shirt feel for a local kombucha brand. Pop color balanced with Times New Roman.'
+    text: 'Merchandise with vibrant 90s graphic t-shirt feel for a local kombucha brand. Pop color balanced with Times New Roman.',
+    image: 'images/projects/isa-main.webp',
+    gallery: []
   },
   14: {
+    slug: 'lelee',
     tag: 'graphic',
     title: 'Lelee Band',
     text: 'Studio photos and expressive posters with photographer Andraž Fijavž Bačovnik for band promotion.',
-    link: 'https://leleeband.com/photos/press'
+    link: 'https://leleeband.com/photos/press',
+    image: 'images/projects/lelee-main.webp',
+    gallery: []
   },
   15: {
+    slug: 'zbornica',
     tag: 'film',
     title: 'The Staff Room — Zbornica',
     text: 'Visual effects and animated digital screens throughout the European hit film. Karlovy Vary Crystal Globe and Pula Film Festival award winner.',
-    link: 'https://www.imdb.com/news/ni63702656/'
+    link: 'https://www.imdb.com/news/ni63702656/',
+    image: 'images/projects/zbornica-main.webp',
+    gallery: []
   }
 };
 
@@ -98,6 +134,12 @@ const panelImage = document.getElementById('panel-image');
 const panelImageImg = document.getElementById('panel-image-img');
 const panelImageCaption = document.getElementById('panel-image-caption');
 const panelImageClose = document.getElementById('panel-image-close');
+const panelGallery = document.getElementById('panel-gallery');
+const panelImagePrev = document.getElementById('panel-image-prev');
+const panelImageNext = document.getElementById('panel-image-next');
+
+let galleryImages = [];
+let galleryIndex = 0;
 const pencilBtn = document.getElementById('pencil-tool');
 const eraserBtn = document.getElementById('eraser-tool');
 const drawCanvas = document.getElementById('draw-canvas');
@@ -532,7 +574,55 @@ function openAboutPanel() {
   closeImagePanel();
 }
 
-function openProjectPanel(projectId, imgSrc, caption) {
+function projectImages(p) {
+  return [p.image, ...(p.gallery || [])].filter(Boolean);
+}
+
+function showGalleryImage(index) {
+  if (!panelImageImg || !galleryImages.length) return;
+  galleryIndex = (index + galleryImages.length) % galleryImages.length;
+  panelImageImg.src = galleryImages[galleryIndex];
+  if (panelGallery) {
+    panelGallery.querySelectorAll('.panel-gallery__thumb').forEach((thumb, i) => {
+      thumb.classList.toggle('active', i === galleryIndex);
+    });
+  }
+}
+
+function buildGallery(p) {
+  galleryImages = projectImages(p);
+  galleryIndex = 0;
+
+  if (!panelGallery || !panelImagePrev || !panelImageNext) return;
+
+  panelGallery.innerHTML = '';
+  const multi = galleryImages.length > 1;
+
+  panelImagePrev.hidden = !multi;
+  panelImageNext.hidden = !multi;
+  panelGallery.hidden = !multi;
+
+  if (!multi) {
+    if (panelImageImg) panelImageImg.src = galleryImages[0] || '';
+    return;
+  }
+
+  galleryImages.forEach((src, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'panel-gallery__thumb' + (i === 0 ? ' active' : '');
+    btn.innerHTML = `<img src="${src}" alt="">`;
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      showGalleryImage(i);
+    });
+    panelGallery.appendChild(btn);
+  });
+
+  showGalleryImage(0);
+}
+
+function openProjectPanel(projectId, caption) {
   const p = projects[projectId];
   if (!p) return;
   panelAbout.hidden = true;
@@ -547,10 +637,10 @@ function openProjectPanel(projectId, imgSrc, caption) {
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
 
-  if (panelImage && panelImageImg && imgSrc) {
-    panelImageImg.src = imgSrc;
+  if (panelImage && panelImageImg) {
     panelImageImg.alt = p.title;
     if (panelImageCaption) panelImageCaption.textContent = caption || p.title;
+    buildGallery(p);
     panelImage.classList.add('open');
     panelImage.setAttribute('aria-hidden', 'false');
   }
@@ -560,6 +650,9 @@ function closeImagePanel() {
   if (!panelImage) return;
   panelImage.classList.remove('open');
   panelImage.setAttribute('aria-hidden', 'true');
+  galleryImages = [];
+  galleryIndex = 0;
+  if (panelGallery) panelGallery.innerHTML = '';
 }
 
 function closePanel() {
@@ -571,27 +664,46 @@ function closePanel() {
 
 function initPanel() {
   document.querySelectorAll('.block-img[data-project]').forEach(block => {
+    const id = parseInt(block.dataset.project, 10);
+    const p = projects[id];
+    const img = block.querySelector('img');
+    if (p?.image && img) {
+      img.src = p.image;
+      img.alt = p.title;
+    }
+
     block.addEventListener('click', e => {
       if (drawMode) return;
       e.stopPropagation();
       e.preventDefault();
-      const img = block.querySelector('img');
       const caption = block.querySelector('.caption')?.textContent?.trim();
-      openProjectPanel(
-        parseInt(block.dataset.project, 10),
-        img?.src,
-        caption
-      );
+      openProjectPanel(id, caption);
     });
   });
 
   panelClose.addEventListener('click', closePanel);
   if (panelImageClose) panelImageClose.addEventListener('click', closePanel);
+  if (panelImagePrev) {
+    panelImagePrev.addEventListener('click', e => {
+      e.stopPropagation();
+      showGalleryImage(galleryIndex - 1);
+    });
+  }
+  if (panelImageNext) {
+    panelImageNext.addEventListener('click', e => {
+      e.stopPropagation();
+      showGalleryImage(galleryIndex + 1);
+    });
+  }
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closePanel();
       if (drawMode) toggleDraw(false);
+      return;
     }
+    if (!panelImage?.classList.contains('open') || galleryImages.length < 2) return;
+    if (e.key === 'ArrowLeft') showGalleryImage(galleryIndex - 1);
+    if (e.key === 'ArrowRight') showGalleryImage(galleryIndex + 1);
   });
 }
 
