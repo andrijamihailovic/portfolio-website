@@ -102,6 +102,20 @@ const projects = {
     image: 'images/projects/drozjar-main.webp',
     gallery: []
   },
+  10: {
+    slug: 'bezigrad',
+    tag: 'typeface',
+    title: 'Bezigrad',
+    text: 'Bezigrad is a dynamic, modular typeface inspired by the stencil lettering used during the construction of Ljubljana\'s Bežigrad district. It serves as an homage to the area and its development, reinterpreting the functional stencil style into a contemporary and characterful typeface. Published by dotless type.',
+    link: 'https://dotless-type.com/bezigrad/',
+    image: 'images/projects/bezigrad-main.webp',
+    gallery: [
+      'images/projects/bezigrad-02.webp',
+      'images/projects/bezigrad-03.webp',
+      'images/projects/bezigrad-04.webp',
+      'images/projects/bezigrad-05.webp'
+    ]
+  },
   12: {
     slug: 'tozd',
     tag: 'graphic',
