@@ -106,7 +106,22 @@ const ROWS = 12;
 const GRID_RATIO = 1.45;
 const PROJECT_BOOST = 1.2;
 const MAX_OVERLAP = 0.42;
+const ROW_BANDS = [
+  { min: 1, max: 4 },
+  { min: 4, max: 8 },
+  { min: 8, max: ROWS + 1 }
+];
 const MOBILE = () => window.innerWidth <= 768;
+
+function randomCol(w) {
+  return 2 + Math.floor(Math.random() * Math.max(1, COLS - w - 2));
+}
+
+function randomRow(h, band = null) {
+  const lo = band ? band.min : 1;
+  const hi = band ? Math.min(band.max, ROWS - h + 1) : ROWS - h + 1;
+  return lo + Math.floor(Math.random() * Math.max(1, hi - lo));
+}
 
 let panX = 0;
 let panY = 0;
@@ -218,7 +233,18 @@ function resizeGrid() {
 }
 
 function syncViewportGrid() {
-  if (MOBILE() || !gridLayer) return;
+  if (!gridLayer) return;
+
+  if (MOBILE()) {
+    const cellW = getCellW();
+    const cellH = getCellH();
+    document.documentElement.style.setProperty('--grid-x', '0px');
+    document.documentElement.style.setProperty('--grid-y', '0px');
+    document.documentElement.style.setProperty('--grid-cell-w', `${cellW}px`);
+    document.documentElement.style.setProperty('--grid-cell-h', `${cellH}px`);
+    if (marginLine) marginLine.style.left = `${cellW * 2 + 6}px`;
+    return;
+  }
 
   const hud = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h')) || 36;
   const cellW = getCellW() * scale;
@@ -353,10 +379,11 @@ function avoidCornerOverlap() {
 
   field.querySelectorAll('.block:not(.block-marquee)').forEach(block => {
     for (let i = 0; i < 24 && hitsCornerName(block, cellW, cellH); i++) {
-      const col = Math.min(COLS - +block.dataset.w, +block.dataset.col + 1);
-      const row = Math.min(ROWS - +block.dataset.h, +block.dataset.row + 1);
-      block.dataset.col = String(col);
-      block.dataset.row = String(row);
+      if (+block.dataset.col < COLS - +block.dataset.w) {
+        block.dataset.col = String(+block.dataset.col + 1);
+      } else if (+block.dataset.row < ROWS - +block.dataset.h) {
+        block.dataset.row = String(+block.dataset.row + 1);
+      }
       moved = true;
     }
   });
@@ -364,14 +391,14 @@ function avoidCornerOverlap() {
   if (moved) layoutBlocks();
 }
 
-function randomPlacement(block, cellW, cellH, placedProjects, maxAttempts = 100) {
+function randomPlacement(block, cellW, cellH, placedProjects, band = null, maxAttempts = 100) {
   const w = +block.dataset.w;
   const h = +block.dataset.h;
   const isProject = block.classList.contains('block-img');
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    block.dataset.col = String(2 + Math.floor(Math.random() * (COLS - w - 2)));
-    block.dataset.row = String(2 + Math.floor(Math.random() * (ROWS - h - 2)));
+    block.dataset.col = String(randomCol(w));
+    block.dataset.row = String(randomRow(h, band));
     block.dataset.ox = String(Math.floor(Math.random() * 20 - 10));
     block.dataset.oy = String(Math.floor(Math.random() * 20 - 10));
     block.dataset.rot = ((Math.random() - 0.5) * 4).toFixed(1);
@@ -561,15 +588,16 @@ function initShuffle() {
     const cellH = getCellH();
     const placedProjects = [];
 
-    const shuffleBlocks = [
-      ...field.querySelectorAll('.block-note, .block-list, .block-portrait, .block-contact, .block-img')
-    ].sort(() => Math.random() - 0.5);
+    const infoBlocks = [...field.querySelectorAll('.block-note, .block-list, .block-portrait, .block-contact')]
+      .sort(() => Math.random() - 0.5);
+    const projectBlocks = [...field.querySelectorAll('.block-img')].sort(() => Math.random() - 0.5);
+    const bands = [...ROW_BANDS].sort(() => Math.random() - 0.5);
 
-    shuffleBlocks.forEach(block => {
-      randomPlacement(block, cellW, cellH, placedProjects);
-      if (block.classList.contains('block-img')) {
-        placedProjects.push(blockRect(block, cellW, cellH));
-      }
+    infoBlocks.forEach(block => randomPlacement(block, cellW, cellH, placedProjects));
+
+    projectBlocks.forEach((block, i) => {
+      randomPlacement(block, cellW, cellH, placedProjects, bands[i % bands.length]);
+      placedProjects.push(blockRect(block, cellW, cellH));
     });
 
     layoutBlocks();
