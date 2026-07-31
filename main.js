@@ -158,12 +158,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('resize', () => {
     if (MOBILE() && drawMode) toggleDraw(false);
-    init(true);
+    init(true, true);
   });
 });
 
-function init(preserveDrawing = false) {
+function randomizeMarquee(cellW, cellH) {
+  const marquee = field.querySelector('.block-marquee');
+  if (!marquee || MOBILE()) return;
+  const bottomBand = { min: 9, max: ROWS + 1 };
+  randomPlacement(marquee, cellW, cellH, [], bottomBand);
+}
+
+function init(preserveDrawing = false, skipMarquee = false) {
   resizeGrid();
+  if (!MOBILE() && !skipMarquee) {
+    randomizeMarquee(getCellW(), getCellH());
+  }
   layoutBlocks();
   resizeDrawCanvas(preserveDrawing);
   if (!MOBILE()) {
@@ -381,7 +391,7 @@ function avoidCornerOverlap() {
   const cellH = getCellH();
   let moved = false;
 
-  field.querySelectorAll('.block:not(.block-marquee)').forEach(block => {
+  field.querySelectorAll('.block').forEach(block => {
     for (let i = 0; i < 24 && hitsCornerName(block, cellW, cellH); i++) {
       if (+block.dataset.col < COLS - +block.dataset.w) {
         block.dataset.col = String(+block.dataset.col + 1);
@@ -618,12 +628,16 @@ function initShuffle() {
     const cellH = getCellH();
     const placedProjects = [];
 
-    const infoBlocks = [...field.querySelectorAll('.block-note, .block-list, .block-portrait, .block-contact')]
+    const infoBlocks = [...field.querySelectorAll('.block-note, .block-list, .block-portrait, .block-contact, .block-marquee')]
       .sort(() => Math.random() - 0.5);
     const projectBlocks = [...field.querySelectorAll('.block-img')].sort(() => Math.random() - 0.5);
     const bands = [...ROW_BANDS].sort(() => Math.random() - 0.5);
+    const bottomBand = { min: 9, max: ROWS + 1 };
 
-    infoBlocks.forEach(block => randomPlacement(block, cellW, cellH, placedProjects));
+    infoBlocks.forEach(block => {
+      const band = block.classList.contains('block-marquee') ? bottomBand : null;
+      randomPlacement(block, cellW, cellH, placedProjects, band);
+    });
 
     projectBlocks.forEach((block, i) => {
       randomPlacement(block, cellW, cellH, placedProjects, bands[i % bands.length]);
