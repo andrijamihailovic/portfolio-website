@@ -672,21 +672,63 @@ body.draw-mode .pencil-cursor { display: block; }
 
   .tap-hint { opacity: 1; background: transparent; color: var(--ink); top: auto; bottom: 18px; right: 4px; }
 
-  .project-view {
+  body.project-open {
+    overflow: hidden;
+  }
+
+  body.project-open .stage {
+    pointer-events: none;
+  }
+
+  .project-view.open {
+    z-index: 280;
     flex-direction: column;
+    overflow-x: hidden;
     overflow-y: auto;
-    align-items: center;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    align-items: stretch;
     justify-content: flex-start;
-    padding: 12px 16px 24px;
+    gap: 16px;
+    padding: 12px 16px max(24px, env(safe-area-inset-bottom));
+    background: var(--paper);
   }
 
   .project-view .panel-image,
   .project-view .panel--project {
-    width: 92vw;
-    max-height: none;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100%;
+    max-height: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    overflow: visible;
+    flex-shrink: 0;
   }
 
-  .panel {
+  .project-view .panel-image-view img {
+    max-height: none;
+    width: 100%;
+  }
+
+  .project-view .panel--project > .panel-close {
+    display: none;
+  }
+
+  .project-view.open > .panel-image > .panel-close {
+    position: fixed;
+    top: calc(var(--hud-h) + 8px);
+    right: 16px;
+    z-index: 281;
+    background: var(--paper);
+  }
+
+  #panel.panel {
     width: 92vw;
     max-height: 80vh;
     overflow-y: auto;
@@ -696,23 +738,8 @@ body.draw-mode .pencil-cursor { display: block; }
     transform: translate(-50%, 0) scale(0.96);
   }
 
-  .panel.open {
+  #panel.panel.open {
     transform: translate(-50%, 0) scale(1);
-  }
-
-  .panel-image {
-    width: 92vw;
-    left: 50% !important;
-    top: 14%;
-    transform: translate(-50%, 0) scale(0.96);
-  }
-
-  .panel-image.open {
-    transform: translate(-50%, 0) scale(1);
-  }
-
-  .panel-image img {
-    max-height: 38vh;
   }
 }
 
