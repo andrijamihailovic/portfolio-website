@@ -49,26 +49,13 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 }
 
 .margin-line {
-  position: absolute;
+  position: fixed;
   top: var(--hud-h);
   bottom: 0;
-  left: calc(var(--grid-x, 14px) + var(--grid-cell-w, var(--cell-w)) * 2 + 6px);
+  left: 14px;
   width: 1px;
   background: var(--margin);
-}
-
-.grid-layer {
-  position: fixed;
-  inset: 0;
-  top: var(--hud-h);
   pointer-events: none;
-  z-index: 0;
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: var(--grid-cell-w, var(--cell-w)) var(--grid-cell-h, var(--cell-h));
-  background-position: var(--grid-x, 0) var(--grid-y, 0);
-  will-change: background-position;
 }
 
 /* Name — overlaps top HUD line */
@@ -203,6 +190,11 @@ body.draw-mode .pencil-cursor { display: block; }
   flex-shrink: 0;
   transform-origin: center center;
   will-change: transform;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: var(--cell-w) var(--cell-h);
 }
 
 #draw-canvas {
@@ -428,7 +420,6 @@ body.draw-mode #draw-canvas {
 @media (max-width: 768px) {
   html, body { overflow: auto; }
 
-  .grid-layer,
   .margin-line {
     display: none;
   }
