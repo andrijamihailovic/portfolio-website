@@ -3,407 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Andrija Mihailović — Industrial designer based in Slovenia. Portfolio of product design, graphic design, and visual work.">
-  <title>Andrija Mihailović — Industrial Designer</title>
+  <title>Andrija Mihailović</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="cursor-glow" aria-hidden="true"></div>
+  <div class="paper" aria-hidden="true">
+    <div class="margin-line"></div>
+    <div class="rules"></div>
+    <div class="grid-lines"></div>
+  </div>
 
-  <nav class="nav" id="nav">
-    <a href="#" class="nav-logo">
-      <img src="images/logo4.png" alt="Andrija Mihailović">
-    </a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#work">Work</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li class="nav-close">
-        <button class="menu-btn" id="menu-close" aria-label="Close menu">
-          <img src="images/close.png" alt="">
-        </button>
-      </li>
-    </ul>
-    <button class="menu-btn" id="menu-open" aria-label="Open menu">
-      <img src="images/menu.png" alt="">
-    </button>
-  </nav>
+  <div class="cursor-cross" id="cursor-cross" aria-hidden="true"></div>
 
-  <header class="hero" id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content container">
-      <p class="hero-label reveal">Industrial Designer</p>
-      <h1 class="hero-title reveal">Andrija<br>Mihailović</h1>
-      <p class="hero-desc reveal">Designing products and experiences with social and sustainable impact — from Ljubljana to Berlin.</p>
-      <a href="#work" class="hero-cta reveal">
-        <span>View selected work</span>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-      </a>
-    </div>
-    <div class="scroll-indicator" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
+  <header class="hud">
+    <span class="hud-coords" id="coords">00.00 / 00.00</span>
+    <span class="hud-time" id="clock">--:--</span>
+    <button class="hud-shuffle" id="shuffle" type="button">shuffle grid</button>
   </header>
 
-  <main>
+  <main class="stage" id="stage">
+    <div class="field" id="field">
 
-    <section class="about section" id="about">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-image reveal">
-            <img src="images/about_koncna_3.png" alt="Andrija Mihailović portrait">
-          </div>
-          <div class="about-content reveal">
-            <h2 class="section-title">About me</h2>
-            <p class="about-text">I am <strong>Andrija Mihailović</strong>, a Slovenian industrial designer. Throughout my studies and projects I tipped my toes into various fields of design with the true constant of maintaining and including the key elements of social and sustainable impact in my work. But my main passion still lies in conventional industrial design.</p>
-            <p class="about-text">I have participated in projects with my alma mater <strong>Academy of fine arts and design in Ljubljana</strong>, local brands and collectives. Through working at a Berlin based research institute <strong>Matters of Activity</strong>, I primarily focused on design research, gaining a deeper infatuation with multidisciplinary work. I am also active in the fields of graphic design, photography and exhibition curating.</p>
+      <div class="block block-xl block-name" data-w="4" data-h="3" style="--i:0">
+        <span class="stamp">fig. 01</span>
+        <h1>Andrija<br>Mihailović</h1>
+        <p class="scribble">industrial designer / ljubljana</p>
+      </div>
 
-            <div class="tabs">
-              <div class="tab-nav" role="tablist">
-                <button class="tab-btn active" role="tab" data-tab="skills" aria-selected="true">Skills</button>
-                <button class="tab-btn" role="tab" data-tab="experience" aria-selected="false">Experience</button>
-                <button class="tab-btn" role="tab" data-tab="education" aria-selected="false">Education</button>
-              </div>
-              <div class="tab-panel active" id="skills" role="tabpanel">
-                <p>Organizational skills, communication skills, creative thinking, making connections, self-reliance, problem solving and critical thinking, networking, design research, teamwork, and creative problem solving.</p>
-                <ul class="skill-list">
-                  <li>Adobe (Illustrator, Photoshop, Lightroom, After Effects, InDesign, Premiere Pro)</li>
-                  <li>Rhino 7</li>
-                  <li>SolidWorks</li>
-                  <li>AutoCAD</li>
-                  <li>Fusion</li>
-                  <li>SilverFast</li>
-                  <li>Affinity</li>
-                </ul>
-              </div>
-              <div class="tab-panel" id="experience" role="tabpanel">
-                <ul class="timeline">
-                  <li><span class="year">2023</span> Design research and student assistant at Matters of Activity, Berlin</li>
-                  <li><span class="year">2023</span> Poster design for Slovenian band Lelee</li>
-                  <li><span class="year">2023</span> Holistic graphic design and object design for TOZD bar</li>
-                  <li><span class="year">2023</span> Architecture design for Lushna glamping catalog</li>
-                  <li><span class="year">2023</span> ALUO pavilion for Milan Design Week 2024</li>
-                  <li><span class="year">2022</span> Production assistant and graphic designer for Mittske</li>
-                  <li><span class="year">2022</span> Graphic assistant for short experimental film XX</li>
-                  <li><span class="year">2021</span> Graphic designer for industrial company KMS</li>
-                  <li><span class="year">2020</span> Graphic designer for stumfi.si</li>
-                  <li><span class="year">2020</span> Visual effects for Croatian feature film Zbornica</li>
-                </ul>
-              </div>
-              <div class="tab-panel" id="education" role="tabpanel">
-                <ul class="timeline">
-                  <li><span class="year">2022–</span> Industrial Design MA — Academy of fine arts and design, Ljubljana</li>
-                  <li><span class="year">2019–22</span> Industrial Design BA — Academy of fine arts and design, Ljubljana</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+      <div class="block block-note block-drift" data-w="3" data-h="2" style="--i:1">
+        <span class="stamp">note</span>
+        <p>I make objects, systems, and mess. Social + sustainable impact is the only rule I keep breaking on purpose.</p>
+      </div>
+
+      <div class="block block-img block-float" data-w="2" data-h="2" style="--i:2" data-project="0">
+        <img src="images/IO_sprej.png" alt="">
+        <span class="caption">sprayer</span>
+      </div>
+
+      <div class="block block-img block-tilt" data-w="2" data-h="3" style="--i:3" data-project="1">
+        <img src="images/IO_gobe.png" alt="">
+        <span class="caption">coffee → mushrooms</span>
+      </div>
+
+      <div class="block block-list block-drift-reverse" data-w="3" data-h="4" style="--i:4">
+        <span class="stamp">where</span>
+        <ul>
+          <li>Matters of Activity, Berlin</li>
+          <li>ALUO Ljubljana</li>
+          <li>TOZD bar</li>
+          <li>Milan Design Week 2024</li>
+          <li>film: Zbornica</li>
+        </ul>
+      </div>
+
+      <div class="block block-img block-wobble" data-w="3" data-h="2" style="--i:5" data-project="3">
+        <img src="images/IO_flaska.png" alt="">
+        <span class="caption">planty bottle</span>
+      </div>
+
+      <div class="block block-marquee" data-w="5" data-h="1" style="--i:6">
+        <div class="marquee-track">
+          <span>rhino · solidworks · fusion · adobe · research · glass · ceramics · screen print · exhibition · packaging · architecture ·</span>
+          <span>rhino · solidworks · fusion · adobe · research · glass · ceramics · screen print · exhibition · packaging · architecture ·</span>
         </div>
       </div>
-    </section>
 
-    <section class="work section" id="work">
-      <div class="container">
-        <div class="work-header reveal">
-          <h2 class="section-title">Selected work</h2>
-          <div class="filter-nav" role="group" aria-label="Filter projects">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="industrial">Industrial</button>
-            <button class="filter-btn" data-filter="graphic">Graphic</button>
-            <button class="filter-btn" data-filter="video">Video & Audio</button>
-          </div>
-        </div>
-
-        <div class="project-grid" id="project-grid">
-
-          <article class="project-card reveal" data-category="industrial" data-index="0">
-            <div class="project-image">
-              <img src="images/IO_sprej.png" alt="Throat Sprayer concept" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Throat Sprayer</h3>
-              <p>Concept for TaticDesign Milano — rugged design for military use cases.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="1">
-            <div class="project-image">
-              <img src="images/IO_gobe.png" alt="Coffee waste management" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Coffee Waste Management</h3>
-              <p>Recycling coffee waste into substrates for growing medicinal mushrooms.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="2">
-            <div class="project-image">
-              <img src="images/IO_hisa.png" alt="PANJ glamping house" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>PANJ Glamping House</h3>
-              <p>A glamping experience inspired by Slovenian beekeeping traditions.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="3">
-            <div class="project-image">
-              <img src="images/IO_flaska.png" alt="Planty returnable system" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Planty — Returnable System</h3>
-              <p>Modern twist on traditional milk bottle design for plant-based alternatives.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="4">
-            <div class="project-image">
-              <img src="images/IO_panel.png" alt="Mycelium panels" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Design Research</span>
-              <h3>Mycelium Panels</h3>
-              <p>Sustainable insulation and acoustic panels grown from mycelium and raw wool.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="5">
-            <div class="project-image">
-              <img src="images/IO_kaslc.png" alt="Kaslc farmer platform" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Kaslc</h3>
-              <p>Platform helping farmers sell directly to end customers with ease.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="6">
-            <div class="project-image">
-              <img src="images/IO_razstava.png" alt="Mobile gallery ALUO" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Mobile Gallery — Sliced Up</h3>
-              <p>Modular container gallery for ALUO exhibitions at Milan Design Week.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="7">
-            <div class="project-image">
-              <img src="images/IO_skatle.png" alt="Modular delivery box" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Modular Delivery Box</h3>
-              <p>Recycled pulp boxes with grooved reinforcement for food delivery.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="8">
-            <div class="project-image">
-              <img src="images/IO_atrijskahisa_poskus.png" alt="Atrium house" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Architecture</span>
-              <h3>Atrium House</h3>
-              <p>Floor plans and interior design bringing creative ideas to life.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="9">
-            <div class="project-image">
-              <img src="images/IO_pakiranje.png" alt="Sourdough starter kit" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Packaging</span>
-              <h3>Sourdough Starter-Kit</h3>
-              <p>Drožjar — making sourdough baking effortless for today's users.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="10">
-            <div class="project-image">
-              <img src="images/IO_steklo.png" alt="Glass plastics" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Material Study</span>
-              <h3>Glass & Ceramics</h3>
-              <p>Exploring gypsum molds and diverse processing techniques in product design.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="industrial" data-index="11">
-            <div class="project-image">
-              <img src="images/IO_stou.png" alt="Vineyard chair" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Industrial Design</span>
-              <h3>Vineyard Chair</h3>
-              <p>Single piece of curved oak veneer for relief during grape harvest.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="graphic" data-index="12">
-            <div class="project-image">
-              <img src="images/GD_tozd.png" alt="TOZD bar branding" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Graphic Design</span>
-              <h3>TOZD Bar</h3>
-              <p>Unified graphic design for a new bar interior in Ljubljana.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="graphic" data-index="13">
-            <div class="project-image">
-              <img src="images/GD_isa.png" alt="Isa kombucha merchandise" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Graphic Design</span>
-              <h3>Isa Kombucha</h3>
-              <p>Merchandise with vibrant 90s graphic t-shirt feel for a local kombucha brand.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="graphic" data-index="14">
-            <div class="project-image">
-              <img src="images/GD_lelee.png" alt="Lelee band posters" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Graphic Design</span>
-              <h3>Lelee Band</h3>
-              <p>Studio photos and expressive posters for band promotion.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="video" data-index="15">
-            <div class="project-image">
-              <img src="images/VA_staff.png" alt="The Staff Room film" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Video & Audio</span>
-              <h3>The Staff Room</h3>
-              <p>Visual effects and animated screens for European hit film Zbornica.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="video" data-index="16">
-            <div class="project-image">
-              <img src="images/VA_xx.png" alt="XX short film" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Video & Audio</span>
-              <h3>XX — Short Film</h3>
-              <p>Screen printing techniques applied to 35mm analog film strips.</p>
-            </div>
-          </article>
-
-          <article class="project-card reveal" data-category="video" data-index="17">
-            <div class="project-image">
-              <img src="images/VA_ad.png" alt="Coffee shop advertisement" loading="lazy">
-              <div class="project-overlay"><span>View project</span></div>
-            </div>
-            <div class="project-info">
-              <span class="project-tag">Video & Audio</span>
-              <h3>Coffee Shop Ad</h3>
-              <p>Short advertisement on sustainability and coffee waste for a local coffee shop.</p>
-            </div>
-          </article>
-
-        </div>
+      <div class="block block-img block-float" data-w="2" data-h="2" style="--i:7" data-project="12">
+        <img src="images/GD_tozd.png" alt="">
+        <span class="caption">tozd</span>
       </div>
-    </section>
 
-    <section class="contact section" id="contact">
-      <div class="container">
-        <div class="contact-grid reveal">
-          <div class="contact-content">
-            <h2 class="section-title">Let's work together</h2>
-            <p class="contact-text">Open to collaborations, freelance projects, and creative conversations.</p>
-            <div class="contact-links">
-              <a href="mailto:andrija12359@gmail.com" class="contact-link">
-                <span class="link-label">Email</span>
-                <span class="link-value">andrija12359@gmail.com</span>
-              </a>
-              <a href="tel:+38664117188" class="contact-link">
-                <span class="link-label">Phone</span>
-                <span class="link-value">+386 64 117 188</span>
-              </a>
-              <a href="https://www.instagram.com/mihailovicandrija/" target="_blank" rel="noopener" class="contact-link">
-                <span class="link-label">Instagram</span>
-                <span class="link-value">@mihailovicandrija</span>
-              </a>
-            </div>
-          </div>
-          <div class="contact-visual">
-            <div class="contact-card">
-              <p class="contact-card-name">Andrija Mihailović</p>
-              <p class="contact-card-role">Industrial Designer</p>
-              <p class="contact-card-location">Ljubljana, Slovenia</p>
-            </div>
-          </div>
-        </div>
+      <div class="block block-portrait block-tilt" data-w="2" data-h="3" style="--i:8">
+        <img src="images/about_koncna_3.png" alt="Andrija Mihailović">
+        <span class="caption">that's me</span>
       </div>
-    </section>
 
+      <div class="block block-img block-drift" data-w="2" data-h="2" style="--i:9" data-project="4">
+        <img src="images/IO_panel.png" alt="">
+        <span class="caption">mycelium</span>
+      </div>
+
+      <div class="block block-scribble block-wobble" data-w="2" data-h="2" style="--i:10">
+        <svg viewBox="0 0 120 80" class="doodle" aria-hidden="true">
+          <path d="M10,40 Q30,10 50,40 T90,40" fill="none" stroke="black" stroke-width="1.5"/>
+          <circle cx="95" cy="35" r="3" fill="black"/>
+          <path d="M20,60 L100,55" fill="none" stroke="black" stroke-width="1" stroke-dasharray="4 3"/>
+        </svg>
+        <p>draw first<br>explain later</p>
+      </div>
+
+      <div class="block block-img block-tilt" data-w="3" data-h="2" style="--i:11" data-project="2">
+        <img src="images/IO_hisa.png" alt="">
+        <span class="caption">panj glamping</span>
+      </div>
+
+      <div class="block block-img block-float" data-w="2" data-h="2" style="--i:12" data-project="14">
+        <img src="images/GD_lelee.png" alt="">
+        <span class="caption">lelee</span>
+      </div>
+
+      <div class="block block-contact block-drift-reverse" data-w="3" data-h="2" style="--i:13">
+        <span class="stamp">contact</span>
+        <a href="mailto:andrija12359@gmail.com">andrija12359@gmail.com</a>
+        <a href="https://www.instagram.com/mihailovicandrija/" target="_blank" rel="noopener">@mihailovicandrija</a>
+        <a href="tel:+38664117188">+386 64 117 188</a>
+      </div>
+
+      <div class="block block-img block-wobble" data-w="2" data-h="3" style="--i:14" data-project="15">
+        <img src="images/VA_staff.png" alt="">
+        <span class="caption">zbornica VFX</span>
+      </div>
+
+      <div class="block block-img block-drift" data-w="2" data-h="2" style="--i:15" data-project="5">
+        <img src="images/IO_kaslc.png" alt="">
+        <span class="caption">kaslc</span>
+      </div>
+
+      <div class="block block-empty block-float" data-w="1" data-h="1" style="--i:16"></div>
+      <div class="block block-empty block-tilt" data-w="1" data-h="1" style="--i:17"></div>
+
+      <div class="block block-img block-float" data-w="2" data-h="2" style="--i:18" data-project="9">
+        <img src="images/IO_pakiranje.png" alt="">
+        <span class="caption">drožjar</span>
+      </div>
+
+      <div class="block block-img block-tilt" data-w="2" data-h="2" style="--i:19" data-project="13">
+        <img src="images/GD_isa.png" alt="">
+        <span class="caption">isa kombucha</span>
+      </div>
+
+      <div class="block block-coords block-drift" data-w="2" data-h="1" style="--i:20">
+        <span id="cell-count">21 cells</span>
+        <span>drag the paper</span>
+      </div>
+
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 Andrija Mihailović. Designed & built by me.</p>
+  <aside class="panel" id="panel" aria-hidden="true">
+    <button class="panel-close" id="panel-close" type="button" aria-label="Close">×</button>
+    <div class="panel-inner">
+      <span class="stamp" id="panel-tag"></span>
+      <h2 id="panel-title"></h2>
+      <p id="panel-text"></p>
+      <a href="#" id="panel-link" target="_blank" rel="noopener" hidden>→ link</a>
     </div>
-  </footer>
-
-  <div class="modal" id="modal" aria-hidden="true" role="dialog">
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    <div class="modal-content">
-      <button class="modal-close" id="modal-close" aria-label="Close project">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <div class="modal-body">
-        <div class="modal-image">
-          <img src="" alt="" id="modal-img">
-        </div>
-        <div class="modal-details">
-          <span class="project-tag" id="modal-tag"></span>
-          <h2 id="modal-title"></h2>
-          <p id="modal-desc"></p>
-          <a href="#" id="modal-link" class="modal-link" target="_blank" rel="noopener" hidden>
-            Learn more
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+  </aside>
 
   <script src="main.js"></script>
 </body>
