@@ -149,6 +149,8 @@ function init(preserveDrawing = false) {
   resizeDrawCanvas(preserveDrawing);
   if (!MOBILE()) {
     fitToView();
+    avoidCornerOverlap();
+    applyTransform();
   } else {
     syncViewportGrid();
   }
@@ -314,6 +316,54 @@ function projectOverlapOk(rect, placed) {
   return true;
 }
 
+function cornerKeepOutRect() {
+  if (!cornerName) return null;
+  const r = cornerName.getBoundingClientRect();
+  const pad = 20;
+  return { left: r.left - pad, top: r.top - pad, right: r.right + pad, bottom: r.bottom + pad, area: 1 };
+}
+
+function blockViewportRect(block, cellW, cellH) {
+  const local = blockRect(block, cellW, cellH);
+  const fr = field.getBoundingClientRect();
+  const fw = field.offsetWidth || 1;
+  const fh = field.offsetHeight || 1;
+  const sx = fr.width / fw;
+  const sy = fr.height / fh;
+  return {
+    left: fr.left + local.left * sx,
+    top: fr.top + local.top * sy,
+    right: fr.left + local.right * sx,
+    bottom: fr.top + local.bottom * sy,
+    area: local.area * sx * sy
+  };
+}
+
+function hitsCornerName(block, cellW, cellH) {
+  const keep = cornerKeepOutRect();
+  if (!keep) return false;
+  return overlapArea(blockViewportRect(block, cellW, cellH), keep) > 0;
+}
+
+function avoidCornerOverlap() {
+  if (MOBILE()) return;
+  const cellW = getCellW();
+  const cellH = getCellH();
+  let moved = false;
+
+  field.querySelectorAll('.block:not(.block-marquee)').forEach(block => {
+    for (let i = 0; i < 24 && hitsCornerName(block, cellW, cellH); i++) {
+      const col = Math.min(COLS - +block.dataset.w, +block.dataset.col + 1);
+      const row = Math.min(ROWS - +block.dataset.h, +block.dataset.row + 1);
+      block.dataset.col = String(col);
+      block.dataset.row = String(row);
+      moved = true;
+    }
+  });
+
+  if (moved) layoutBlocks();
+}
+
 function randomPlacement(block, cellW, cellH, placedProjects, maxAttempts = 100) {
   const w = +block.dataset.w;
   const h = +block.dataset.h;
@@ -327,10 +377,14 @@ function randomPlacement(block, cellW, cellH, placedProjects, maxAttempts = 100)
     block.dataset.rot = ((Math.random() - 0.5) * 4).toFixed(1);
     block.dataset.z = String(5 + Math.floor(Math.random() * 12));
 
-    if (!isProject) return true;
+    if (hitsCornerName(block, cellW, cellH)) continue;
 
-    const rect = blockRect(block, cellW, cellH);
-    if (projectOverlapOk(rect, placedProjects)) return true;
+    if (isProject) {
+      const rect = blockRect(block, cellW, cellH);
+      if (!projectOverlapOk(rect, placedProjects)) continue;
+    }
+
+    return true;
   }
 
   if (isProject) {
@@ -519,6 +573,9 @@ function initShuffle() {
     });
 
     layoutBlocks();
+    fitToView();
+    avoidCornerOverlap();
+    applyTransform();
     setTimeout(() => field.classList.remove('shuffling'), 600);
   });
 }
@@ -540,50 +597,62 @@ function initDraw() {
 
   pencilBtn.addEventListener('click', e => {
     e.stopPropagation();
+    e.preventDefault();
     toggleDraw(!drawMode);
   });
   eraserBtn.addEventListener('click', e => {
     e.stopPropagation();
+    e.preventDefault();
     clearDrawings();
   });
+}
 
-  document.addEventListener('pointermove', e => {
-    if (!drawMode || !pencilEl) return;
+function drawTarget(e) {
+  return e.target.closest('.draw-tools') ||
+    e.target.closest('.corner-name') ||
+    e.target.closest('.hud') ||
+    e.target.closest('.panel');
+}
+
+function onDrawStart(e) {
+  if (!drawMode || !drawCtx || drawTarget(e)) return;
+  e.preventDefault();
+  drawing = true;
+  const { x, y } = canvasPoint(e);
+  drawCtx.beginPath();
+  drawCtx.moveTo(x, y);
+}
+
+function onDrawMove(e) {
+  if (!drawMode || !drawCtx) return;
+  if (pencilEl) {
     pencilEl.style.left = `${e.clientX}px`;
     pencilEl.style.top = `${e.clientY}px`;
-  });
+  }
+  if (!drawing) return;
+  e.preventDefault();
+  const { x, y } = canvasPoint(e);
+  drawCtx.lineTo(x, y);
+  drawCtx.stroke();
+}
 
-  drawCanvas.addEventListener('pointerdown', e => {
-    if (!drawMode || !drawCtx) return;
-    e.preventDefault();
-    e.stopPropagation();
-    drawing = true;
-    const { x, y } = canvasPoint(e);
-    drawCtx.beginPath();
-    drawCtx.moveTo(x, y);
-    drawCanvas.setPointerCapture(e.pointerId);
-  });
+function onDrawEnd() {
+  drawing = false;
+}
 
-  drawCanvas.addEventListener('pointermove', e => {
-    if (!drawing || !drawMode || !drawCtx) return;
-    e.preventDefault();
-    const { x, y } = canvasPoint(e);
-    drawCtx.lineTo(x, y);
-    drawCtx.stroke();
-    if (pencilEl) {
-      pencilEl.style.left = `${e.clientX}px`;
-      pencilEl.style.top = `${e.clientY}px`;
-    }
-  });
-
-  drawCanvas.addEventListener('pointerup', e => {
-    drawing = false;
-    if (drawCanvas.hasPointerCapture(e.pointerId)) {
-      drawCanvas.releasePointerCapture(e.pointerId);
-    }
-  });
-
-  drawCanvas.addEventListener('pointercancel', () => { drawing = false; });
+function setDrawListeners(on) {
+  const opts = { capture: true };
+  if (on) {
+    document.addEventListener('pointerdown', onDrawStart, opts);
+    document.addEventListener('pointermove', onDrawMove, opts);
+    document.addEventListener('pointerup', onDrawEnd, opts);
+    document.addEventListener('pointercancel', onDrawEnd, opts);
+  } else {
+    document.removeEventListener('pointerdown', onDrawStart, opts);
+    document.removeEventListener('pointermove', onDrawMove, opts);
+    document.removeEventListener('pointerup', onDrawEnd, opts);
+    document.removeEventListener('pointercancel', onDrawEnd, opts);
+  }
 }
 
 function clearDrawings() {
@@ -642,8 +711,10 @@ function toggleDraw(on) {
   drawMode = on;
   document.body.classList.toggle('draw-mode', on);
   if (pencilBtn) pencilBtn.classList.toggle('active', on);
+  setDrawListeners(on);
   if (on) {
     closePanel();
     isDragging = false;
+    drawing = false;
   }
 }
