@@ -21,23 +21,6 @@ const projects = {
     image: 'images/projects/coffee-mushrooms-main.webp',
     gallery: []
   },
-  2: {
-    slug: 'panj-glamping',
-    tag: 'architecture',
-    title: 'PANJ Glamping House',
-    text: 'A glamping experience inspired by Slovenian beekeeping. Parametric wall allows privacy with controlled morning sun views. Surrounded by greenery that attracts bees.',
-    image: 'images/projects/panj-glamping-main.webp',
-    gallery: []
-  },
-  3: {
-    slug: 'planty',
-    tag: 'system',
-    title: 'Planty — Returnable System',
-    text: 'Modern twist on traditional milk bottle design for plant-based milk. Returnable service at local coffee shops — circular economy, pure taste in glass.',
-    link: 'https://glassberriesawards.com/the-glassberries/',
-    image: 'images/projects/planty-main.webp',
-    gallery: []
-  },
   4: {
     slug: 'mycelium',
     tag: 'research',
@@ -45,15 +28,6 @@ const projects = {
     text: 'Sustainable insulation and acoustic panels grown from mycelium and raw wool. Workshop at Matters of Activity, Berlin with Folke Köbberling and team.',
     link: 'https://zur-nachahmung-empfohlen.de/workshop-rohwolle/',
     image: 'images/projects/mycelium-main.webp',
-    gallery: []
-  },
-  5: {
-    slug: 'kaslc',
-    tag: 'platform',
-    title: 'Kaslc',
-    text: 'Solution for farmers to sell produce directly to end customers — inspired by the milking machine. MA thesis WIP with Esma Hajderpasić.',
-    link: 'https://multidisciplinaren.si/posts/2022-projekt-digitalizacija-kmetij/PREDSTAVITVE/2023_kaslc.pdf',
-    image: 'images/projects/kaslc-main.webp',
     gallery: []
   },
   6: {
@@ -93,14 +67,6 @@ const projects = {
       'images/projects/echoes-tomorrow-03.webp',
       'images/projects/echoes-tomorrow-04.webp'
     ]
-  },
-  9: {
-    slug: 'drozjar',
-    tag: 'packaging',
-    title: 'Sourdough Starter-Kit — Drožjar',
-    text: 'Packaging that communicates effortless sourdough baking. Glazed print symbolizes water; inner opening mimics a fresh bag of flour.',
-    image: 'images/projects/drozjar-main.webp',
-    gallery: []
   },
   10: {
     slug: 'bezigrad',
