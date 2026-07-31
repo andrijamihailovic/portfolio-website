@@ -167,6 +167,15 @@ const projects = {
     link: 'https://www.imdb.com/news/ni63702656/',
     image: 'images/projects/zbornica-main.webp',
     gallery: []
+  },
+  16: {
+    slug: 'beholding-cell',
+    tag: 'graphic',
+    title: 'Beholding Cell',
+    text: 'Logo design for Beholding Cell, a gallery in Taipei.',
+    link: 'https://beholdingcell.com/exhibitions',
+    image: 'images/projects/beholding-cell-main.webp',
+    gallery: []
   }
 };
 
