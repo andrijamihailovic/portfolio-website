@@ -98,6 +98,8 @@ const pencilBtn = document.getElementById('pencil-tool');
 const eraserBtn = document.getElementById('eraser-tool');
 const drawCanvas = document.getElementById('draw-canvas');
 const cornerName = document.getElementById('corner-name');
+const gridLayer = document.getElementById('grid-layer');
+const marginLine = document.querySelector('.margin-line');
 
 const COLS = 20;
 const ROWS = 12;
@@ -144,7 +146,11 @@ function init() {
   resizeGrid();
   layoutBlocks();
   resizeDrawCanvas();
-  if (!MOBILE()) fitToView();
+  if (!MOBILE()) {
+    fitToView();
+  } else {
+    syncViewportGrid();
+  }
 }
 
 function layoutBlocksMobileShuffled() {
@@ -208,13 +214,22 @@ function resizeGrid() {
   document.documentElement.style.setProperty('--rows', String(ROWS));
 }
 
-function updateMarginLine() {
-  if (MOBILE()) return;
-  const ml = document.querySelector('.margin-line');
-  if (!ml) return;
-  const rect = field.getBoundingClientRect();
+function syncViewportGrid() {
+  if (MOBILE() || !gridLayer) return;
+
+  const hud = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hud-h')) || 36;
   const cellW = getCellW() * scale;
-  ml.style.left = `${rect.left + cellW * 2 + 6}px`;
+  const cellH = getCellH() * scale;
+  const rect = field.getBoundingClientRect();
+
+  document.documentElement.style.setProperty('--grid-x', `${rect.left}px`);
+  document.documentElement.style.setProperty('--grid-y', `${rect.top - hud}px`);
+  document.documentElement.style.setProperty('--grid-cell-w', `${cellW}px`);
+  document.documentElement.style.setProperty('--grid-cell-h', `${cellH}px`);
+
+  if (marginLine) {
+    marginLine.style.left = `${rect.left + cellW * 2 + 6}px`;
+  }
 }
 
 function mobileLeft(width, align) {
@@ -304,7 +319,7 @@ function clampPan() {
 function applyTransform() {
   clampPan();
   field.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-  updateMarginLine();
+  syncViewportGrid();
 }
 
 function initPan() {
