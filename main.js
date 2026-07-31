@@ -12,6 +12,19 @@ const projects = {
   15: { tag: 'film', title: 'Zbornica VFX', text: 'Animated digital screens throughout The Staff Room. Karlovy Vary Crystal Globe.', link: 'https://www.imdb.com/news/ni63702656/' }
 };
 
+const LAYOUTS = [
+  [
+    [1, 1], [13, 1], [5, 1], [14, 2], [1, 4], [8, 1], [3, 9], [11, 1],
+    [12, 2], [11, 5], [4, 6], [9, 2], [5, 4], [1, 7], [14, 5], [6, 6],
+    [12, 7], [14, 8]
+  ],
+  [
+    [1, 1], [12, 1], [6, 1], [14, 1], [1, 4], [9, 1], [2, 9], [11, 1],
+    [7, 3], [13, 4], [3, 6], [10, 3], [5, 3], [1, 7], [14, 6], [5, 6],
+    [11, 8], [13, 7]
+  ]
+];
+
 const field = document.getElementById('field');
 const stage = document.getElementById('stage');
 const coordsEl = document.getElementById('coords');
@@ -29,48 +42,85 @@ let startX = 0;
 let startY = 0;
 let velX = 0;
 let velY = 0;
-let rafId = null;
+let layoutIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-  placeBlocks([
-    [1, 1], [5, 1], [8, 1], [10, 1], [1, 4], [4, 4], [7, 3],
-    [1, 7], [3, 6], [6, 6], [9, 5], [11, 4], [2, 9], [5, 8],
-    [8, 8], [10, 7], [1, 11], [4, 11], [7, 10], [10, 10], [6, 11]
-  ]);
-  centerField();
+  placeBlocks(LAYOUTS[0]);
+  fitToView();
   initPan();
   initPanel();
   initClock();
   initCursor();
-  initParallax();
   initShuffle();
   startInertia();
+  window.addEventListener('resize', () => {
+    fitToView();
+  });
 });
 
 function placeBlocks(positions) {
   const blocks = field.querySelectorAll('.block');
   blocks.forEach((block, i) => {
-    const [col, row] = positions[i] || [1 + (i % 6), 1 + Math.floor(i / 6)];
+    const [col, row] = positions[i];
     block.style.gridColumn = `${col} / span ${block.dataset.w}`;
     block.style.gridRow = `${row} / span ${block.dataset.h}`;
   });
 }
 
-function centerField() {
+function fitToView() {
+  panX = 0;
+  panY = 0;
+  scale = 1;
+
+  const vw = stage.clientWidth;
+  const vh = stage.clientHeight;
+  const fw = field.offsetWidth;
+  const fh = field.offsetHeight;
+
+  if (fw > vw || fh > vh) {
+    scale = Math.min(vw / fw, vh / fh) * 0.98;
+  }
+
+  clampPan();
   updateTransform();
 }
 
+function clampPan() {
+  const vw = stage.clientWidth;
+  const vh = stage.clientHeight;
+  const fw = field.offsetWidth * scale;
+  const fh = field.offsetHeight * scale;
+
+  const overflowX = Math.max(0, fw - vw);
+  const overflowY = Math.max(0, fh - vh);
+
+  const maxX = overflowX > 0 ? overflowX / 2 + 12 : 28;
+  const maxY = overflowY > 0 ? overflowY / 2 + 12 : 28;
+
+  panX = Math.max(-maxX, Math.min(maxX, panX));
+  panY = Math.max(-maxY, Math.min(maxY, panY));
+
+  if (Math.abs(panX) > maxX) velX = 0;
+  if (Math.abs(panY) > maxY) velY = 0;
+}
+
 function updateTransform() {
+  clampPan();
   field.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) scale(${scale})`;
   coordsEl.textContent = `${panX.toFixed(0).padStart(3, '0')} / ${panY.toFixed(0).padStart(3, '0')}`;
 }
 
+let lastPointerX = 0;
+let lastPointerY = 0;
+
 function initPan() {
   stage.addEventListener('pointerdown', e => {
-    if (e.target.closest('.block-img') || e.target.closest('.panel') || e.target.closest('.hud-shuffle')) return;
+    if (e.target.closest('.block-img') || e.target.closest('.panel') || e.target.closest('.hud-shuffle') || e.target.closest('a')) return;
     isDragging = true;
     startX = e.clientX - panX;
     startY = e.clientY - panY;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
     velX = 0;
     velY = 0;
     stage.setPointerCapture(e.pointerId);
@@ -78,12 +128,12 @@ function initPan() {
 
   stage.addEventListener('pointermove', e => {
     if (!isDragging) return;
-    const nx = e.clientX - startX;
-    const ny = e.clientY - startY;
-    velX = nx - panX;
-    velY = ny - panY;
-    panX = nx;
-    panY = ny;
+    panX = e.clientX - startX;
+    panY = e.clientY - startY;
+    velX = e.clientX - lastPointerX;
+    velY = e.clientY - lastPointerY;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
     updateTransform();
   });
 
@@ -93,24 +143,28 @@ function initPan() {
 
   stage.addEventListener('wheel', e => {
     e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.04 : 0.04;
-    scale = Math.min(1.4, Math.max(0.6, scale + delta));
+    const delta = e.deltaY > 0 ? -0.05 : 0.05;
+    const prevScale = scale;
+    scale = Math.min(1.08, Math.max(0.85, scale + delta));
+
+    const ratio = scale / prevScale;
+    panX *= ratio;
+    panY *= ratio;
+
     updateTransform();
   }, { passive: false });
 }
 
 function startInertia() {
   function tick() {
-    if (!isDragging) {
-      panX += velX * 0.92;
-      panY += velY * 0.92;
-      velX *= 0.92;
-      velY *= 0.92;
-      if (Math.abs(velX) > 0.1 || Math.abs(velY) > 0.1) {
-        updateTransform();
-      }
+    if (!isDragging && (Math.abs(velX) > 0.15 || Math.abs(velY) > 0.15)) {
+      panX += velX;
+      panY += velY;
+      velX *= 0.88;
+      velY *= 0.88;
+      updateTransform();
     }
-    rafId = requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
   }
   tick();
 }
@@ -169,50 +223,14 @@ function initCursor() {
   });
 }
 
-function initParallax() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-  document.addEventListener('mousemove', e => {
-    const cx = (e.clientX / window.innerWidth - 0.5) * 2;
-    const cy = (e.clientY / window.innerHeight - 0.5) * 2;
-
-    document.querySelectorAll('.block').forEach((block, i) => {
-      const depth = (i % 5 + 1) * 0.8;
-      const motion = block.classList.contains('block-float') ||
-                     block.classList.contains('block-drift') ||
-                     block.classList.contains('block-drift-reverse') ||
-                     block.classList.contains('block-wobble') ||
-                     block.classList.contains('block-tilt');
-
-      if (motion) {
-        block.style.setProperty('--mx', `${cx * depth}px`);
-        block.style.setProperty('--my', `${cy * depth}px`);
-      }
-    });
-  });
-}
-
 function initShuffle() {
   shuffleBtn.addEventListener('click', () => {
-    const blocks = [...field.querySelectorAll('.block:not(.block-marquee):not(.block-name)')];
+    layoutIndex = (layoutIndex + 1) % LAYOUTS.length;
     field.classList.add('shuffling');
-
-    blocks.forEach(block => {
-      const maxCol = 12 - parseInt(block.dataset.w, 10);
-      const col = Math.floor(Math.random() * Math.max(1, maxCol)) + 1;
-      const row = Math.floor(Math.random() * 8) + 1;
-      block.style.gridColumn = `${col} / span ${block.dataset.w}`;
-      block.style.gridRow = `${row} / span ${block.dataset.h}`;
-
-      const motions = ['block-float', 'block-drift', 'block-drift-reverse', 'block-wobble', 'block-tilt'];
-      motions.forEach(c => block.classList.remove(c));
-      block.classList.add(motions[Math.floor(Math.random() * motions.length)]);
-    });
-
-    panX += (Math.random() - 0.5) * 80;
-    panY += (Math.random() - 0.5) * 80;
-    updateTransform();
-
+    placeBlocks(LAYOUTS[layoutIndex]);
+    panX = 0;
+    panY = 0;
+    fitToView();
     setTimeout(() => field.classList.remove('shuffling'), 700);
   });
 }
