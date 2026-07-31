@@ -16,7 +16,7 @@ const projects = {
     slug: 'coffee-mushrooms',
     tag: 'research',
     title: 'Coffee Waste Management',
-    text: 'Research into unregulated waste separation in catering and recycling coffee waste into substrates for growing nutritious and medicinal mushrooms. BA thesis project.',
+    text: 'I encountered the problem of an unregulated waste separation system in catering. There, I noticed great potential for recycling coffee waste. Through my project, I started researching the current management of coffee waste.\n\nI set myself various options for reusing coffee waste, and delved into the use of coffee waste as a basis for growing nutritious and medicinal mushrooms. Through my project I want to show a new alternative path of coffee waste in the form of a product journey, which acts as a guide for providing a second life cycle to coffee waste.\n\nIn the practical part of the bachelor\'s thesis, I monitor and measure the success of growing different types of mushrooms on coffee waste through experiments, and thus prepare ideal substrates for my products.',
     link: 'https://repozitorij.uni-lj.si/IzpisGradiva.php?id=140616',
     image: 'images/projects/coffee-mushrooms-main.webp',
     gallery: []
@@ -714,8 +714,10 @@ function openProjectPanel(projectId, caption) {
   }
 
   if (projectView) {
+    projectView.scrollTop = 0;
     projectView.classList.add('open');
     projectView.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('project-open');
   }
 }
 
@@ -724,6 +726,7 @@ function closeProjectView() {
     projectView.classList.remove('open');
     projectView.setAttribute('aria-hidden', 'true');
   }
+  document.body.classList.remove('project-open');
   galleryImages = [];
   galleryIndex = 0;
   if (panelGallery) panelGallery.innerHTML = '';
@@ -746,8 +749,16 @@ function initPanel() {
       img.alt = p.title;
     }
 
-    block.addEventListener('click', e => {
-      if (drawMode) return;
+    block.addEventListener('pointerdown', e => {
+      block._tapStart = { x: e.clientX, y: e.clientY };
+    }, { passive: true });
+
+    block.addEventListener('pointerup', e => {
+      if (drawMode || !block._tapStart) return;
+      const dx = Math.abs(e.clientX - block._tapStart.x);
+      const dy = Math.abs(e.clientY - block._tapStart.y);
+      block._tapStart = null;
+      if (dx > 12 || dy > 12) return;
       e.stopPropagation();
       e.preventDefault();
       const caption = block.querySelector('.caption')?.textContent?.trim();
