@@ -119,13 +119,7 @@
 
   <aside class="panel" id="panel" role="dialog" aria-hidden="true">
     <button class="panel-close" id="panel-close" type="button" aria-label="Close">×</button>
-    <div class="panel-inner" id="panel-project">
-      <span class="stamp" id="panel-tag"></span>
-      <h2 id="panel-title"></h2>
-      <p id="panel-text"></p>
-      <a href="#" id="panel-link" class="panel-link" target="_blank" rel="noopener" hidden>learn more →</a>
-    </div>
-    <div class="panel-inner panel-about" id="panel-about" hidden>
+    <div class="panel-inner panel-about" id="panel-about">
       <span class="stamp">about</span>
       <h2>Andrija Mihailović</h2>
       <p>I'm a product designer and design researcher based in Ljubljana, currently pursuing a PhD focused on social design. I hold both a Bachelor's and Master's degree from the Academy of Fine Arts and Design in Ljubljana (ALUO), where I trained as an industrial designer.</p>
@@ -134,16 +128,28 @@
     </div>
   </aside>
 
-  <aside class="panel-image" id="panel-image" role="dialog" aria-hidden="true">
-    <button class="panel-close" id="panel-image-close" type="button" aria-label="Close">×</button>
-    <div class="panel-image-view">
-      <button class="panel-image-nav" id="panel-image-prev" type="button" aria-label="Previous image" hidden>‹</button>
-      <img id="panel-image-img" src="" alt="">
-      <button class="panel-image-nav" id="panel-image-next" type="button" aria-label="Next image" hidden>›</button>
-    </div>
-    <div class="panel-gallery" id="panel-gallery" hidden></div>
-    <span class="panel-image-caption" id="panel-image-caption"></span>
-  </aside>
+  <div class="project-view" id="project-view" aria-hidden="true">
+    <aside class="panel-image" id="panel-image" role="dialog" aria-hidden="true">
+      <button class="panel-close" id="panel-image-close" type="button" aria-label="Close">×</button>
+      <div class="panel-image-view">
+        <button class="panel-image-nav" id="panel-image-prev" type="button" aria-label="Previous image" hidden>‹</button>
+        <img id="panel-image-img" src="" alt="">
+        <button class="panel-image-nav" id="panel-image-next" type="button" aria-label="Next image" hidden>›</button>
+      </div>
+      <div class="panel-gallery" id="panel-gallery" hidden></div>
+      <span class="panel-image-caption" id="panel-image-caption"></span>
+    </aside>
+
+    <aside class="panel panel--project" id="panel-project-wrap" role="dialog" aria-hidden="true">
+      <button class="panel-close" id="panel-project-close" type="button" aria-label="Close">×</button>
+      <div class="panel-inner" id="panel-project">
+        <span class="stamp" id="panel-tag"></span>
+        <h2 id="panel-title"></h2>
+        <p id="panel-text"></p>
+        <a href="#" id="panel-link" class="panel-link" target="_blank" rel="noopener" hidden>learn more →</a>
+      </div>
+    </aside>
+  </div>
 
   <script src="main.js"></script>
 </body>
