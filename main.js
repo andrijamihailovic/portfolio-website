@@ -101,6 +101,508 @@ const cornerName = document.getElementById('corner-name');
 
 const COLS = 20;
 const ROWS = 12;
+const GRID_RATIO = 1.5;
+const PROJECT_BOOST = 1.22;
+const MOBILE = () => window.innerWidth <= 768;
+
+let panX = 0;
+let panY = 0;
+let scale = 1;
+let isDragging = false;
+let startX = 0;
+let startY = 0;
+let velX = 0;
+let velY = 0;
+let lastPointerX = 0;
+let lastPointerY = 0;
+let drawMode = false;
+let drawing = false;
+let drawCtx = null;
+let pencilEl = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  resizeGrid();
+  layoutBlocks();
+  if (!MOBILE()) fitToView();
+  initPan();
+  initPanel();
+  initClock();
+  initShuffle();
+  initDraw();
+  initCornerName();
+  startInertia();
+
+  field.querySelectorAll('.block-img').forEach((b, i) => {
+    if (i % 2 === 0) b.classList.add('floaty');
+  });
+
+  window.addEventListener('resize', () => {
+    if (MOBILE() && drawMode) toggleDraw(false);
+    resizeGrid();
+    layoutBlocks();
+    resizeDrawCanvas();
+    if (!MOBILE()) fitToView();
+  });
+});
+
+function layoutBlocksMobileShuffled() {
+  let y = 0;
+  const gap = 18;
+  const blocks = [...field.querySelectorAll('.block')];
+
+  blocks.forEach((block, i) => {
+    const orderIdx = parseInt(block.dataset.mobileOrder ?? i, 10);
+    const cfg = MOBILE_LAYOUT[orderIdx % MOBILE_LAYOUT.length];
+    const width = Math.round((window.innerWidth - 32) * cfg.w * (block.classList.contains('block-img') ? PROJECT_BOOST : 1));
+    const height = cfg.marquee ? 28 : Math.round(width / cfg.aspect);
+    const left = mobileLeft(width, cfg.align);
+    const rot = ((orderIdx * 7 + 3) % 11 - 5) * 0.35;
+
+    block.style.left = `${left}px`;
+    block.style.top = `${y}px`;
+    block.style.width = `${width}px`;
+    block.style.height = `${height}px`;
+    block.style.zIndex = 5 + (i % 10);
+    block.style.transform = `rotate(${rot}deg)`;
+
+    y += height + gap - (i % 3) * 6;
+  });
+
+  field.style.height = `${y + 60}px`;
+}
+
+function getCellW() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell-w')) || 64;
+}
+
+function getCellH() {
+  return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cell-h')) || 44;
+}
+
+function resizeGrid() {
+  const hud = 36;
+  const pad = 16;
+
+  if (MOBILE()) {
+    document.documentElement.style.setProperty('--cell-w', '58px');
+    document.documentElement.style.setProperty('--cell-h', '38px');
+    document.documentElement.style.setProperty('--cols', 8);
+    document.documentElement.style.setProperty('--rows', 1);
+    syncGrid();
+    return;
+  }
+
+  let cellW = Math.floor((window.innerWidth - pad) / COLS);
+  let cellH = Math.floor(cellW / GRID_RATIO);
+
+  const maxH = window.innerHeight - hud - pad;
+  if (cellH * ROWS > maxH) {
+    cellH = Math.floor(maxH / ROWS);
+    cellW = Math.floor(cellH * GRID_RATIO);
+  }
+
+  document.documentElement.style.setProperty('--cell-w', `${cellW}px`);
+  document.documentElement.style.setProperty('--cell-h', `${cellH}px`);
+  document.documentElement.style.setProperty('--cols', COLS);
+  document.documentElement.style.setProperty('--rows', ROWS);
+  syncGrid();
+}
+
+function syncGrid() {
+  if (MOBILE()) {
+    document.documentElement.style.setProperty('--grid-x', '0px');
+    document.documentElement.style.setProperty('--grid-y', '0px');
+    document.documentElement.style.setProperty('--grid-cell-w', '58px');
+    document.documentElement.style.setProperty('--grid-cell-h', '38px');
+    return;
+  }
+
+  const cellW = getCellW();
+  const cellH = getCellH();
+  const fw = COLS * cellW * scale;
+  const fh = ROWS * cellH * scale;
+  const sw = stage.clientWidth;
+  const sh = stage.clientHeight;
+  const gx = sw / 2 + panX - fw / 2;
+  const gy = sh / 2 + panY - fh / 2;
+
+  document.documentElement.style.setProperty('--grid-x', `${gx}px`);
+  document.documentElement.style.setProperty('--grid-y', `${gy}px`);
+  document.documentElement.style.setProperty('--grid-cell-w', `${cellW * scale}px`);
+  document.documentElement.style.setProperty('--grid-cell-h', `${cellH * scale}px`);
+}
+
+function mobileLeft(width, align) {
+  const margin = 16;
+  const maxW = window.innerWidth - margin * 2;
+
+  if (align === 'center') return margin + (maxW - width) / 2;
+  if (align === 'right') return window.innerWidth - margin - width;
+  return margin;
+}
+
+function layoutBlocks() {
+  const cellW = getCellW();
+  const cellH = getCellH();
+  const blocks = [...field.querySelectorAll('.block')];
+
+  if (MOBILE()) {
+    layoutBlocksMobileShuffled();
+    return;
+  }
+
+  blocks.forEach(block => {
+    const col = +block.dataset.col;
+    const row = +block.dataset.row;
+    const w = +block.dataset.w;
+    const h = +block.dataset.h;
+    const ox = +(block.dataset.ox || 0);
+    const oy = +(block.dataset.oy || 0);
+    const rot = +(block.dataset.rot || 0);
+    const z = +(block.dataset.z || 1);
+    const boost = block.classList.contains('block-img') ? PROJECT_BOOST : 1;
+
+    const baseW = w * cellW;
+    const baseH = h * cellH;
+    const bw = baseW * boost;
+    const bh = baseH * boost;
+    const bx = (col - 1) * cellW + ox - (bw - baseW) / 2;
+    const by = (row - 1) * cellH + oy - (bh - baseH) / 2;
+
+    block.style.left = `${bx}px`;
+    block.style.top = `${by}px`;
+    block.style.width = `${bw}px`;
+    block.style.height = `${bh}px`;
+    block.style.zIndex = z;
+    block.style.transform = `rotate(${rot}deg)`;
+  });
+}
+
+function fitToView() {
+  panX = 0;
+  panY = 0;
+  scale = 1;
+  const vw = stage.clientWidth;
+  const vh = stage.clientHeight;
+  const fw = field.offsetWidth;
+  const fh = field.offsetHeight;
+  if (fw > vw || fh > vh) scale = Math.min(vw / fw, vh / fh) * 0.98;
+  clampPan();
+  applyTransform();
+}
+
+function clampPan() {
+  if (MOBILE()) return;
+  const vw = stage.clientWidth;
+  const vh = stage.clientHeight;
+  const fw = field.offsetWidth * scale;
+  const fh = field.offsetHeight * scale;
+  const maxX = Math.max(0, (fw - vw) / 2) + 20;
+  const maxY = Math.max(0, (fh - vh) / 2) + 20;
+  panX = Math.max(-maxX, Math.min(maxX, panX));
+  panY = Math.max(-maxY, Math.min(maxY, panY));
+}
+
+function applyTransform() {
+  clampPan();
+  field.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+  syncGrid();
+}
+
+function initPan() {
+  stage.addEventListener('pointerdown', e => {
+    if (drawMode) return;
+    if (e.target.closest('.block-img') || e.target.closest('.block-portrait') ||
+        e.target.closest('.panel') || e.target.closest('.hud-shuffle') ||
+        e.target.closest('.draw-tools') || e.target.closest('.corner-name') ||
+        e.target.closest('a')) return;
+    if (MOBILE()) return;
+
+    isDragging = true;
+    startX = e.clientX - panX;
+    startY = e.clientY - panY;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+    velX = 0;
+    velY = 0;
+    stage.setPointerCapture(e.pointerId);
+  });
+
+  stage.addEventListener('pointermove', e => {
+    if (drawMode || !isDragging) return;
+    panX = e.clientX - startX;
+    panY = e.clientY - startY;
+    velX = e.clientX - lastPointerX;
+    velY = e.clientY - lastPointerY;
+    lastPointerX = e.clientX;
+    lastPointerY = e.clientY;
+    applyTransform();
+  });
+
+  stage.addEventListener('pointerup', () => { isDragging = false; });
+}
+
+function startInertia() {
+  function tick() {
+    if (!MOBILE() && !isDragging && !drawMode && (Math.abs(velX) > 0.1 || Math.abs(velY) > 0.1)) {
+      panX += velX;
+      panY += velY;
+      velX *= 0.85;
+      velY *= 0.85;
+      applyTransform();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function openAboutPanel() {
+  panelProject.hidden = true;
+  panelAbout.hidden = false;
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+}
+
+function openProjectPanel(projectId) {
+  const p = projects[projectId];
+  if (!p) return;
+  panelAbout.hidden = true;
+  panelProject.hidden = false;
+  document.getElementById('panel-tag').textContent = p.tag;
+  document.getElementById('panel-title').textContent = p.title;
+  document.getElementById('panel-text').textContent = p.text;
+  const link = document.getElementById('panel-link');
+  link.hidden = !p.link;
+  if (p.link) link.href = p.link;
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden', 'true');
+}
+
+function initPanel() {
+  document.querySelectorAll('.block-img[data-project]').forEach(block => {
+    block.addEventListener('click', e => {
+      if (drawMode) return;
+      e.stopPropagation();
+      e.preventDefault();
+      openProjectPanel(parseInt(block.dataset.project, 10));
+    });
+  });
+
+  panelClose.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closePanel();
+      if (drawMode) toggleDraw(false);
+    }
+  });
+}
+
+function initCornerName() {
+  cornerName.addEventListener('click', e => {
+    e.preventDefault();
+    if (drawMode) toggleDraw(false);
+    openAboutPanel();
+  });
+}
+
+function initClock() {
+  const tick = () => {
+    clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  };
+  tick();
+  setInterval(tick, 1000);
+}
+
+function initShuffle() {
+  shuffleBtn.addEventListener('click', () => {
+    if (MOBILE()) {
+      const blocks = [...field.querySelectorAll('.block')];
+      const order = blocks.map((_, i) => i).sort(() => Math.random() - 0.5);
+      blocks.forEach((block, i) => {
+        block.dataset.mobileOrder = order[i];
+      });
+      layoutBlocksMobileShuffled();
+      return;
+    }
+
+    field.classList.add('shuffling');
+
+    field.querySelectorAll('.block-img, .block-portrait').forEach(block => {
+      const w = +block.dataset.w;
+      const h = +block.dataset.h;
+      block.dataset.col = 4 + Math.floor(Math.random() * (COLS - w - 4));
+      block.dataset.row = 2 + Math.floor(Math.random() * (ROWS - h - 2));
+      block.dataset.ox = Math.floor(Math.random() * 24 - 12);
+      block.dataset.oy = Math.floor(Math.random() * 24 - 12);
+      block.dataset.rot = ((Math.random() - 0.5) * 5).toFixed(1);
+      block.dataset.z = 5 + Math.floor(Math.random() * 12);
+    });
+
+    layoutBlocks();
+    setTimeout(() => field.classList.remove('shuffling'), 600);
+  });
+}
+
+function initDraw() {
+  if (MOBILE()) return;
+
+  pencilEl = document.createElement('div');
+  pencilEl.className = 'pencil-cursor';
+  pencilEl.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 21l3.75-1 11-11-2.75-2.75-11 11L3 21z" fill="none" stroke="#0a0a0a" stroke-width="1.5"/><path d="M14 4l2.75 2.75" fill="none" stroke="#0a0a0a" stroke-width="1.5"/></svg>';
+  document.body.appendChild(pencilEl);
+
+  drawCtx = drawCanvas.getContext('2d');
+  drawCtx.lineCap = 'round';
+  drawCtx.lineJoin = 'round';
+  drawCtx.strokeStyle = '#0a0a0a';
+  drawCtx.lineWidth = 2;
+  resizeDrawCanvas();
+
+  pencilBtn.addEventListener('click', () => toggleDraw(!drawMode));
+  eraserBtn.addEventListener('click', clearDrawings);
+
+  document.addEventListener('pointermove', e => {
+    if (!drawMode) return;
+    pencilEl.style.left = `${e.clientX}px`;
+    pencilEl.style.top = `${e.clientY}px`;
+  });
+
+  drawCanvas.addEventListener('pointerdown', e => {
+    if (!drawMode) return;
+    drawing = true;
+    const { x, y } = canvasPoint(e);
+    drawCtx.beginPath();
+    drawCtx.moveTo(x, y);
+    drawCanvas.setPointerCapture(e.pointerId);
+  });
+
+  drawCanvas.addEventListener('pointermove', e => {
+    if (!drawing || !drawMode) return;
+    const { x, y } = canvasPoint(e);
+    drawCtx.lineTo(x, y);
+    drawCtx.stroke();
+    pencilEl.style.left = `${e.clientX}px`;
+    pencilEl.style.top = `${e.clientY}px`;
+  });
+
+  drawCanvas.addEventListener('pointerup', () => { drawing = false; });
+}
+
+function clearDrawings() {
+  if (!drawCtx || !drawCanvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  drawCtx.setTransform(1, 0, 0, 1, 0, 0);
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  drawCtx.lineCap = 'round';
+  drawCtx.lineJoin = 'round';
+  drawCtx.strokeStyle = '#0a0a0a';
+  drawCtx.lineWidth = 2;
+}
+
+function canvasPoint(e) {
+  const rect = drawCanvas.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
+
+function resizeDrawCanvas() {
+  if (!drawCanvas) return;
+  const rect = stage.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  drawCanvas.width = rect.width * dpr;
+  drawCanvas.height = rect.height * dpr;
+  drawCanvas.style.width = `${rect.width}px`;
+  drawCanvas.style.height = `${rect.height}px`;
+  if (drawCtx) {
+    drawCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawCtx.lineCap = 'round';
+    drawCtx.lineJoin = 'round';
+    drawCtx.strokeStyle = '#0a0a0a';
+    drawCtx.lineWidth = 2;
+  }
+}
+
+function toggleDraw(on) {
+  drawMode = on;
+  document.body.classList.toggle('draw-mode', on);
+  pencilBtn.classList.toggle('active', on);
+  if (on) closePanel();
+}
+  9: {
+    tag: 'packaging',
+    title: 'Sourdough Starter-Kit — Drožjar',
+    text: 'Packaging that communicates effortless sourdough baking. Glazed print symbolizes water; inner opening mimics a fresh bag of flour.'
+  },
+  12: {
+    tag: 'graphic',
+    title: 'TOZD Bar',
+    text: 'Unified graphic design for a new bar in Ljubljana — inox, plexiglass, menus, garments, coasters, stickers across all touchpoints.',
+    link: 'https://www.instagram.com/tozdbar/'
+  },
+  13: {
+    tag: 'graphic',
+    title: 'Isa Kombucha',
+    text: 'Merchandise with vibrant 90s graphic t-shirt feel for a local kombucha brand. Pop color balanced with Times New Roman.'
+  },
+  14: {
+    tag: 'graphic',
+    title: 'Lelee Band',
+    text: 'Studio photos and expressive posters with photographer Andraž Fijavž Bačovnik for band promotion.',
+    link: 'https://leleeband.com/photos/press'
+  },
+  15: {
+    tag: 'film',
+    title: 'The Staff Room — Zbornica',
+    text: 'Visual effects and animated digital screens throughout the European hit film. Karlovy Vary Crystal Globe and Pula Film Festival award winner.',
+    link: 'https://www.imdb.com/news/ni63702656/'
+  }
+};
+
+/* Mobile collage: align + width ratio per block for natural scatter */
+const MOBILE_LAYOUT = [
+  { align: 'center', w: 0.78, aspect: 0.9 },
+  { align: 'right', w: 0.52, aspect: 1.0 },
+  { align: 'left', w: 0.58, aspect: 0.95 },
+  { align: 'center', w: 0.65, aspect: 0.88 },
+  { align: 'left', w: 0.48, aspect: 1.15 },
+  { align: 'right', w: 0.72, aspect: 0.85 },
+  { align: 'center', w: 0.88, aspect: 0.2, marquee: true },
+  { align: 'right', w: 0.56, aspect: 1.05 },
+  { align: 'center', w: 0.82, aspect: 0.75 },
+  { align: 'left', w: 0.54, aspect: 1.1 },
+  { align: 'right', w: 0.68, aspect: 0.92 },
+  { align: 'center', w: 0.5, aspect: 1.0 },
+  { align: 'left', w: 0.74, aspect: 0.8 },
+  { align: 'right', w: 0.6, aspect: 1.05 },
+  { align: 'center', w: 0.86, aspect: 0.7 },
+  { align: 'left', w: 0.52, aspect: 1.0 },
+  { align: 'right', w: 0.7, aspect: 0.88 },
+  { align: 'center', w: 0.58, aspect: 1.12 }
+];
+
+const field = document.getElementById('field');
+const stage = document.getElementById('stage');
+const clockEl = document.getElementById('clock');
+const shuffleBtn = document.getElementById('shuffle');
+const panel = document.getElementById('panel');
+const panelClose = document.getElementById('panel-close');
+const panelProject = document.getElementById('panel-project');
+const panelAbout = document.getElementById('panel-about');
+const pencilBtn = document.getElementById('pencil-tool');
+const eraserBtn = document.getElementById('eraser-tool');
+const drawCanvas = document.getElementById('draw-canvas');
+const cornerName = document.getElementById('corner-name');
+
+const COLS = 20;
+const ROWS = 12;
 const GRID_RATIO = 1.45;
 const PROJECT_BOOST = 1.12;
 const MOBILE = () => window.innerWidth <= 768;
