@@ -433,9 +433,13 @@ body.draw-mode .pencil-cursor { display: block; }
 @media (max-width: 768px) {
   html, body { overflow: auto; }
 
-  .grid-layer,
+  .grid-layer {
+    background-position: 0 0;
+    background-size: var(--cell-w) var(--cell-h);
+  }
+
   .margin-line {
-    display: none;
+    left: calc(var(--cell-w) * 2 + 6px) !important;
   }
 
   .hud {
