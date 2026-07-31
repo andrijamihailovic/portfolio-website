@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Andrija Mihailović</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,9 +12,12 @@
 </head>
 <body>
 
-  <div class="paper" aria-hidden="true">
-    <div class="margin-line"></div>
-  </div>
+  <div class="paper" aria-hidden="true"><div class="margin-line"></div></div>
+
+  <a href="#" class="corner-name" id="corner-name">
+    <span class="corner-name__title">Andrija Mihailović</span>
+    <span class="corner-name__sub">industrial designer</span>
+  </a>
 
   <header class="hud">
     <span class="hud-coords" id="coords">000 / 000</span>
@@ -25,93 +28,91 @@
   <main class="stage" id="stage">
     <div class="field" id="field">
 
-      <div class="block block-name" data-w="2" data-h="2" style="--i:0">
-        <span class="stamp">fig.01</span>
-        <h1>Andrija Mihailović</h1>
-        <p class="scribble">industrial designer · ljubljana</p>
-      </div>
-
-      <div class="block block-note" data-w="2" data-h="2" style="--i:1">
+      <div class="block block-note" data-col="18" data-row="1" data-w="3" data-h="2" data-z="3" data-rot="-1" data-ox="8" style="--i:0">
         <span class="stamp">note</span>
-        <p>objects, systems, mess. sustainable impact as a rule I keep breaking.</p>
+        <p>objects, systems, mess. sustainable impact as a rule I keep breaking on purpose.</p>
       </div>
 
-      <div class="block block-list" data-w="2" data-h="2" style="--i:2">
+      <div class="block block-list" data-col="1" data-row="9" data-w="2" data-h="2" data-z="2" data-rot="0.5" style="--i:1">
         <span class="stamp">where</span>
         <ul>
-          <li>Matters of Activity</li>
+          <li>Matters of Activity, Berlin</li>
           <li>ALUO Ljubljana</li>
           <li>TOZD · Milan DW</li>
         </ul>
       </div>
 
-      <div class="block block-contact" data-w="2" data-h="2" style="--i:3">
+      <div class="block block-contact" data-col="17" data-row="9" data-w="3" data-h="2" data-z="4" data-ox="-12" data-oy="4" style="--i:2">
         <span class="stamp">contact</span>
-        <a href="mailto:andrija12359@gmail.com">email</a>
-        <a href="https://www.instagram.com/mihailovicandrija/" target="_blank" rel="noopener">instagram</a>
-        <a href="tel:+38664117188">phone</a>
+        <a href="mailto:andrija12359@gmail.com">andrija12359@gmail.com</a>
+        <a href="https://www.instagram.com/mihailovicandrija/" target="_blank" rel="noopener">@mihailovicandrija</a>
+        <a href="tel:+38664117188">+386 64 117 188</a>
       </div>
 
-      <div class="block block-portrait" data-w="2" data-h="2" style="--i:4">
+      <div class="block block-portrait" data-col="2" data-row="4" data-w="2" data-h="3" data-z="5" data-ox="6" data-oy="-8" data-rot="-2" style="--i:3">
         <img src="images/about_koncna_3.png" alt="Andrija Mihailović">
-        <span class="caption">me</span>
+        <span class="caption">that's me</span>
       </div>
 
-      <div class="block block-scribble" data-w="2" data-h="1" style="--i:5">
-        <p>draw first → explain later</p>
-      </div>
-
-      <div class="block block-marquee" data-w="6" data-h="1" style="--i:6">
+      <div class="block block-marquee" data-col="5" data-row="11" data-w="8" data-h="1" data-z="1" style="--i:4">
         <div class="marquee-track">
-          <span>rhino · solidworks · adobe · research · glass · screen print ·</span>
-          <span>rhino · solidworks · adobe · research · glass · screen print ·</span>
+          <span>rhino · solidworks · fusion · adobe · research · glass · ceramics · screen print ·</span>
+          <span>rhino · solidworks · fusion · adobe · research · glass · ceramics · screen print ·</span>
         </div>
       </div>
 
-      <div class="block block-img" data-w="2" data-h="2" style="--i:7" data-project="0">
-        <img src="images/IO_sprej.png" alt=""><span class="caption">sprayer</span>
+      <div class="block block-img" data-col="6" data-row="1" data-w="2" data-h="2" data-z="6" data-ox="-10" data-oy="6" data-rot="1.5" data-project="0" style="--i:5">
+        <img src="images/IO_sprej.png" alt=""><span class="caption">sprayer</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:8" data-project="1">
-        <img src="images/IO_gobe.png" alt=""><span class="caption">mushrooms</span>
+      <div class="block block-img" data-col="9" data-row="2" data-w="3" data-h="2" data-z="7" data-oy="12" data-project="1" style="--i:6">
+        <img src="images/IO_gobe.png" alt=""><span class="caption">coffee → mushrooms</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:9" data-project="2">
-        <img src="images/IO_hisa.png" alt=""><span class="caption">panj</span>
+      <div class="block block-img" data-col="13" data-row="1" data-w="2" data-h="3" data-z="8" data-ox="14" data-rot="-1" data-project="2" style="--i:7">
+        <img src="images/IO_hisa.png" alt=""><span class="caption">panj glamping</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:10" data-project="3">
-        <img src="images/IO_flaska.png" alt=""><span class="caption">planty</span>
+      <div class="block block-img" data-col="5" data-row="5" data-w="2" data-h="2" data-z="9" data-ox="18" data-oy="-6" data-rot="2" data-project="3" style="--i:8">
+        <img src="images/IO_flaska.png" alt=""><span class="caption">planty</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:11" data-project="4">
-        <img src="images/IO_panel.png" alt=""><span class="caption">mycelium</span>
+      <div class="block block-img" data-col="8" data-row="6" data-w="3" data-h="2" data-z="10" data-ox="-16" data-project="4" style="--i:9">
+        <img src="images/IO_panel.png" alt=""><span class="caption">mycelium</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:12" data-project="5">
-        <img src="images/IO_kaslc.png" alt=""><span class="caption">kaslc</span>
+      <div class="block block-img" data-col="12" data-row="5" data-w="2" data-h="2" data-z="11" data-oy="10" data-rot="-2.5" data-project="5" style="--i:10">
+        <img src="images/IO_kaslc.png" alt=""><span class="caption">kaslc</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:13" data-project="9">
-        <img src="images/IO_pakiranje.png" alt=""><span class="caption">drožjar</span>
+      <div class="block block-img" data-col="15" data-row="6" data-w="2" data-h="2" data-z="12" data-ox="8" data-project="9" style="--i:11">
+        <img src="images/IO_pakiranje.png" alt=""><span class="caption">drožjar</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:14" data-project="12">
-        <img src="images/GD_tozd.png" alt=""><span class="caption">tozd</span>
+      <div class="block block-img" data-col="4" data-row="8" data-w="3" data-h="2" data-z="13" data-ox="-8" data-oy="8" data-rot="1" data-project="12" style="--i:12">
+        <img src="images/GD_tozd.png" alt=""><span class="caption">tozd bar</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:15" data-project="13">
-        <img src="images/GD_isa.png" alt=""><span class="caption">isa</span>
+      <div class="block block-img" data-col="10" data-row="8" data-w="2" data-h="2" data-z="14" data-ox="12" data-oy="-10" data-project="13" style="--i:13">
+        <img src="images/GD_isa.png" alt=""><span class="caption">isa</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:16" data-project="14">
-        <img src="images/GD_lelee.png" alt=""><span class="caption">lelee</span>
+      <div class="block block-img" data-col="13" data-row="9" data-w="2" data-h="3" data-z="15" data-rot="1.5" data-project="14" style="--i:14">
+        <img src="images/GD_lelee.png" alt=""><span class="caption">lelee</span><span class="tap-hint">click →</span>
       </div>
-      <div class="block block-img" data-w="2" data-h="2" style="--i:17" data-project="15">
-        <img src="images/VA_staff.png" alt=""><span class="caption">zbornica</span>
+      <div class="block block-img" data-col="7" data-row="3" data-w="2" data-h="2" data-z="16" data-ox="-6" data-oy="14" data-rot="-1.5" data-project="15" style="--i:15">
+        <img src="images/VA_staff.png" alt=""><span class="caption">zbornica</span><span class="tap-hint">click →</span>
       </div>
 
     </div>
+    <canvas id="draw-canvas" aria-hidden="true"></canvas>
   </main>
 
-  <aside class="panel" id="panel" aria-hidden="true">
+  <button class="pencil-tool" id="pencil-tool" type="button" aria-label="Draw on the page" title="draw">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <path d="M3 21l3.75-1 11-11-2.75-2.75-11 11L3 21z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M14 4l2.75 2.75" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </svg>
+  </button>
+
+  <aside class="panel" id="panel" role="dialog" aria-hidden="true">
     <button class="panel-close" id="panel-close" type="button" aria-label="Close">×</button>
     <div class="panel-inner">
       <span class="stamp" id="panel-tag"></span>
       <h2 id="panel-title"></h2>
       <p id="panel-text"></p>
-      <a href="#" id="panel-link" target="_blank" rel="noopener" hidden>→ link</a>
+      <a href="#" id="panel-link" class="panel-link" target="_blank" rel="noopener" hidden>learn more →</a>
     </div>
   </aside>
 
