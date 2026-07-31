@@ -553,6 +553,16 @@ body.draw-mode .pencil-cursor { display: block; }
   line-height: 1.2;
 }
 
+.panel-authors {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.4;
+  opacity: 0.55;
+  margin: -6px 0 12px;
+}
+
+.panel-authors[hidden] { display: none; }
+
 .panel-inner p {
   font-family: var(--font-mono);
   font-size: 11px;
