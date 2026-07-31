@@ -1,39 +1,54 @@
 const projects = {
-  0: { tag: 'object', title: 'Throat Sprayer', text: 'Rugged concept for TaticDesign Milano — military use case, developed with Urh Furlanič.', link: 'https://www.instagram.com/p/Cmg_0dHtkSv/?img_index=6' },
-  1: { tag: 'research', title: 'Coffee → Mushrooms', text: 'Coffee waste in catering, recycled into substrates for growing medicinal mushrooms. BA thesis.', link: 'https://repozitorij.uni-lj.si/IzpisGradiva.php?id=140616' },
-  2: { tag: 'architecture', title: 'PANJ Glamping', text: 'Beekeeping-inspired glamping unit with parametric privacy wall and morning sun control.' },
-  3: { tag: 'system', title: 'Planty Bottle', text: 'Returnable glass bottle system for plant-based milk. Circular economy for coffee shops.', link: 'https://glassberriesawards.com/the-glassberries/' },
-  4: { tag: 'research', title: 'Mycelium Panels', text: 'Self-grown insulation from mycelium and raw wool. Matters of Activity, Berlin.', link: 'https://zur-nachahmung-empfohlen.de/workshop-rohwolle/' },
-  5: { tag: 'platform', title: 'Kaslc', text: 'Farmers selling direct to customers — inspired by the milking machine. MA thesis WIP.', link: 'https://multidisciplinaren.si/posts/2022-projekt-digitalizacija-kmetij/PREDSTAVITVE/2023_kaslc.pdf' },
-  9: { tag: 'packaging', title: 'Drožjar', text: 'Sourdough starter kit — water + flour, that\'s it. Glazed wet-cardboard print.' },
-  12: { tag: 'graphic', title: 'TOZD Bar', text: 'Holistic identity for a Ljubljana bar — inox, plexiglass, menus, garments, stickers.', link: 'https://www.instagram.com/tozdbar/' },
-  13: { tag: 'graphic', title: 'Isa Kombucha', text: '90s t-shirt energy merchandise for a local kombucha brand.' },
-  14: { tag: 'graphic', title: 'Lelee Band', text: 'Studio photos and posters with Andraž Fijavž Bačovnik.', link: 'https://leleeband.com/photos/press' },
-  15: { tag: 'film', title: 'Zbornica VFX', text: 'Animated digital screens throughout The Staff Room. Karlovy Vary Crystal Globe.', link: 'https://www.imdb.com/news/ni63702656/' }
+  0: { tag: 'object', title: 'Throat Sprayer', text: 'Rugged concept for TaticDesign Milano.', link: 'https://www.instagram.com/p/Cmg_0dHtkSv/?img_index=6' },
+  1: { tag: 'research', title: 'Coffee → Mushrooms', text: 'Coffee waste recycled into mushroom substrates. BA thesis.', link: 'https://repozitorij.uni-lj.si/IzpisGradiva.php?id=140616' },
+  2: { tag: 'architecture', title: 'PANJ Glamping', text: 'Beekeeping-inspired glamping with parametric privacy wall.' },
+  3: { tag: 'system', title: 'Planty Bottle', text: 'Returnable glass bottle for plant-based milk.', link: 'https://glassberriesawards.com/the-glassberries/' },
+  4: { tag: 'research', title: 'Mycelium Panels', text: 'Insulation from mycelium and raw wool. Berlin.', link: 'https://zur-nachahmung-empfohlen.de/workshop-rohwolle/' },
+  5: { tag: 'platform', title: 'Kaslc', text: 'Farmers selling direct to customers.', link: 'https://multidisciplinaren.si/posts/2022-projekt-digitalizacija-kmetij/PREDSTAVITVE/2023_kaslc.pdf' },
+  9: { tag: 'packaging', title: 'Drožjar', text: 'Sourdough starter kit packaging.' },
+  12: { tag: 'graphic', title: 'TOZD Bar', text: 'Identity for Ljubljana bar.', link: 'https://www.instagram.com/tozdbar/' },
+  13: { tag: 'graphic', title: 'Isa Kombucha', text: '90s merch for kombucha brand.' },
+  14: { tag: 'graphic', title: 'Lelee Band', text: 'Posters and promo photos.', link: 'https://leleeband.com/photos/press' },
+  15: { tag: 'film', title: 'Zbornica VFX', text: 'Digital screens for The Staff Room.', link: 'https://www.imdb.com/news/ni63702656/' }
 };
 
-const LAYOUTS = [
-  [
-    [1, 1], [13, 1], [5, 1], [14, 2], [1, 4], [8, 1], [3, 9], [11, 1],
-    [12, 2], [11, 5], [4, 6], [9, 2], [5, 4], [1, 7], [14, 5], [6, 6],
-    [12, 7], [14, 8]
-  ],
-  [
-    [1, 1], [12, 1], [6, 1], [14, 1], [1, 4], [9, 1], [2, 9], [11, 1],
-    [7, 3], [13, 4], [3, 6], [10, 3], [5, 3], [1, 7], [14, 6], [5, 6],
-    [11, 8], [13, 7]
-  ]
+/* Sparse — corners for text, images in middle bands with gaps */
+const SPREAD = [
+  [3, 2],   // 0 name — top-left
+  [19, 2],  // 1 note — top-right
+  [3, 9],   // 2 list — bottom-left
+  [19, 9],  // 3 contact — bottom-right
+  [3, 5],   // 4 portrait — mid-left
+  [19, 5],  // 5 scribble — mid-right
+  [8, 11],  // 6 marquee — bottom center
+  [7, 2],   // 7–17 images — three bands across center
+  [11, 2],
+  [15, 2],
+  [7, 5],
+  [11, 5],
+  [15, 5],
+  [7, 8],
+  [11, 8],
+  [15, 8],
+  [17, 8],
+];
+
+const SPREAD_ALT = [
+  [2, 2], [18, 2], [2, 8], [18, 8], [2, 5], [18, 5], [7, 11],
+  [5, 2], [9, 2], [13, 2], [17, 2], [5, 5], [9, 5], [13, 5],
+  [5, 8], [9, 8], [13, 8], [17, 8]
 ];
 
 const field = document.getElementById('field');
 const stage = document.getElementById('stage');
 const coordsEl = document.getElementById('coords');
 const clockEl = document.getElementById('clock');
-const cursorCross = document.getElementById('cursor-cross');
 const shuffleBtn = document.getElementById('shuffle');
 const panel = document.getElementById('panel');
 const panelClose = document.getElementById('panel-close');
 
+const COLS = 22;
+const ROWS = 12;
 let panX = 0;
 let panY = 0;
 let scale = 1;
@@ -42,25 +57,42 @@ let startX = 0;
 let startY = 0;
 let velX = 0;
 let velY = 0;
+let lastPointerX = 0;
+let lastPointerY = 0;
 let layoutIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-  placeBlocks(LAYOUTS[0]);
+  resizeGrid();
+  placeBlocks(SPREAD);
   fitToView();
   initPan();
   initPanel();
   initClock();
-  initCursor();
   initShuffle();
   startInertia();
   window.addEventListener('resize', () => {
+    resizeGrid();
     fitToView();
   });
 });
 
+function resizeGrid() {
+  const hud = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hud-h')) || 36;
+  const pad = 20;
+  const cols = window.innerWidth < 768 ? 14 : COLS;
+  const rows = window.innerWidth < 768 ? 18 : ROWS;
+
+  const cellW = (window.innerWidth - pad) / cols;
+  const cellH = (window.innerHeight - hud - pad) / rows;
+  const cell = Math.floor(Math.min(cellW, cellH));
+
+  document.documentElement.style.setProperty('--cell', `${cell}px`);
+  document.documentElement.style.setProperty('--cols', cols);
+  document.documentElement.style.setProperty('--rows', rows);
+}
+
 function placeBlocks(positions) {
-  const blocks = field.querySelectorAll('.block');
-  blocks.forEach((block, i) => {
+  field.querySelectorAll('.block').forEach((block, i) => {
     const [col, row] = positions[i];
     block.style.gridColumn = `${col} / span ${block.dataset.w}`;
     block.style.gridRow = `${row} / span ${block.dataset.h}`;
@@ -78,11 +110,11 @@ function fitToView() {
   const fh = field.offsetHeight;
 
   if (fw > vw || fh > vh) {
-    scale = Math.min(vw / fw, vh / fh) * 0.98;
+    scale = Math.min(vw / fw, vh / fh);
   }
 
   clampPan();
-  updateTransform();
+  applyTransform();
 }
 
 function clampPan() {
@@ -91,31 +123,23 @@ function clampPan() {
   const fw = field.offsetWidth * scale;
   const fh = field.offsetHeight * scale;
 
-  const overflowX = Math.max(0, fw - vw);
-  const overflowY = Math.max(0, fh - vh);
-
-  const maxX = overflowX > 0 ? overflowX / 2 + 12 : 28;
-  const maxY = overflowY > 0 ? overflowY / 2 + 12 : 28;
+  const maxX = Math.max(0, (fw - vw) / 2) + 16;
+  const maxY = Math.max(0, (fh - vh) / 2) + 16;
 
   panX = Math.max(-maxX, Math.min(maxX, panX));
   panY = Math.max(-maxY, Math.min(maxY, panY));
-
-  if (Math.abs(panX) > maxX) velX = 0;
-  if (Math.abs(panY) > maxY) velY = 0;
 }
 
-function updateTransform() {
+function applyTransform() {
   clampPan();
-  field.style.transform = `translate(calc(-50% + ${panX}px), calc(-50% + ${panY}px)) scale(${scale})`;
+  field.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
   coordsEl.textContent = `${panX.toFixed(0).padStart(3, '0')} / ${panY.toFixed(0).padStart(3, '0')}`;
 }
 
-let lastPointerX = 0;
-let lastPointerY = 0;
-
 function initPan() {
   stage.addEventListener('pointerdown', e => {
-    if (e.target.closest('.block-img') || e.target.closest('.panel') || e.target.closest('.hud-shuffle') || e.target.closest('a')) return;
+    if (e.target.closest('.block-img') || e.target.closest('.block-portrait') ||
+        e.target.closest('.panel') || e.target.closest('.hud-shuffle') || e.target.closest('a')) return;
     isDragging = true;
     startX = e.clientX - panX;
     startY = e.clientY - panY;
@@ -134,35 +158,29 @@ function initPan() {
     velY = e.clientY - lastPointerY;
     lastPointerX = e.clientX;
     lastPointerY = e.clientY;
-    updateTransform();
+    applyTransform();
   });
 
-  stage.addEventListener('pointerup', () => {
-    isDragging = false;
-  });
+  stage.addEventListener('pointerup', () => { isDragging = false; });
 
   stage.addEventListener('wheel', e => {
     e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.05 : 0.05;
-    const prevScale = scale;
-    scale = Math.min(1.08, Math.max(0.85, scale + delta));
-
-    const ratio = scale / prevScale;
-    panX *= ratio;
-    panY *= ratio;
-
-    updateTransform();
+    const prev = scale;
+    scale = Math.min(1.1, Math.max(0.9, scale + (e.deltaY > 0 ? -0.03 : 0.03)));
+    panX *= scale / prev;
+    panY *= scale / prev;
+    applyTransform();
   }, { passive: false });
 }
 
 function startInertia() {
   function tick() {
-    if (!isDragging && (Math.abs(velX) > 0.15 || Math.abs(velY) > 0.15)) {
+    if (!isDragging && (Math.abs(velX) > 0.1 || Math.abs(velY) > 0.1)) {
       panX += velX;
       panY += velY;
-      velX *= 0.88;
-      velY *= 0.88;
-      updateTransform();
+      velX *= 0.85;
+      velY *= 0.85;
+      applyTransform();
     }
     requestAnimationFrame(tick);
   }
@@ -173,64 +191,37 @@ function initPanel() {
   document.querySelectorAll('.block-img[data-project]').forEach(block => {
     block.addEventListener('click', e => {
       e.stopPropagation();
-      const idx = parseInt(block.dataset.project, 10);
-      const p = projects[idx];
+      const p = projects[parseInt(block.dataset.project, 10)];
       if (!p) return;
-
       document.getElementById('panel-tag').textContent = p.tag;
       document.getElementById('panel-title').textContent = p.title;
       document.getElementById('panel-text').textContent = p.text;
-
       const link = document.getElementById('panel-link');
-      if (p.link) {
-        link.href = p.link;
-        link.hidden = false;
-      } else {
-        link.hidden = true;
-      }
-
+      link.hidden = !p.link;
+      if (p.link) link.href = p.link;
       panel.classList.add('open');
-      panel.setAttribute('aria-hidden', 'false');
     });
   });
-
-  panelClose.addEventListener('click', closePanel);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closePanel();
-  });
-}
-
-function closePanel() {
-  panel.classList.remove('open');
-  panel.setAttribute('aria-hidden', 'true');
+  panelClose.addEventListener('click', () => panel.classList.remove('open'));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') panel.classList.remove('open'); });
 }
 
 function initClock() {
-  function tick() {
-    const now = new Date();
-    clockEl.textContent = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-  }
+  const tick = () => {
+    clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  };
   tick();
   setInterval(tick, 1000);
 }
 
-function initCursor() {
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-  document.addEventListener('mousemove', e => {
-    cursorCross.style.left = e.clientX + 'px';
-    cursorCross.style.top = e.clientY + 'px';
-  });
-}
-
 function initShuffle() {
   shuffleBtn.addEventListener('click', () => {
-    layoutIndex = (layoutIndex + 1) % LAYOUTS.length;
+    layoutIndex = 1 - layoutIndex;
     field.classList.add('shuffling');
-    placeBlocks(LAYOUTS[layoutIndex]);
+    placeBlocks(layoutIndex ? SPREAD_ALT : SPREAD);
     panX = 0;
     panY = 0;
     fitToView();
-    setTimeout(() => field.classList.remove('shuffling'), 700);
+    setTimeout(() => field.classList.remove('shuffling'), 600);
   });
 }
