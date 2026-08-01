@@ -372,6 +372,34 @@ body.draw-mode .pencil-cursor { display: block; }
 
 @keyframes marquee { to { transform: translateX(-50%); } }
 
+/* Fruit stickers */
+.stickers {
+  position: fixed;
+  inset: 0;
+  top: var(--hud-h);
+  pointer-events: none;
+  z-index: 45;
+  overflow: hidden;
+}
+
+.sticker {
+  position: absolute;
+  background-repeat: no-repeat;
+  filter: drop-shadow(1px 2px 0 rgba(0, 0, 0, 0.1));
+  opacity: 0.9;
+  animation: sticker-drift 7s ease-in-out infinite alternate;
+}
+
+@keyframes sticker-drift {
+  from { transform: rotate(var(--rot, 0deg)) translateY(0); }
+  to { transform: rotate(var(--rot, 0deg)) translateY(-5px); }
+}
+
+body.project-open .stickers {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
 /* Panel */
 .panel {
   position: fixed;
