@@ -104,14 +104,6 @@ const projects = {
       'images/projects/tozd-04.webp'
     ]
   },
-  13: {
-    slug: 'isa',
-    tag: 'graphic',
-    title: 'Isa Kombucha',
-    text: 'Merchandise with vibrant 90s graphic t-shirt feel for a local kombucha brand. Pop color balanced with Times New Roman.',
-    image: 'images/projects/isa-main.webp',
-    gallery: []
-  },
   14: {
     slug: 'lelee',
     tag: 'graphic',
@@ -124,15 +116,6 @@ const projects = {
       'images/projects/lelee-03.webp',
       'images/projects/lelee-04.webp'
     ]
-  },
-  15: {
-    slug: 'zbornica',
-    tag: 'film',
-    title: 'The Staff Room — Zbornica',
-    text: 'Visual effects and animated digital screens throughout the European hit film. Karlovy Vary Crystal Globe and Pula Film Festival award winner.',
-    link: 'https://www.imdb.com/news/ni63702656/',
-    image: 'images/projects/zbornica-main.webp',
-    gallery: []
   },
   16: {
     slug: 'beholding-cell',
@@ -166,6 +149,81 @@ const MOBILE_LAYOUT = [
   { align: 'right', w: 0.7, aspect: 0.88 },
   { align: 'center', w: 0.58, aspect: 1.12 }
 ];
+
+const STICKER_SHEET = 'images/stickers-sheet.webp';
+const STICKER_SHEET_W = 865;
+const STICKER_SHEET_H = 831;
+
+const STICKER_CROPS = [
+  { x: 378, y: 38, w: 92, h: 92 },      // got milk?
+  { x: 298, y: 118, w: 215, h: 88 },    // couture persian melons
+  { x: 498, y: 108, w: 145, h: 132 },   // tomatoes
+  { x: 658, y: 88, w: 165, h: 78 },     // honeydew oval
+  { x: 28, y: 252, w: 145, h: 78 },     // ripe ready to eat
+  { x: 668, y: 292, w: 115, h: 112 },   // taste me
+  { x: 698, y: 488, w: 135, h: 205 },   // maui pineapple
+  { x: 762, y: 172, w: 85, h: 82 },     // florida heart
+  { x: 162, y: 372, w: 118, h: 112 },   // walter
+  { x: 38, y: 92, w: 135, h: 88 },      // nature house
+  { x: 188, y: 182, w: 145, h: 98 },    // white star
+  { x: 432, y: 352, w: 118, h: 125 },   // bronco banana
+  { x: 552, y: 238, w: 108, h: 108 },   // a-one melons
+  { x: 288, y: 468, w: 108, h: 88 },    // lucky fruit
+  { x: 52, y: 368, w: 125, h: 95 },     // mangos toledo
+  { x: 548, y: 468, w: 130, h: 105 }    // jet fresh maui tag
+];
+
+const STICKER_SPOTS = [
+  { top: '16%', left: '3%' },
+  { top: '22%', right: '4%' },
+  { top: '68%', left: '5%' },
+  { top: '74%', right: '5%' },
+  { top: '42%', left: '2%' },
+  { top: '48%', right: '3%' },
+  { top: '58%', left: '18%' },
+  { top: '32%', right: '16%' }
+];
+
+function pickRandomUnique(arr, count) {
+  const copy = [...arr];
+  const picked = [];
+  while (picked.length < count && copy.length) {
+    const i = Math.floor(Math.random() * copy.length);
+    picked.push(copy.splice(i, 1)[0]);
+  }
+  return picked;
+}
+
+function initStickers() {
+  const container = document.getElementById('stickers');
+  if (!container) return;
+
+  container.innerHTML = '';
+  const count = Math.min(3, STICKER_CROPS.length);
+  const crops = pickRandomUnique(STICKER_CROPS, count);
+  const spots = pickRandomUnique(STICKER_SPOTS, count);
+
+  crops.forEach((crop, i) => {
+    const spot = spots[i];
+    const displayW = MOBILE() ? 52 + Math.random() * 28 : 62 + Math.random() * 38;
+    const scale = displayW / crop.w;
+    const displayH = crop.h * scale;
+    const el = document.createElement('div');
+    el.className = 'sticker';
+    el.style.width = `${displayW}px`;
+    el.style.height = `${displayH}px`;
+    el.style.backgroundImage = `url('${STICKER_SHEET}')`;
+    el.style.backgroundSize = `${STICKER_SHEET_W * scale}px ${STICKER_SHEET_H * scale}px`;
+    el.style.backgroundPosition = `${-crop.x * scale}px ${-crop.y * scale}px`;
+    el.style.setProperty('--rot', `${(-8 + Math.random() * 16).toFixed(1)}deg`);
+    el.style.animationDelay = `${(Math.random() * 2).toFixed(2)}s`;
+    if (spot.top) el.style.top = spot.top;
+    if (spot.left) el.style.left = spot.left;
+    if (spot.right) el.style.right = spot.right;
+    if (spot.bottom) el.style.bottom = spot.bottom;
+    container.appendChild(el);
+  });
+}
 
 const field = document.getElementById('field');
 const stage = document.getElementById('stage');
@@ -237,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initShuffle();
   initDraw();
   initCornerName();
+  initStickers();
   startInertia();
 
   field.querySelectorAll('.block-img').forEach((b, i) => {
@@ -246,6 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => {
     if (MOBILE() && drawMode) toggleDraw(false);
     init(true, true);
+    initStickers();
   });
 });
 
