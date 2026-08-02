@@ -238,6 +238,8 @@ const ROW_BANDS = [
   { min: 8, max: ROWS + 1 }
 ];
 const MOBILE = () => window.innerWidth <= 768;
+const PROJECT_TRANSITION_MS = 420;
+let projectCloseTimer = null;
 
 function randomCol(w) {
   return 2 + Math.floor(Math.random() * Math.max(1, COLS - w - 2));
@@ -765,22 +767,32 @@ function openProjectPanel(projectId, caption) {
 
   if (projectView) {
     projectView.scrollTop = 0;
-    projectView.classList.add('open');
+    clearTimeout(projectCloseTimer);
     projectView.setAttribute('aria-hidden', 'false');
     document.body.classList.add('project-open');
+    if (!projectView.classList.contains('open')) {
+      requestAnimationFrame(() => {
+        projectView.classList.add('open');
+      });
+    }
   }
 }
 
 function closeProjectView() {
-  if (projectView) {
+  const wasOpen = projectView?.classList.contains('open');
+  if (wasOpen) {
     projectView.classList.remove('open');
     projectView.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('project-open');
   }
-  document.body.classList.remove('project-open');
-  galleryImages = [];
-  galleryIndex = 0;
-  if (panelGallery) panelGallery.innerHTML = '';
-  if (panelImageImg) panelImageImg.src = '';
+
+  clearTimeout(projectCloseTimer);
+  projectCloseTimer = setTimeout(() => {
+    galleryImages = [];
+    galleryIndex = 0;
+    if (panelGallery) panelGallery.innerHTML = '';
+    if (panelImageImg) panelImageImg.src = '';
+  }, wasOpen ? PROJECT_TRANSITION_MS : 0);
 }
 
 function closePanel() {
