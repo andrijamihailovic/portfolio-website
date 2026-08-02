@@ -150,27 +150,14 @@ const MOBILE_LAYOUT = [
   { align: 'center', w: 0.58, aspect: 1.12 }
 ];
 
-const STICKER_SHEET = 'images/stickers-sheet.webp';
-const STICKER_SHEET_W = 865;
-const STICKER_SHEET_H = 831;
-
-const STICKER_CROPS = [
-  { x: 378, y: 38, w: 92, h: 92 },      // got milk?
-  { x: 298, y: 118, w: 215, h: 88 },    // couture persian melons
-  { x: 498, y: 108, w: 145, h: 132 },   // tomatoes
-  { x: 658, y: 88, w: 165, h: 78 },     // honeydew oval
-  { x: 28, y: 252, w: 145, h: 78 },     // ripe ready to eat
-  { x: 668, y: 292, w: 115, h: 112 },   // taste me
-  { x: 698, y: 488, w: 135, h: 205 },   // maui pineapple
-  { x: 762, y: 172, w: 85, h: 82 },     // florida heart
-  { x: 162, y: 372, w: 118, h: 112 },   // walter
-  { x: 38, y: 92, w: 135, h: 88 },      // nature house
-  { x: 188, y: 182, w: 145, h: 98 },    // white star
-  { x: 432, y: 352, w: 118, h: 125 },   // bronco banana
-  { x: 552, y: 238, w: 108, h: 108 },   // a-one melons
-  { x: 288, y: 468, w: 108, h: 88 },    // lucky fruit
-  { x: 52, y: 368, w: 125, h: 95 },     // mangos toledo
-  { x: 548, y: 468, w: 130, h: 105 }    // jet fresh maui tag
+const STICKERS = [
+  'images/stickers/tropical-mango.webp',
+  'images/stickers/mademoiselle.webp',
+  'images/stickers/watermelon.webp',
+  'images/stickers/karla-banana.webp',
+  'images/stickers/red-jim.webp',
+  'images/stickers/mango-tips.webp',
+  'images/stickers/bronco-banana.webp'
 ];
 
 const STICKER_SPOTS = [
@@ -184,43 +171,28 @@ const STICKER_SPOTS = [
   { top: '32%', right: '16%' }
 ];
 
-function pickRandomUnique(arr, count) {
-  const copy = [...arr];
-  const picked = [];
-  while (picked.length < count && copy.length) {
-    const i = Math.floor(Math.random() * copy.length);
-    picked.push(copy.splice(i, 1)[0]);
-  }
-  return picked;
-}
-
 function initStickers() {
   const container = document.getElementById('stickers');
   if (!container) return;
 
   container.innerHTML = '';
-  const count = Math.min(3, STICKER_CROPS.length);
-  const crops = pickRandomUnique(STICKER_CROPS, count);
-  const spots = pickRandomUnique(STICKER_SPOTS, count);
+  const picks = [...STICKERS].sort(() => Math.random() - 0.5).slice(0, 3);
+  const spots = [...STICKER_SPOTS].sort(() => Math.random() - 0.5).slice(0, 3);
 
-  crops.forEach((crop, i) => {
+  picks.forEach((src, i) => {
     const spot = spots[i];
-    const displayW = MOBILE() ? 52 + Math.random() * 28 : 62 + Math.random() * 38;
-    const scale = displayW / crop.w;
-    const displayH = crop.h * scale;
     const el = document.createElement('div');
     el.className = 'sticker';
-    el.style.width = `${displayW}px`;
-    el.style.height = `${displayH}px`;
-    el.style.backgroundImage = `url('${STICKER_SHEET}')`;
-    el.style.backgroundSize = `${STICKER_SHEET_W * scale}px ${STICKER_SHEET_H * scale}px`;
-    el.style.backgroundPosition = `${-crop.x * scale}px ${-crop.y * scale}px`;
     el.style.setProperty('--rot', `${(-8 + Math.random() * 16).toFixed(1)}deg`);
-    el.style.animationDelay = `${(Math.random() * 2).toFixed(2)}s`;
     if (spot.top) el.style.top = spot.top;
     if (spot.left) el.style.left = spot.left;
     if (spot.right) el.style.right = spot.right;
-    if (spot.bottom) el.style.bottom = spot.bottom;
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.style.width = `${MOBILE() ? 56 + Math.random() * 24 : 72 + Math.random() * 36}px`;
+    el.appendChild(img);
     container.appendChild(el);
   });
 }
