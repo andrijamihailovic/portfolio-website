@@ -252,6 +252,11 @@ body.draw-mode .pencil-cursor { display: block; }
   box-shadow: 4px 4px 0 var(--ink);
 }
 
+.block-list {
+  display: flex;
+  flex-direction: column;
+}
+
 .block-note,
 .block-list,
 .block-portrait {
@@ -286,11 +291,34 @@ body.draw-mode .pencil-cursor { display: block; }
   line-height: 1.5;
 }
 
-.block-list ul { list-style: none; }
+.block-list ul {
+  list-style: none;
+  max-height: calc(100% - 14px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
 
 .block-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
   padding: 2px 0;
   border-bottom: 1px dashed var(--line-bold);
+}
+
+.block-list .exp-role {
+  flex: 1;
+  min-width: 0;
+}
+
+.block-list .exp-when {
+  flex-shrink: 0;
+  opacity: 0.5;
+  font-size: 7px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .block-list li:last-child { border-bottom: none; }
