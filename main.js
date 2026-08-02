@@ -305,28 +305,36 @@ function init(preserveDrawing = false, skipMarquee = false) {
 function layoutBlocksMobileShuffled() {
   let y = 0;
   const gap = 18;
+  const margin = 16;
+  const maxW = window.innerWidth - margin * 2;
   const blocks = [...field.querySelectorAll('.block')];
 
   blocks.forEach((block, i) => {
     const orderIdx = parseInt(block.dataset.mobileOrder ?? i, 10);
     const cfg = MOBILE_LAYOUT[orderIdx % MOBILE_LAYOUT.length];
-    const width = Math.round((window.innerWidth - 32) * cfg.w * (block.classList.contains('block-img') ? PROJECT_BOOST : 1));
+    const boost = block.classList.contains('block-img') ? PROJECT_BOOST : 1;
+    let width = Math.round(maxW * cfg.w * boost);
+    width = Math.min(width, maxW);
     let height = cfg.marquee ? 28 : Math.round(width / cfg.aspect);
     if (block.classList.contains('block-portrait') || block.classList.contains('block-img--square')) height = width;
     else if (block.classList.contains('block-img--vertical')) height = Math.round(width / 0.72);
-    const left = mobileLeft(width, cfg.align);
+    let left = mobileLeft(width, cfg.align);
+    left = Math.max(margin, Math.min(left, window.innerWidth - margin - width));
     const rot = ((orderIdx * 7 + 3) % 11 - 5) * 0.35;
 
     block.style.left = `${left}px`;
     block.style.top = `${y}px`;
     block.style.width = `${width}px`;
     block.style.height = `${height}px`;
+    block.style.maxWidth = `${maxW}px`;
     block.style.zIndex = 5 + (i % 10);
     block.style.transform = `rotate(${rot}deg)`;
 
     y += height + gap - (i % 3) * 6;
   });
 
+  field.style.width = '100%';
+  field.style.maxWidth = '100%';
   field.style.height = `${y + 60}px`;
 }
 
