@@ -716,6 +716,10 @@ body.project-open .stickers {
     overflow-x: hidden;
   }
 
+  .sticker {
+    animation: none;
+  }
+
   .block,
   .block-note,
   .block-list,
