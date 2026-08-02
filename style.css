@@ -649,6 +649,8 @@ body.project-open .stickers {
   html, body {
     overflow-x: hidden;
     overflow-y: auto;
+    height: auto;
+    min-height: 100%;
     max-width: 100vw;
     overscroll-behavior-x: none;
   }
@@ -694,12 +696,15 @@ body.project-open .stickers {
   .field {
     width: 100% !important;
     max-width: 100% !important;
-    height: auto !important;
-    min-height: auto;
+    min-height: 100vh;
     overflow-x: hidden;
     transform: none !important;
     border: none;
     background: transparent;
+  }
+
+  .field.ready .block {
+    opacity: 1;
   }
 
   .block {
