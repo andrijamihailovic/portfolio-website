@@ -160,16 +160,13 @@ const STICKERS = [
   'images/stickers/bronco-banana.webp'
 ];
 
-const STICKER_SPOTS = [
-  { top: '16%', left: '3%' },
-  { top: '22%', right: '4%' },
-  { top: '68%', left: '5%' },
-  { top: '74%', right: '5%' },
-  { top: '42%', left: '2%' },
-  { top: '48%', right: '3%' },
-  { top: '58%', left: '18%' },
-  { top: '32%', right: '16%' }
-];
+function randomStickerSpot() {
+  const top = `${12 + Math.random() * 65}%`;
+  if (Math.random() < 0.5) {
+    return { top, left: `${2 + Math.random() * 14}%` };
+  }
+  return { top, right: `${2 + Math.random() * 14}%` };
+}
 
 function initStickers() {
   const container = document.getElementById('stickers');
@@ -177,13 +174,13 @@ function initStickers() {
 
   container.innerHTML = '';
   const picks = [...STICKERS].sort(() => Math.random() - 0.5).slice(0, 3);
-  const spots = [...STICKER_SPOTS].sort(() => Math.random() - 0.5).slice(0, 3);
 
-  picks.forEach((src, i) => {
-    const spot = spots[i];
+  picks.forEach(src => {
+    const spot = randomStickerSpot();
     const el = document.createElement('div');
     el.className = 'sticker';
-    el.style.setProperty('--rot', `${(-8 + Math.random() * 16).toFixed(1)}deg`);
+    el.style.setProperty('--rot', `${(-12 + Math.random() * 24).toFixed(1)}deg`);
+    el.style.animationDelay = `${(Math.random() * 2).toFixed(2)}s`;
     if (spot.top) el.style.top = spot.top;
     if (spot.left) el.style.left = spot.left;
     if (spot.right) el.style.right = spot.right;
@@ -843,6 +840,8 @@ function initClock() {
 
 function initShuffle() {
   shuffleBtn.addEventListener('click', () => {
+    initStickers();
+
     if (MOBILE()) {
       const blocks = [...field.querySelectorAll('.block')];
       const order = blocks.map((_, i) => i).sort(() => Math.random() - 0.5);
