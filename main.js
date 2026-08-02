@@ -161,6 +161,14 @@ const STICKERS = [
 ];
 
 function randomStickerSpot() {
+  if (MOBILE()) {
+    const top = `${Math.round(80 + Math.random() * (window.innerHeight - 220))}px`;
+    if (Math.random() < 0.5) {
+      return { top, left: `${Math.round(8 + Math.random() * 20)}px` };
+    }
+    return { top, right: `${Math.round(8 + Math.random() * 20)}px` };
+  }
+
   const top = `${12 + Math.random() * 65}%`;
   if (Math.random() < 0.5) {
     return { top, left: `${2 + Math.random() * 14}%` };
@@ -256,6 +264,8 @@ let drawing = false;
 let drawCtx = null;
 let pencilEl = null;
 
+let lastLayoutWidth = window.innerWidth;
+
 document.addEventListener('DOMContentLoaded', () => {
   init();
   initPan();
@@ -274,7 +284,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => {
     if (MOBILE() && drawMode) toggleDraw(false);
     init(true, true);
-    initStickers();
+    if (window.innerWidth !== lastLayoutWidth) {
+      lastLayoutWidth = window.innerWidth;
+      initStickers();
+    }
   });
 });
 
